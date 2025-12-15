@@ -58,7 +58,7 @@ watch(() => filters.skill, () => updateUrl())
 <template>
   <div class="annuaire">
     <header class="page-header">
-      <div class="header-content">
+      <div class="page-header-content">
         <span class="page-label">
           <span class="label-line"></span>
           Annuaire
@@ -445,11 +445,23 @@ watch(() => filters.skill, () => updateUrl())
 /* Responsive */
 @media (max-width: 768px) {
   .annuaire {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
+    overflow-x: hidden;
+  }
+
+  .page-header {
+    padding: 2rem 0;
+  }
+
+  .page-label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .page-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    word-break: break-word;
   }
 
   .filters-row {
