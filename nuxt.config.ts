@@ -9,7 +9,12 @@ export default defineNuxtConfig({
     '@sidebase/nuxt-auth'
   ],
   auth: {
-    origin: process.env.AUTH_ORIGIN || 'http://localhost:3000',
+    provider: {
+      type: 'authjs'
+    },
+    originEnvKey: 'AUTH_ORIGIN',
+    baseURL: process.env.AUTH_ORIGIN || 'http://localhost:3000',
+    basePath: '/api/auth',
     enableGlobalAppMiddleware: false
   },
   nitro: {
