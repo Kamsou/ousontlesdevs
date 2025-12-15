@@ -1,0 +1,60 @@
+import { eq, like, inArray } from 'drizzle-orm'
+
+export default defineEventHandler(async (event) => {
+  const db = useDrizzle()
+  const query = getQuery(event)
+
+  // Get all developers with their skills and openTo tags
+  const developers = await db.query.developers.findMany({
+    with: {
+      skills: true,
+      openTo: true,
+      speakerProfile: true
+    }
+  })
+
+  let filtered = developers
+
+  // Filter by location
+  if (query.location) {
+    filtered = filtered.filter(d =>
+      d.location?.toLowerCase().includes((query.location as string).toLowerCase())
+    )
+  }
+
+  // Filter by skill
+  if (query.skill) {
+    filtered = filtered.filter(d =>
+      d.skills.some(s => s.skillName.toLowerCase().includes((query.skill as string).toLowerCase()))
+    )
+  }
+
+  // Filter by openTo type
+  if (query.openTo) {
+    const openToTypes = (query.openTo as string).split(',')
+    filtered = filtered.filter(d =>
+      d.openTo.some(o => openToTypes.includes(o.type))
+    )
+  }
+
+  // Filter speakers only
+  if (query.speakers === 'true') {
+    filtered = filtered.filter(d =>
+      d.speakerProfile?.available === true || d.openTo.some(o => o.type === 'conference')
+    )
+  }
+
+  return filtered.map(d => ({
+    id: d.id,
+    name: d.name,
+    avatarUrl: d.avatarUrl,
+    bio: d.bio,
+    location: d.location,
+    yearsExperience: d.yearsExperience,
+    linkedinUrl: d.linkedinUrl,
+    githubUrl: d.githubUrl,
+    skills: d.skills.map(s => s.skillName),
+    openTo: d.openTo.map(o => o.type),
+    isSpeaker: d.speakerProfile?.available || d.openTo.some(o => o.type === 'conference')
+  }))
+})
