@@ -1,4 +1,19 @@
 <script setup lang="ts">
+interface Speaker {
+  id: number
+  name: string
+  avatarUrl: string | null
+  bio: string | null
+  location: string | null
+  skills: string[]
+  speakerProfile: {
+    topics: string[]
+    remoteOk: boolean | null
+    travelWilling: boolean | null
+    available: boolean | null
+  } | null
+}
+
 const route = useRoute()
 const router = useRouter()
 
@@ -18,7 +33,7 @@ const queryParams = computed(() => {
   return params
 })
 
-const { data: speakers, refresh } = await useFetch('/api/speakers', {
+const { data: speakers } = await useFetch<Speaker[]>('/api/speakers', {
   query: queryParams
 })
 
@@ -43,7 +58,10 @@ watch(() => filters.travel, () => updateUrl())
 <template>
   <div class="speakers-page">
     <header class="page-header">
-      <div class="header-content">
+      <NuxtLink to="/" class="back-link">
+        ← Accueil
+      </NuxtLink>
+      <div class="page-header-content">
         <span class="page-label">
           <span class="label-line"></span>
           Speakers Bureau
@@ -162,6 +180,21 @@ watch(() => filters.travel, () => updateUrl())
 .page-header {
   padding: 4rem 0;
   border-bottom: 1px solid var(--border);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: var(--text);
 }
 
 .page-label {
@@ -367,6 +400,7 @@ watch(() => filters.travel, () => updateUrl())
   line-height: 1.6;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -439,11 +473,23 @@ watch(() => filters.travel, () => updateUrl())
 /* Responsive */
 @media (max-width: 768px) {
   .speakers-page {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
+    overflow-x: hidden;
+  }
+
+  .page-header {
+    padding: 2rem 0;
+  }
+
+  .page-label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .page-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    word-break: break-word;
   }
 
   .filters-row {

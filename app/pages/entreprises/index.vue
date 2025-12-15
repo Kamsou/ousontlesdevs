@@ -95,20 +95,25 @@ function openReviewModal(company: any) {
 <template>
   <div class="entreprises-page">
     <header class="page-header">
-      <div class="header-content">
-        <span class="page-label">
-          <span class="label-line"></span>
-          Verified Inclusive
-        </span>
-        <h1 class="page-title">Entreprises</h1>
-        <p class="page-subtitle">
-          {{ companies?.length || 0 }} entreprises référencées
-        </p>
-      </div>
+      <NuxtLink to="/" class="back-link">
+        ← Accueil
+      </NuxtLink>
+      <div class="page-header-row">
+        <div class="page-header-content">
+          <span class="page-label">
+            <span class="label-line"></span>
+            Verified Inclusive
+          </span>
+          <h1 class="page-title">Entreprises</h1>
+          <p class="page-subtitle">
+            {{ companies?.length || 0 }} entreprises référencées
+          </p>
+        </div>
 
-      <button v-if="status === 'authenticated'" @click="showAddModal = true" class="btn-add">
-        Ajouter une entreprise
-      </button>
+        <button v-if="status === 'authenticated'" @click="showAddModal = true" class="btn-add">
+          Ajouter une entreprise
+        </button>
+      </div>
     </header>
 
     <!-- Filters -->
@@ -304,6 +309,24 @@ function openReviewModal(company: any) {
 .page-header {
   padding: 4rem 0;
   border-bottom: 1px solid var(--border);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: var(--text);
+}
+
+.page-header-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -808,16 +831,28 @@ function openReviewModal(company: any) {
 /* Responsive */
 @media (max-width: 768px) {
   .entreprises-page {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
+    overflow-x: hidden;
   }
 
   .page-header {
+    padding: 2rem 0;
+  }
+
+  .page-header-row {
     flex-direction: column;
     gap: 1.5rem;
   }
 
+  .page-label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
   .page-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    word-break: break-word;
   }
 
   .filters-row {
