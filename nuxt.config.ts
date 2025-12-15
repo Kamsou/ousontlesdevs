@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     '@sidebase/nuxt-auth'
   ],
   auth: {
-    origin: process.env.ORIGIN || 'http://localhost:3000',
+    origin: process.env.AUTH_ORIGIN || 'http://localhost:3000',
     enableGlobalAppMiddleware: false
   },
   nitro: {
