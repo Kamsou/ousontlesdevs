@@ -14,7 +14,6 @@
     "@nuxthub/core": "^0.10.1",
     "@sidebase/nuxt-auth": "^1.1.1",
     "@types/better-sqlite3": "^7.6.13",
-    "better-sqlite3": "^12.5.0",
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
     "next-auth": "~4.21.1",
