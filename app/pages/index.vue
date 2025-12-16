@@ -1,4 +1,13 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: 'OSLD - Où Sont Les Développeuses',
+  ogTitle: 'OSLD - Où Sont Les Développeuses',
+  description: 'Annuaire des développeuses en France. Trouvez des talents tech féminins, des speakers pour vos conférences, et des entreprises inclusives.',
+  ogDescription: 'Annuaire des développeuses en France. Trouvez des talents tech féminins, des speakers pour vos conférences, et des entreprises inclusives.',
+  ogImage: '/og-image.png',
+  twitterCard: 'summary_large_image'
+})
+
 const { status, signIn } = useAuth()
 const router = useRouter()
 

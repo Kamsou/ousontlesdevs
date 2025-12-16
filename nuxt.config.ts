@@ -5,10 +5,43 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4
   },
+  app: {
+    head: {
+      htmlAttrs: { lang: 'fr' },
+      title: 'OSLD - Où Sont Les Développeuses',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Annuaire des développeuses en France. Trouvez des talents tech féminins, des speakers pour vos conférences, et des entreprises inclusives.' },
+        { name: 'keywords', content: 'développeuses, femmes tech, annuaire, speakers, conférences, entreprises inclusives, France, diversité tech' },
+        { name: 'author', content: 'OSLD' },
+        { name: 'robots', content: 'index, follow' },
+        // Open Graph
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'OSLD - Où Sont Les Développeuses' },
+        { property: 'og:title', content: 'OSLD - Où Sont Les Développeuses' },
+        { property: 'og:description', content: 'Annuaire des développeuses en France. Trouvez des talents tech féminins, des speakers pour vos conférences, et des entreprises inclusives.' },
+        { property: 'og:image', content: '/og-image.png' },
+        { property: 'og:locale', content: 'fr_FR' },
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'OSLD - Où Sont Les Développeuses' },
+        { name: 'twitter:description', content: 'Annuaire des développeuses en France. Trouvez des talents tech féminins, des speakers pour vos conférences, et des entreprises inclusives.' },
+        { name: 'twitter:image', content: '/og-image.png' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ]
+    }
+  },
   modules: [
     '@nuxthub/core',
-    '@sidebase/nuxt-auth'
+    '@sidebase/nuxt-auth',
+    '@nuxtjs/sitemap'
   ],
+  site: {
+    url: 'https://ousontlesdeveloppeuses.fr'
+  },
   hub: {
     db: 'sqlite'
   },

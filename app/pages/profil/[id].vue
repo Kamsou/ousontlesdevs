@@ -17,6 +17,16 @@ const { data: developer, error } = await useFetch(`/api/developers/${id}`)
 if (error.value) {
   throw createError({ statusCode: 404, message: 'Profil non trouvé' })
 }
+
+// Dynamic SEO meta based on developer data
+useSeoMeta({
+  title: () => developer.value ? `${developer.value.name} - OSLD` : 'Profil - OSLD',
+  ogTitle: () => developer.value ? `${developer.value.name} - OSLD` : 'Profil - OSLD',
+  description: () => developer.value?.bio || 'Profil de développeuse sur OSLD',
+  ogDescription: () => developer.value?.bio || 'Profil de développeuse sur OSLD',
+  ogImage: () => developer.value?.avatarUrl || '/og-image.png',
+  twitterCard: 'summary_large_image'
+})
 </script>
 
 <template>

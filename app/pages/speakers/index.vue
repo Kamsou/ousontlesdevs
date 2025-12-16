@@ -1,4 +1,13 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Speakers Bureau - OSLD',
+  ogTitle: 'Speakers Bureau - OSLD',
+  description: 'Trouvez des intervenantes tech pour vos conférences et événements. Speakers disponibles en remote ou en présentiel.',
+  ogDescription: 'Trouvez des intervenantes tech pour vos conférences et événements. Speakers disponibles en remote ou en présentiel.',
+  ogImage: '/og-image.png',
+  twitterCard: 'summary_large_image'
+})
+
 interface Speaker {
   id: number
   name: string

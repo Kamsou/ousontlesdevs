@@ -1,4 +1,13 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Entreprises Inclusives - OSLD',
+  ogTitle: 'Entreprises Inclusives - OSLD',
+  description: 'Découvrez les entreprises tech certifiées inclusives en France. Avis et notes par la communauté des développeuses.',
+  ogDescription: 'Découvrez les entreprises tech certifiées inclusives en France. Avis et notes par la communauté des développeuses.',
+  ogImage: '/og-image.png',
+  twitterCard: 'summary_large_image'
+})
+
 const route = useRoute()
 const router = useRouter()
 const { status } = useAuth()

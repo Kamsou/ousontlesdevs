@@ -1,4 +1,9 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Mon Profil - OSLD',
+  robots: 'noindex, nofollow' // Page privée, ne pas indexer
+})
+
 const { data: session, status } = useAuth()
 const router = useRouter()
 
