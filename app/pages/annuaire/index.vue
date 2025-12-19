@@ -1,12 +1,22 @@
 <script setup lang="ts">
-useSeoMeta({
+// SEO centralisé
+const { canonicalUrl, siteUrl } = usePageSEO({
   title: 'Annuaire des Développeuses - OSLD',
-  ogTitle: 'Annuaire des Développeuses - OSLD',
   description: 'Explorez les profils de développeuses en France. Filtrez par ville, technologie et disponibilité.',
-  ogDescription: 'Explorez les profils de développeuses en France. Filtrez par ville, technologie et disponibilité.',
-  ogImage: '/og-image.png',
-  twitterCard: 'summary_large_image'
+  path: '/annuaire'
 })
+
+// Structured Data type-safe
+const schema = useSchemaOrgSEO()
+schema.setCollectionPage(
+  'Annuaire des Développeuses',
+  'Explorez les profils de développeuses en France. Filtrez par ville, technologie et disponibilité.',
+  canonicalUrl
+)
+schema.setBreadcrumb([
+  { name: 'Accueil', url: siteUrl },
+  { name: 'Annuaire', url: canonicalUrl }
+])
 
 const route = useRoute()
 const router = useRouter()
@@ -140,8 +150,9 @@ watch(() => filters.skill, () => updateUrl())
           <div class="card-header">
             <img
               :src="dev.avatarUrl || '/default-avatar.png'"
-              :alt="dev.name"
+              :alt="`Photo de profil de ${dev.name}, développeuse${dev.location ? ` basée à ${dev.location}` : ''}`"
               class="avatar"
+              loading="lazy"
             />
             <div class="card-info">
               <h3 class="card-name">{{ dev.name }}</h3>

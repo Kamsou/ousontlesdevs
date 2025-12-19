@@ -1,12 +1,22 @@
 <script setup lang="ts">
-useSeoMeta({
-  title: 'Speakeuses - OSLD',
-  ogTitle: 'Speakeuses - OSLD',
-  description: 'Trouvez des intervenantes tech pour vos conférences et événements. Speakeuses disponibles en remote ou en présentiel.',
-  ogDescription: 'Trouvez des intervenantes tech pour vos conférences et événements. Speakeuses disponibles en remote ou en présentiel.',
-  ogImage: '/og-image.png',
-  twitterCard: 'summary_large_image'
+// SEO centralisé
+const { canonicalUrl, siteUrl } = usePageSEO({
+  title: 'Speakers Bureau - OSLD',
+  description: 'Trouvez des intervenantes tech pour vos conférences et événements. Speakers disponibles en remote ou en présentiel.',
+  path: '/speakers'
 })
+
+// Structured Data type-safe
+const schema = useSchemaOrgSEO()
+schema.setCollectionPage(
+  'Speakers Bureau',
+  'Trouvez des intervenantes tech pour vos conférences et événements. Speakers disponibles en remote ou en présentiel.',
+  canonicalUrl
+)
+schema.setBreadcrumb([
+  { name: 'Accueil', url: siteUrl },
+  { name: 'Speakers', url: canonicalUrl }
+])
 
 interface Speaker {
   id: number
@@ -138,8 +148,9 @@ watch(() => filters.travel, () => updateUrl())
           <div class="card-header">
             <img
               :src="speaker.avatarUrl || '/default-avatar.png'"
-              :alt="speaker.name"
+              :alt="`Photo de profil de ${speaker.name}, speaker tech${speaker.location ? ` basée à ${speaker.location}` : ''}`"
               class="avatar"
+              loading="lazy"
             />
             <div class="card-info">
               <h3 class="card-name">{{ speaker.name }}</h3>

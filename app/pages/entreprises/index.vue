@@ -1,12 +1,22 @@
 <script setup lang="ts">
-useSeoMeta({
+// SEO centralisé
+const { canonicalUrl, siteUrl } = usePageSEO({
   title: 'Entreprises Inclusives - OSLD',
-  ogTitle: 'Entreprises Inclusives - OSLD',
   description: 'Découvrez les entreprises tech certifiées inclusives en France. Avis et notes par la communauté des développeuses.',
-  ogDescription: 'Découvrez les entreprises tech certifiées inclusives en France. Avis et notes par la communauté des développeuses.',
-  ogImage: '/og-image.png',
-  twitterCard: 'summary_large_image'
+  path: '/entreprises'
 })
+
+// Structured Data type-safe
+const schema = useSchemaOrgSEO()
+schema.setCollectionPage(
+  'Entreprises Inclusives',
+  'Découvrez les entreprises tech certifiées inclusives en France. Avis et notes par la communauté des développeuses.',
+  canonicalUrl
+)
+schema.setBreadcrumb([
+  { name: 'Accueil', url: siteUrl },
+  { name: 'Entreprises', url: canonicalUrl }
+])
 
 const route = useRoute()
 const router = useRouter()
@@ -171,7 +181,7 @@ function openReviewModal(company: any) {
         <div v-for="company in companies" :key="company.id" class="company-card">
           <div class="card-header">
             <div v-if="company.logoUrl" class="company-logo">
-              <img :src="company.logoUrl" :alt="company.name" />
+              <img :src="company.logoUrl" :alt="`Logo de ${company.name}${company.location ? `, entreprise basée à ${company.location}` : ''}`" loading="lazy" />
             </div>
             <div v-else class="company-logo placeholder">
               {{ company.name.charAt(0) }}
