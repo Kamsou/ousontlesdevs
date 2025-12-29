@@ -74,32 +74,48 @@ const features = [
   <div class="max-w-[1600px] mx-auto">
     <section class="min-h-[calc(100vh-80px)] flex flex-col justify-center px-4 md:px-16 py-16 md:py-8 relative">
       <div class="max-w-4xl">
-        <h1 class="font-display text-4xl md:text-[clamp(3.5rem,10vw,8rem)] font-medium leading-[0.95] tracking-tight mb-8">
+        <div class="overflow-hidden">
+          <NuxtLink to="/experience" class="hidden md:inline-flex items-center gap-2 text-text-muted text-xs uppercase tracking-widest mb-8 no-underline hover:text-text transition-colors animate-slide-up">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+              <path d="M12 17h.01"/>
+            </svg>
+            Découvre quel profil dev tu es →
+          </NuxtLink>
+        </div>
+        <h1 class="font-display text-5xl md:text-[clamp(3.5rem,10vw,8rem)] font-medium leading-[0.95] tracking-tight mb-8">
           <span class="block overflow-hidden">
-            <span class="inline-block mr-[0.2em]">Où</span>
-            <span class="inline-block mr-[0.2em]">sont</span>
-            <span class="inline-block">les</span>
+            <span class="inline-block mr-[0.2em] animate-slide-up animation-delay-100">Où</span>
+            <span class="inline-block mr-[0.2em] animate-slide-up animation-delay-150">sont</span>
+            <span class="inline-block animate-slide-up animation-delay-200">les</span>
           </span>
           <span class="block overflow-hidden title-stroke transition-all duration-400">
-            <span class="inline-block">développeuses</span>
+            <span class="inline-block animate-slide-up animation-delay-250">développeuses</span>
           </span>
         </h1>
 
-        <p class="text-lg text-text-muted max-w-md leading-relaxed mb-12">
-          Le réseau des talents tech féminins en France.<br/>
-          Profils. Talks. Mentorat.
-        </p>
+        <div class="overflow-hidden">
+          <p class="text-sm md:text-lg text-text-muted max-w-md leading-relaxed mb-12 animate-slide-up animation-delay-300">
+            Le réseau des talents tech féminins en France.<br/>
+            Profils. Talks. Mentorat.
+          </p>
+        </div>
 
-        <div class="flex gap-6 items-center flex-wrap">
-          <button @click="handleCreateProfile" class="group flex items-center gap-4 px-6 py-4 bg-text text-bg border-none rounded-full text-sm font-medium cursor-pointer transition-all hover:gap-6 hover:pr-5">
-            <span>Créer mon profil</span>
+        <div class="overflow-hidden">
+          <div class="flex gap-4 items-center flex-wrap animate-slide-up animation-delay-400">
+          <NuxtLink to="/annuaire" class="group flex items-center gap-4 px-6 py-4 bg-text text-bg border-none rounded-full text-sm font-medium cursor-pointer transition-all hover:gap-6 hover:pr-5 no-underline">
+            <span>Elles sont là</span>
             <span class="flex transition-transform group-hover:translate-x-1">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </span>
+          </NuxtLink>
+          <button @click="handleCreateProfile" class="px-6 py-4 bg-transparent text-text border border-border rounded-full text-sm font-medium cursor-pointer transition-all hover:border-text hover:bg-text hover:text-bg">
+            Créer mon profil
           </button>
-          <NuxtLink to="/experience" class="relative py-4 bg-transparent border-none text-text text-sm font-medium cursor-pointer after:content-[''] after:absolute after:bottom-3 after:left-0 after:w-full after:h-px after:bg-text after:scale-x-0 after:origin-right after:transition-transform hover:after:scale-x-100 hover:after:origin-left">Découvre ton profil dev</NuxtLink>
+          </div>
         </div>
       </div>
 
@@ -233,5 +249,50 @@ const features = [
 
 .scroll-line {
   animation: scroll-down 1.5s ease-in-out infinite;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.animation-delay-150 {
+  animation-delay: 0.15s;
+  opacity: 0;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.animation-delay-250 {
+  animation-delay: 0.25s;
+  opacity: 0;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+  opacity: 0;
 }
 </style>

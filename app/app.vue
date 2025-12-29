@@ -27,6 +27,7 @@ watch(() => route.path, () => {
           <NuxtLink to="/annuaire" class="text-text-muted no-underline text-sm font-medium transition-colors hover:text-text">Annuaire</NuxtLink>
           <NuxtLink to="/speakers" class="text-text-muted no-underline text-sm font-medium transition-colors hover:text-text">Speakeuses</NuxtLink>
           <NuxtLink to="/entreprises" class="text-text-muted no-underline text-sm font-medium transition-colors hover:text-text">Entreprises</NuxtLink>
+          <NuxtLink to="/experience" class="text-text-muted no-underline text-sm font-medium transition-colors hover:text-text">Quiz</NuxtLink>
         </nav>
 
         <div class="flex items-center gap-4">
@@ -69,6 +70,7 @@ watch(() => route.path, () => {
         <NuxtLink to="/annuaire" class="text-text no-underline text-2xl font-medium">Annuaire</NuxtLink>
         <NuxtLink to="/speakers" class="text-text no-underline text-2xl font-medium">Speakeuses</NuxtLink>
         <NuxtLink to="/entreprises" class="text-text no-underline text-2xl font-medium">Entreprises</NuxtLink>
+        <NuxtLink to="/experience" class="text-text no-underline text-2xl font-medium">Quiz</NuxtLink>
       </nav>
       <div class="pt-6 border-t border-border">
         <template v-if="status !== 'authenticated'">

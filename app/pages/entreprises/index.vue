@@ -105,11 +105,17 @@ function openReviewModal(company: any) {
     <header class="py-16 border-b border-border">
       <div class="flex flex-col md:flex-row justify-between items-start gap-6">
         <div>
-          <span class="text-xs uppercase tracking-[0.2em] text-text-muted mb-6 block">Entreprises</span>
-          <h1 class="font-display text-4xl md:text-7xl font-medium tracking-tight mb-2">Entreprises</h1>
-          <p class="text-text-muted text-base">
-            {{ companies?.length || 0 }} entreprises référencées
-          </p>
+          <div class="overflow-hidden">
+            <span class="text-xs uppercase tracking-[0.2em] text-text-muted mb-6 block animate-slide-up">Entreprises</span>
+          </div>
+          <div class="overflow-hidden">
+            <h1 class="font-display text-4xl md:text-7xl font-medium tracking-tight mb-2 animate-slide-up animation-delay-100">Entreprises</h1>
+          </div>
+          <div class="overflow-hidden">
+            <p class="text-text-muted text-base animate-slide-up animation-delay-200">
+              {{ companies?.length || 0 }} entreprises référencées
+            </p>
+          </div>
         </div>
 
         <button v-if="status === 'authenticated'" @click="showAddModal = true" class="px-6 py-3 bg-text text-bg border-none rounded-lg text-sm font-medium cursor-pointer transition-opacity hover:opacity-80">
@@ -295,3 +301,30 @@ function openReviewModal(company: any) {
     </div>
   </div>
 </template>
+
+<style scoped>
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+</style>

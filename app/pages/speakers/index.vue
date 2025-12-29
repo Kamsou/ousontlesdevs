@@ -70,11 +70,17 @@ watch(() => filters.travel, () => updateUrl())
 <template>
   <div class="max-w-7xl mx-auto px-4 md:px-16">
     <header class="py-16 border-b border-border">
-      <span class="text-xs uppercase tracking-[0.2em] text-text-muted mb-6 block">Speakeuses</span>
-      <h1 class="font-display text-4xl md:text-7xl font-medium tracking-tight mb-2">Speakeuses</h1>
-      <p class="text-text-muted text-base">
-        {{ speakers?.length || 0 }} speakeuses disponibles pour vos conférences
-      </p>
+      <div class="overflow-hidden">
+        <span class="text-xs uppercase tracking-[0.2em] text-text-muted mb-6 block animate-slide-up">Speakeuses</span>
+      </div>
+      <div class="overflow-hidden">
+        <h1 class="font-display text-4xl md:text-7xl font-medium tracking-tight mb-2 animate-slide-up animation-delay-100">Speakeuses</h1>
+      </div>
+      <div class="overflow-hidden">
+        <p class="text-text-muted text-base animate-slide-up animation-delay-200">
+          {{ speakers?.length || 0 }} speakeuses disponibles pour vos conférences
+        </p>
+      </div>
     </header>
 
     <section class="py-8 border-b border-border">
@@ -171,3 +177,30 @@ watch(() => filters.travel, () => updateUrl())
     </section>
   </div>
 </template>
+
+<style scoped>
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+</style>
