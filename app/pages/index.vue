@@ -97,7 +97,7 @@ const features = [
 
         <div class="overflow-hidden">
           <p class="text-sm md:text-lg text-text-muted max-w-md leading-relaxed mb-12 animate-slide-up animation-delay-300">
-            Le réseau des talents tech féminins en France.<br/>
+            Développeuses, faites-vous connaître.<br/>
             Profils. Talks. Mentorat.
           </p>
         </div>
