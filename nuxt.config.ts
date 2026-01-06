@@ -79,5 +79,10 @@ export default defineNuxtConfig({
     externals: {
       inline: ['unhead'],
     },
+  },
+  routeRules: {
+    '/': { prerender: true },
+    '/experience': { prerender: true },
+    '/experience/**': { prerender: true },
   }
 })
