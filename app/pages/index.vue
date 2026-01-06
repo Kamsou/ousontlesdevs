@@ -22,9 +22,6 @@ useSeoMeta({
   twitterImage: 'https://ousontlesdeveloppeuses.fr/og-image.png',
 })
 
-useOrganizationSchema()
-useWebSiteSchema()
-
 const { data: statsData } = await useFetch('/api/stats')
 
 function pluralize(count: number, singular: string, plural: string) {

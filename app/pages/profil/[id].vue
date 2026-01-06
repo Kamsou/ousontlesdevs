@@ -52,7 +52,15 @@ useSeoMeta({
   twitterImage: () => developer.value?.avatarUrl || 'https://ousontlesdeveloppeuses.fr/og-image.png',
 })
 
-usePersonSchema(developer)
+useSchemaOrg([
+  definePerson({
+    name: () => developer.value?.name || '',
+    description: () => developer.value?.bio || undefined,
+    image: () => developer.value?.avatarUrl || undefined,
+    jobTitle: 'Développeuse',
+    url: () => developer.value?.website || undefined,
+  }),
+])
 </script>
 
 <template>
