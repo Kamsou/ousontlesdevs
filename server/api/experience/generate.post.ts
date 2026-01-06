@@ -25,14 +25,12 @@ const typeDescriptions: Record<string, string> = {
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
-  // Validate required fields
   if (!body.q1 || !body.q2 || !body.q3 || !body.q4 || !body.q5) {
     throw createError({ statusCode: 400, message: 'Toutes les réponses sont requises' })
   }
 
   const config = useRuntimeConfig()
 
-  // If no API key, return a fallback profile based on answers
   if (!config.anthropicApiKey) {
     console.warn('ANTHROPIC_API_KEY not set, using fallback profile generation')
     return generateFallbackProfile(body)
@@ -77,14 +75,12 @@ IMPORTANT: Réponds UNIQUEMENT avec un objet JSON valide, sans markdown, sans ex
     try {
       const profile = JSON.parse(responseText.trim())
 
-      // Validate the response has required fields
       if (!profile.type || !profile.phrase || !profile.insight) {
         throw new Error('Invalid profile structure')
       }
 
-      // Ensure the type is one of our valid types
       if (!developerTypes.includes(profile.type)) {
-        profile.type = 'L\'Exploratrice' // Default fallback
+        profile.type = 'L\'Exploratrice'
       }
 
       return profile
@@ -99,12 +95,10 @@ IMPORTANT: Réponds UNIQUEMENT avec un objet JSON valide, sans markdown, sans ex
 })
 
 function generateFallbackProfile(answers: Record<string, string>) {
-  // Simple heuristic-based profile generation as fallback
   let type = 'L\'Exploratrice'
   let phrase = 'Tu explores, tu testes, tu apprends. Le code est ton terrain de jeu.'
   let insight = 'Tu fais partie des développeuses qui n\'ont pas peur de l\'inconnu.'
 
-  // Basic matching based on answers
   if (answers.q2 === 'schema') {
     type = 'L\'Architecte'
     phrase = 'Tu vois le système avant de voir le code. La structure, c\'est ta force.'

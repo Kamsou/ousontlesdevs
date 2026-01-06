@@ -1,21 +1,17 @@
 import { sql } from 'drizzle-orm'
 
-export default defineEventHandler(async () => {
+export default defineCachedEventHandler(async () => {
   const db = useDrizzle()
 
-  // Count developers
   const developers = await db.query.developers.findMany()
   const developerCount = developers.length
 
-  // Count companies
   const companies = await db.query.companies.findMany()
   const companyCount = companies.length
 
-  // Count unique locations
   const locations = new Set(developers.map(d => d.location).filter(Boolean))
   const locationCount = locations.size
 
-  // Count speakers (developers with 'conference' in openTo)
   const speakerDevs = await db.query.developerOpenTo.findMany({
     where: sql`${tables.developerOpenTo.type} = 'conference'`
   })
@@ -27,4 +23,7 @@ export default defineEventHandler(async () => {
     locations: locationCount,
     speakers: speakerCount
   }
+}, {
+  maxAge: 60 * 60,
+  staleMaxAge: 60 * 60 * 24
 })

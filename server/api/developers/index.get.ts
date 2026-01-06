@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
   const db = useDrizzle()
   const query = getQuery(event)
 
-  // Get all developers with their skills and openTo tags
   const developers = await db.query.developers.findMany({
     with: {
       skills: true,
@@ -15,21 +14,18 @@ export default defineEventHandler(async (event) => {
 
   let filtered = developers
 
-  // Filter by location
   if (query.location) {
     filtered = filtered.filter(d =>
       d.location?.toLowerCase().includes((query.location as string).toLowerCase())
     )
   }
 
-  // Filter by skill
   if (query.skill) {
     filtered = filtered.filter(d =>
       d.skills.some(s => s.skillName.toLowerCase().includes((query.skill as string).toLowerCase()))
     )
   }
 
-  // Filter by openTo type
   if (query.openTo) {
     const openToTypes = (query.openTo as string).split(',')
     filtered = filtered.filter(d =>
@@ -37,7 +33,6 @@ export default defineEventHandler(async (event) => {
     )
   }
 
-  // Filter speakers only
   if (query.speakers === 'true') {
     filtered = filtered.filter(d =>
       d.speakerProfile?.available === true || d.openTo.some(o => o.type === 'conference')

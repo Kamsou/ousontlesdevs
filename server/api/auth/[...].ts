@@ -23,7 +23,6 @@ export default NuxtAuthHandler({
       return session
     },
     redirect({ url, baseUrl }) {
-      // After sign in, redirect to profile
       if (url === baseUrl || url === `${baseUrl}/`) {
         return `${baseUrl}/profil`
       }

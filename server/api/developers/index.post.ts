@@ -9,7 +9,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'Non authentifié' })
   }
 
-  // Get GitHub ID from token (more reliable)
   const githubId = (token?.id || token?.sub) as string
 
   if (!githubId) {
@@ -23,7 +22,6 @@ export default defineEventHandler(async (event) => {
   }
   const db = useDrizzle()
 
-  // Check if profile already exists
   const existing = await db.query.developers.findFirst({
     where: eq(tables.developers.githubId, githubId)
   })
@@ -32,7 +30,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Profil déjà existant' })
   }
 
-  // Create developer profile
   const [developer] = await db.insert(tables.developers).values({
     githubId,
     name: body.name || session.user.name || '',
@@ -47,7 +44,6 @@ export default defineEventHandler(async (event) => {
     twitterUrl: body.twitterUrl || null
   }).returning()
 
-  // Add skills
   if (body.skills?.length) {
     await db.insert(tables.developerSkills).values(
       body.skills.map((skill: string) => ({
@@ -57,7 +53,6 @@ export default defineEventHandler(async (event) => {
     )
   }
 
-  // Add openTo tags
   if (body.openTo?.length) {
     await db.insert(tables.developerOpenTo).values(
       body.openTo.map((type: string) => ({
@@ -67,7 +62,6 @@ export default defineEventHandler(async (event) => {
     )
   }
 
-  // Create speaker profile if available for conference
   if (body.openTo?.includes('conference')) {
     await db.insert(tables.speakerProfiles).values({
       developerId: developer.id,

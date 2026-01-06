@@ -15,7 +15,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const db = useDrizzle()
 
-  // Get developer by github ID
   const developer = await db.query.developers.findFirst({
     where: eq(tables.developers.githubId, githubId)
   })
@@ -24,7 +23,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Profil développeur requis' })
   }
 
-  // Check company exists
   const company = await db.query.companies.findFirst({
     where: eq(tables.companies.id, companyId)
   })
@@ -33,7 +31,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: 'Entreprise non trouvée' })
   }
 
-  // Check if user already reviewed this company
   const existingReview = await db.query.companyReviews.findFirst({
     where: and(
       eq(tables.companyReviews.companyId, companyId),
@@ -45,7 +42,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Vous avez déjà donné un avis' })
   }
 
-  // Validate input
   if (!body.rating || body.rating < 1 || body.rating > 5) {
     throw createError({ statusCode: 400, message: 'Note entre 1 et 5 requise' })
   }

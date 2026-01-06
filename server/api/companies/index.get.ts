@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
       : 0
     const inclusiveCount = company.reviews.filter(r => r.isInclusive).length
 
-    // Badge Verified Inclusive: >= 5 reviews AND average >= 4
     const isVerifiedInclusive = reviewCount >= 5 && avgRating >= 4
 
     return {
@@ -34,7 +33,6 @@ export default defineEventHandler(async (event) => {
     }
   })
 
-  // Filter by location
   if (query.location) {
     const locationFilter = (query.location as string).toLowerCase()
     results = results.filter(c =>
@@ -42,12 +40,10 @@ export default defineEventHandler(async (event) => {
     )
   }
 
-  // Filter by verified inclusive only
   if (query.verified === 'true') {
     results = results.filter(c => c.isVerifiedInclusive)
   }
 
-  // Sort by rating by default
   results.sort((a, b) => b.avgRating - a.avgRating)
 
   return results

@@ -15,7 +15,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const db = useDrizzle()
 
-  // Check ownership
   const developer = await db.query.developers.findFirst({
     where: eq(tables.developers.id, id)
   })
@@ -28,7 +27,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 403, message: 'Non autorisé' })
   }
 
-  // Update developer
   await db.update(tables.developers).set({
     name: body.name ?? developer.name,
     bio: body.bio ?? developer.bio,
@@ -40,7 +38,6 @@ export default defineEventHandler(async (event) => {
     updatedAt: new Date()
   }).where(eq(tables.developers.id, id))
 
-  // Update skills if provided
   if (body.skills) {
     await db.delete(tables.developerSkills).where(eq(tables.developerSkills.developerId, id))
     if (body.skills.length) {
@@ -53,7 +50,6 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  // Update openTo if provided
   if (body.openTo) {
     await db.delete(tables.developerOpenTo).where(eq(tables.developerOpenTo.developerId, id))
     if (body.openTo.length) {
@@ -65,7 +61,6 @@ export default defineEventHandler(async (event) => {
       )
     }
 
-    // Handle speaker profile
     const existingSpeaker = await db.query.speakerProfiles.findFirst({
       where: eq(tables.speakerProfiles.developerId, id)
     })

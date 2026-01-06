@@ -147,11 +147,9 @@ async function generateProfile() {
 
     generatedProfile.value = response as typeof generatedProfile.value
 
-    // Save to localStorage for non-authenticated users
     localStorage.setItem('osld_experience_profile', JSON.stringify(generatedProfile.value))
     localStorage.setItem('osld_experience_answers', JSON.stringify(answers))
 
-    // If user is authenticated, save to their profile in DB
     if (status.value === 'authenticated') {
       try {
         await $fetch('/api/experience/save', {

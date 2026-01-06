@@ -21,14 +21,12 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'GitHub ID manquant' })
   }
 
-  // Find existing developer
   const existingDev = await db.select()
     .from(tables.developers)
     .where(eq(tables.developers.githubId, githubId))
     .get()
 
   if (existingDev) {
-    // Update existing profile
     await db.update(tables.developers)
       .set({
         profileType: body.type,
@@ -39,7 +37,6 @@ export default defineEventHandler(async (event) => {
 
     return { success: true, updated: true }
   } else {
-    // Create new developer with profile
     await db.insert(tables.developers).values({
       githubId,
       name: session.user.name || 'Développeuse',

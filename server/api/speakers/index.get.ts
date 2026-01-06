@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const db = useDrizzle()
 
-  // Get all developers who have 'conference' in their openTo
   const speakerDevIds = await db.query.developerOpenTo.findMany({
     where: eq(tables.developerOpenTo.type, 'conference'),
     columns: { developerId: true }
@@ -16,7 +15,6 @@ export default defineEventHandler(async (event) => {
     return []
   }
 
-  // Get developers with speaker profiles
   const developers = await db.query.developers.findMany({
     with: {
       skills: true,
@@ -27,7 +25,6 @@ export default defineEventHandler(async (event) => {
 
   let results = developers.filter(dev => devIds.includes(dev.id))
 
-  // Filter by location
   if (query.location) {
     const locationFilter = (query.location as string).toLowerCase()
     results = results.filter(dev =>
@@ -35,7 +32,6 @@ export default defineEventHandler(async (event) => {
     )
   }
 
-  // Filter by topic
   if (query.topic) {
     const topicFilter = (query.topic as string).toLowerCase()
     results = results.filter(dev => {
@@ -45,12 +41,10 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Filter by remote
   if (query.remote === 'true') {
     results = results.filter(dev => dev.speakerProfile?.remoteOk)
   }
 
-  // Filter by travel willing
   if (query.travel === 'true') {
     results = results.filter(dev => dev.speakerProfile?.travelWilling)
   }
