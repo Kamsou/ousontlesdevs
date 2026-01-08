@@ -22,11 +22,13 @@ useSeoMeta({
   twitterImage: 'https://ousontlesdeveloppeuses.fr/og-image.png',
 })
 
-const { data: statsData } = useLazyFetch('/api/stats')
+const { data: statsData, status: statsStatus } = useLazyFetch('/api/stats')
 
 function pluralize(count: number, singular: string, plural: string) {
   return count <= 1 ? singular : plural
 }
+
+const statsLoading = computed(() => statsStatus.value === 'pending')
 
 const stats = computed(() => {
   const devs = statsData.value?.developers || 0
@@ -144,7 +146,10 @@ const features = [
         <div v-for="(stat, index) in stats" :key="stat.label" class="flex flex-col gap-6 py-8 border-t border-border">
           <span class="text-[0.7rem] text-text-muted tracking-widest">0{{ index + 1 }}</span>
           <div class="flex flex-col gap-1">
-            <span class="font-display text-4xl md:text-6xl font-medium tracking-tight">{{ stat.value }}</span>
+            <span v-if="statsLoading" class="font-display text-4xl md:text-6xl font-medium tracking-tight">
+              <span class="inline-block w-16 h-10 md:h-14 bg-border/50 rounded animate-pulse"></span>
+            </span>
+            <span v-else class="font-display text-4xl md:text-6xl font-medium tracking-tight">{{ stat.value }}</span>
             <span class="text-text-muted text-sm">{{ stat.label }}</span>
           </div>
         </div>

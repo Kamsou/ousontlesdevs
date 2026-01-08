@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm'
 
-export default defineCachedEventHandler(async () => {
+export default defineEventHandler(async () => {
   const db = useDrizzle()
 
   const developers = await db.query.developers.findMany()
@@ -23,7 +23,4 @@ export default defineCachedEventHandler(async () => {
     locations: locationCount,
     speakers: speakerCount
   }
-}, {
-  maxAge: 60 * 60,
-  staleMaxAge: 60 * 60 * 24
 })
