@@ -143,13 +143,20 @@ const features = [
 
     <section class="py-24 px-4 md:px-16">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div v-for="(stat, index) in stats" :key="stat.label" class="flex flex-col gap-6 py-8 border-t border-border">
+        <div v-for="(stat, index) in stats" :key="index" class="flex flex-col gap-6 py-8 border-t border-border">
           <span class="text-[0.7rem] text-text-muted tracking-widest">0{{ index + 1 }}</span>
           <div class="flex flex-col gap-1">
-            <span v-if="statsLoading" class="font-display text-4xl md:text-6xl font-medium tracking-tight">
-              <span class="inline-block w-16 h-10 md:h-14 bg-border/50 rounded animate-pulse"></span>
-            </span>
-            <span v-else class="font-display text-4xl md:text-6xl font-medium tracking-tight">{{ stat.value }}</span>
+            <ClientOnly>
+              <span v-if="statsLoading" class="font-display text-4xl md:text-6xl font-medium tracking-tight">
+                <span class="inline-block w-16 h-10 md:h-14 bg-border/50 rounded animate-pulse"></span>
+              </span>
+              <span v-else class="font-display text-4xl md:text-6xl font-medium tracking-tight">{{ stat.value }}</span>
+              <template #fallback>
+                <span class="font-display text-4xl md:text-6xl font-medium tracking-tight">
+                  <span class="inline-block w-16 h-10 md:h-14 bg-border/50 rounded animate-pulse"></span>
+                </span>
+              </template>
+            </ClientOnly>
             <span class="text-text-muted text-sm">{{ stat.label }}</span>
           </div>
         </div>
