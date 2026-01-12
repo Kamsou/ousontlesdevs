@@ -170,6 +170,13 @@ async function save() {
       <h1 class="font-display text-3xl md:text-5xl font-medium tracking-tight">{{ isNewProfile ? 'Bienvenue' : 'Mon profil' }}</h1>
     </header>
 
+    <div v-if="isNewProfile" class="mb-8 p-4 bg-primary/10 border border-primary/30 rounded-xl">
+      <p class="text-sm text-text">
+        Cet annuaire est réservé aux <strong>développeuses basées en France</strong>.
+        Merci de renseigner ta ville française dans le champ "Ville" ci-dessous.
+      </p>
+    </div>
+
     <section v-if="hasValidExperienceProfile" class="mb-16 -mx-4 md:-mx-8 px-4 md:px-8 py-12 border-y border-border relative overflow-hidden">
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
         <span class="font-display text-[20rem] md:text-[28rem] font-bold text-text opacity-[0.02] leading-none tracking-tighter">*</span>

@@ -3,9 +3,24 @@ definePageMeta({
   middleware: 'sidebase-auth'
 })
 
-const { data: developers, status, error } = await useFetch('/api/admin/developers')
+const { data: developers, status, error, refresh } = await useFetch('/api/admin/developers')
 
 const searchQuery = ref('')
+const deleting = ref<number | null>(null)
+
+async function deleteDeveloper(id: number, name: string) {
+  if (!confirm(`Supprimer ${name} de l'annuaire ?`)) return
+
+  deleting.value = id
+  try {
+    await $fetch(`/api/admin/developers/${id}`, { method: 'DELETE' } as any)
+    await refresh()
+  } catch (e) {
+    alert('Erreur lors de la suppression')
+  } finally {
+    deleting.value = null
+  }
+}
 
 const filteredDevelopers = computed(() => {
   if (!developers.value) return []
@@ -80,6 +95,7 @@ function formatDate(date: string | Date | null) {
             <th class="pb-4 pr-4 text-sm font-medium text-text-muted">Skills</th>
             <th class="pb-4 pr-4 text-sm font-medium text-text-muted">Dispo pour</th>
             <th class="pb-4 pr-4 text-sm font-medium text-text-muted">Inscription</th>
+            <th class="pb-4 text-sm font-medium text-text-muted">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -153,6 +169,15 @@ function formatDate(date: string | Date | null) {
             </td>
             <td class="py-4 pr-4">
               <span class="text-sm text-text-muted">{{ formatDate(dev.createdAt) }}</span>
+            </td>
+            <td class="py-4">
+              <button
+                @click="deleteDeveloper(dev.id, dev.name)"
+                :disabled="deleting === dev.id"
+                class="px-3 py-1.5 text-xs border border-red-500/30 text-red-400 rounded-lg bg-transparent cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {{ deleting === dev.id ? '...' : 'Supprimer' }}
+              </button>
             </td>
           </tr>
         </tbody>

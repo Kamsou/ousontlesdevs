@@ -6,7 +6,7 @@ const menuOpen = ref(false)
 const userMenuOpen = ref(false)
 
 const { data: isAdmin, refresh: refreshAdmin } = useFetch('/api/admin/check', {
-  immediate: status.value === 'authenticated',
+  immediate: false,
   default: () => false
 })
 
@@ -14,7 +14,7 @@ watch(() => status.value, (newStatus) => {
   if (newStatus === 'authenticated') {
     refreshAdmin()
   }
-})
+}, { immediate: true })
 
 watch(() => route.path, () => {
   menuOpen.value = false
