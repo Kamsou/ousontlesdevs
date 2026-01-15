@@ -80,10 +80,8 @@ watch(() => filters.travel, () => updateUrl())
       </div>
       <div class="overflow-hidden">
         <p class="text-text-muted text-base animate-slide-up animation-delay-200">
-          <ClientOnly>
-            <span>{{ speakers?.length || 0 }} speakeuses disponibles pour vos conférences</span>
-            <template #fallback><span class="inline-block w-64 h-5 bg-border rounded animate-pulse" /></template>
-          </ClientOnly>
+          <span v-if="isLoading" class="inline-block w-64 h-5 bg-border rounded animate-pulse align-middle" />
+          <span v-else>{{ speakers?.length || 0 }} speakeuses disponibles pour vos conférences</span>
         </p>
       </div>
     </header>

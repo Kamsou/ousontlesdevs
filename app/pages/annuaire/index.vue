@@ -67,10 +67,8 @@ watch(() => filters.skill, () => updateUrl())
       <span class="text-xs uppercase tracking-[0.2em] text-text-muted mb-6 block">Annuaire</span>
       <h1 class="font-display text-4xl md:text-7xl font-medium tracking-tight mb-2">Développeuses</h1>
       <p class="text-text-muted text-base">
-        <ClientOnly>
-          <span>{{ developers?.length || 0 }} profils</span>
-          <template #fallback><span class="inline-block w-16 h-5 bg-border rounded animate-pulse" /></template>
-        </ClientOnly>
+        <span v-if="isLoading" class="inline-block w-20 h-5 bg-border rounded animate-pulse align-middle" />
+        <span v-else>{{ developers?.length || 0 }} profils</span>
       </p>
     </header>
 
