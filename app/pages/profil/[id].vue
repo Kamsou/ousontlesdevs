@@ -20,7 +20,7 @@ interface Developer {
   } | null
 }
 
-const { $posthog } = useNuxtApp()
+const { $clientPosthog } = useNuxtApp()
 const route = useRoute()
 const id = route.params.id
 
@@ -65,7 +65,7 @@ useSchemaOrg([
 
 onMounted(() => {
   if (!developer.value) return
-  $posthog()?.capture('profile_viewed', {
+  $clientPosthog?.capture('profile_viewed', {
     developer_id: developer.value.id,
     location: developer.value.location,
     is_speaker: developer.value.openTo?.includes('conference') || false

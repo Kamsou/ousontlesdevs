@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { $posthog } = useNuxtApp()
+const { $clientPosthog } = useNuxtApp()
 const { status, signIn } = useAuth()
 
 useSeoMeta({
@@ -26,7 +26,7 @@ function pluralize(count: number, singular: string, plural: string) {
 }
 
 function handleCreateProfile() {
-  $posthog()?.capture('cta_clicked', { cta: 'create_profile' })
+  $clientPosthog?.capture('cta_clicked', { cta: 'create_profile' })
   if (status.value === 'authenticated') {
     navigateTo('/profil')
   } else {

@@ -2,7 +2,14 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   runtimeConfig: {
-    anthropicApiKey: process.env.ANTHROPIC_API_KEY
+    anthropicApiKey: process.env.ANTHROPIC_API_KEY,
+    resendApiKey: process.env.RESEND_API_KEY,
+    public: {
+      posthog: {
+        publicKey: process.env.NUXT_PUBLIC_POSTHOG_PUBLIC_KEY,
+        host: 'https://eu.i.posthog.com'
+      }
+    }
   },
   future: {
     compatibilityVersion: 4
@@ -19,7 +26,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  modules: ['@nuxthub/core', '@sidebase/nuxt-auth', '@nuxtjs/seo', '@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@nuxt/a11y', '@posthog/nuxt'],
+  modules: ['@nuxthub/core', '@sidebase/nuxt-auth', '@nuxtjs/seo', '@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@nuxt/a11y', 'nuxt-posthog'],
 
   css: ['@/assets/css/main.css'],
 
@@ -68,14 +75,6 @@ export default defineNuxtConfig({
   },
   hub: {
     db: 'sqlite'
-  },
-  posthog: {
-    publicKey: process.env.NUXT_PUBLIC_POSTHOG_PUBLIC_KEY!,
-    host: 'https://eu.i.posthog.com',
-    clientConfig: {
-      capture_pageview: true,
-      capture_pageleave: true
-    }
   },
   auth: {
     baseURL: process.env.NUXT_PUBLIC_AUTH_BASE_URL || 'http://localhost:3000/api/auth',

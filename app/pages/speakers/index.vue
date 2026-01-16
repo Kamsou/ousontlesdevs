@@ -23,7 +23,7 @@ interface Speaker {
   } | null
 }
 
-const { $posthog } = useNuxtApp()
+const { $clientPosthog } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
 
@@ -71,7 +71,7 @@ function trackSearch() {
   searchTimeout = setTimeout(() => {
     const hasFilters = filters.location || filters.topic || filters.remote || filters.travel
     if (!hasFilters) return
-    $posthog()?.capture('search_performed', {
+    $clientPosthog?.capture('search_performed', {
       page: 'speakers',
       location: filters.location || null,
       topic: filters.topic || null,

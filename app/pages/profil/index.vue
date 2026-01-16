@@ -36,7 +36,7 @@ useSeoMeta({
 
 import { openToOptions } from '~/utils/constants'
 
-const { $posthog } = useNuxtApp()
+const { $clientPosthog } = useNuxtApp()
 const { data: session, signOut } = useAuth()
 const router = useRouter()
 
@@ -146,7 +146,7 @@ onMounted(() => {
 async function handleOptInChoice(choice: boolean) {
   showOptInModal.value = false
   form.emailOptIn = choice
-  $posthog()?.capture('email_optin_response', { accepted: choice })
+  $clientPosthog?.capture('email_optin_response', { accepted: choice })
 
   if (profile.value) {
     try {
@@ -172,7 +172,7 @@ async function save() {
         method: 'POST',
         body: form
       })
-      $posthog()?.capture('profile_created', {
+      $clientPosthog?.capture('profile_created', {
         location: form.location,
         skills_count: form.skills.length,
         is_speaker: form.openTo.includes('conference')
@@ -182,7 +182,7 @@ async function save() {
         method: 'PUT',
         body: form
       })
-      $posthog()?.capture('profile_updated')
+      $clientPosthog?.capture('profile_updated')
     }
     await refresh()
     router.push(`/profil/${profile.value?.id || 'me'}`)
@@ -199,7 +199,7 @@ async function deleteProfile() {
   deleting.value = true
   try {
     await $fetch('/api/developers/me', { method: 'DELETE' } as any)
-    $posthog()?.capture('profile_deleted')
+    $clientPosthog?.capture('profile_deleted')
     await signOut({ callbackUrl: '/' })
   } catch (e: any) {
     error.value = e.data?.message || 'Erreur lors de la suppression'
@@ -209,9 +209,10 @@ async function deleteProfile() {
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="modal">
-      <div v-if="showOptInModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <ClientOnly>
+    <Teleport to="body">
+      <Transition name="modal">
+        <div v-if="showOptInModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-md" @click="handleOptInChoice(false)" />
         <dialog open role="dialog" aria-labelledby="optin-title" aria-describedby="optin-desc" class="relative bg-bg border border-border rounded-3xl p-10 max-w-lg w-full overflow-hidden">
           <div class="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
@@ -253,30 +254,44 @@ async function deleteProfile() {
           </div>
         </dialog>
       </div>
-    </Transition>
-  </Teleport>
+      </Transition>
+    </Teleport>
+  </ClientOnly>
 
   <div class="max-w-3xl mx-auto px-4 md:px-8 pb-16">
-    <header class="py-12 mb-8" :class="{ 'border-b border-border': !hasValidExperienceProfile }">
-      <span class="text-xs uppercase tracking-[0.2em] text-text-muted mb-4 block">
-        {{ isNewProfile ? 'Créer' : 'Modifier' }} mon profil
-      </span>
-      <h1 class="font-display text-3xl md:text-5xl font-medium tracking-tight">{{ isNewProfile ? 'Bienvenue' : 'Mon profil' }}</h1>
+    <header class="py-12 mb-8 border-b border-border">
+      <ClientOnly>
+        <span class="text-xs uppercase tracking-[0.2em] text-text-muted mb-4 block">
+          {{ isNewProfile ? 'Créer' : 'Modifier' }} mon profil
+        </span>
+        <template #fallback>
+          <span class="text-xs uppercase tracking-[0.2em] text-text-muted mb-4 block">Mon profil</span>
+        </template>
+      </ClientOnly>
+      <ClientOnly>
+        <h1 class="font-display text-3xl md:text-5xl font-medium tracking-tight">{{ isNewProfile ? 'Bienvenue' : 'Mon profil' }}</h1>
+        <template #fallback>
+          <h1 class="font-display text-3xl md:text-5xl font-medium tracking-tight">Mon profil</h1>
+        </template>
+      </ClientOnly>
     </header>
 
-    <div v-if="isNewProfile" class="mb-8 p-4 bg-primary/10 border border-primary/30 rounded-xl">
-      <p class="text-sm text-text">
-        Cet annuaire est réservé aux <strong>développeuses basées en France</strong>.
-        Merci de renseigner ta ville française dans le champ "Ville" ci-dessous.
-      </p>
-    </div>
+    <ClientOnly>
+      <div v-if="isNewProfile" class="mb-8 p-4 bg-primary/10 border border-primary/30 rounded-xl">
+        <p class="text-sm text-text">
+          Cet annuaire est réservé aux <strong>développeuses basées en France</strong>.
+          Merci de renseigner ta ville française dans le champ "Ville" ci-dessous.
+        </p>
+      </div>
+    </ClientOnly>
 
-    <section v-if="hasValidExperienceProfile" class="mb-10 relative group">
+    <ClientOnly>
+      <section v-if="hasValidExperienceProfile" class="mb-10 relative group">
       <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       <div class="relative p-6 md:p-8 border border-border/50 rounded-2xl">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="flex-1 min-w-0">
-            <span class="text-[0.6rem] uppercase tracking-[0.25em] text-text-muted/70 mb-2 block">Ton profil</span>
+            <span class="text-[0.6rem] uppercase tracking-[0.25em] text-text-muted mb-2 block">Ton profil</span>
             <p class="font-display text-2xl md:text-3xl font-medium tracking-tight mb-1">{{ profile?.profileType }}</p>
             <p class="text-text-muted text-sm leading-relaxed">{{ profile?.profilePhrase }}</p>
           </div>
@@ -292,11 +307,25 @@ async function deleteProfile() {
         </div>
       </div>
     </section>
+    </ClientOnly>
 
-    <form @submit.prevent="save">
-      <div v-if="error" class="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-500 mb-8">{{ error }}</div>
+    <ClientOnly>
+      <template #fallback>
+        <div class="animate-pulse space-y-8">
+          <div class="py-8 border-b border-border">
+            <div class="h-6 bg-border/50 rounded w-24 mb-6"></div>
+            <div class="space-y-6">
+              <div class="h-12 bg-border/50 rounded"></div>
+              <div class="h-24 bg-border/50 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </template>
 
-      <!-- Section 1: Identité -->
+      <form @submit.prevent="save">
+        <div v-if="error" class="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-500 mb-8">{{ error }}</div>
+
+        <!-- Section 1: Identité -->
       <section class="py-8 border-b border-border">
         <h2 class="font-display text-xl font-medium mb-6">Identité</h2>
 
@@ -462,30 +491,31 @@ async function deleteProfile() {
         </label>
       </section>
 
-      <div class="flex justify-end gap-4 pt-8">
-        <NuxtLink to="/annuaire" class="px-8 py-4 bg-transparent border border-border rounded-full text-text-muted no-underline text-sm transition-all hover:border-text hover:text-text">Annuler</NuxtLink>
-        <button type="submit" :disabled="saving" class="px-8 py-4 bg-text border-none rounded-full text-bg text-sm font-medium cursor-pointer transition-all hover:bg-text-muted disabled:opacity-50 disabled:cursor-not-allowed">
-          {{ saving ? 'Enregistrement...' : 'Enregistrer' }}
-        </button>
-      </div>
-    </form>
-
-    <section v-if="!isNewProfile" class="mt-16 pt-8 border-t border-red-500/20">
-      <h2 class="text-sm font-medium text-red-400 mb-4">Zone de danger</h2>
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 border border-red-500/20 rounded-xl">
-        <div>
-          <p class="text-sm text-text">Supprimer mon profil</p>
-          <p class="text-xs text-text-muted mt-1">Cette action est irréversible.</p>
+        <div class="flex justify-end gap-4 pt-8">
+          <NuxtLink to="/annuaire" class="px-8 py-4 bg-transparent border border-border rounded-full text-text-muted no-underline text-sm transition-all hover:border-text hover:text-text">Annuler</NuxtLink>
+          <button type="submit" :disabled="saving" class="px-8 py-4 bg-text border-none rounded-full text-bg text-sm font-medium cursor-pointer transition-all hover:bg-text-muted disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ saving ? 'Enregistrement...' : 'Enregistrer' }}
+          </button>
         </div>
-        <button
-          type="button"
-          @click="deleteProfile"
-          :disabled="deleting"
-          class="px-6 py-3 bg-transparent border border-red-500/30 text-red-400 rounded-full text-sm cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {{ deleting ? 'Suppression...' : 'Supprimer' }}
-        </button>
-      </div>
-    </section>
+      </form>
+
+      <section v-if="!isNewProfile" class="mt-16 pt-8 border-t border-red-500/20">
+        <h2 class="text-sm font-medium text-red-400 mb-4">Zone de danger</h2>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 border border-red-500/20 rounded-xl">
+          <div>
+            <p class="text-sm text-text">Supprimer mon profil</p>
+            <p class="text-xs text-text-muted mt-1">Cette action est irréversible.</p>
+          </div>
+          <button
+            type="button"
+            @click="deleteProfile"
+            :disabled="deleting"
+            class="px-6 py-3 bg-transparent border border-red-500/30 text-red-400 rounded-full text-sm cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ deleting ? 'Suppression...' : 'Supprimer' }}
+          </button>
+        </div>
+      </section>
+    </ClientOnly>
   </div>
 </template>

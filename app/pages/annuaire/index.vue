@@ -10,7 +10,7 @@ useSeoMeta({
 
 import { openToOptions } from '~/utils/constants'
 
-const { $posthog } = useNuxtApp()
+const { $clientPosthog } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
 
@@ -66,7 +66,7 @@ function trackSearch() {
   searchTimeout = setTimeout(() => {
     const hasFilters = filters.location || filters.skill || filters.openTo.length
     if (!hasFilters) return
-    $posthog()?.capture('search_performed', {
+    $clientPosthog?.capture('search_performed', {
       page: 'annuaire',
       location: filters.location || null,
       skill: filters.skill || null,

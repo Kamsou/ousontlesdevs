@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { $posthog } = useNuxtApp()
+const { $clientPosthog } = useNuxtApp()
 const { data, status, signIn, signOut } = useAuth()
 const route = useRoute()
 
@@ -24,9 +24,9 @@ watch(() => status.value, (newStatus) => {
   if (newStatus === 'authenticated') {
     refreshAdmin()
     const user = data.value?.user
-    $posthog()?.identify((user as any)?.id, { name: user?.name, email: user?.email })
+    $clientPosthog?.identify((user as any)?.id, { name: user?.name, email: user?.email })
   } else if (newStatus === 'unauthenticated') {
-    $posthog()?.reset()
+    $clientPosthog?.reset()
   }
 }, { immediate: true })
 

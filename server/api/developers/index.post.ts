@@ -1,5 +1,6 @@
 import { getServerSession, getToken } from '#auth'
 import { eq } from 'drizzle-orm'
+import { sendWelcomeEmail } from '../../utils/email'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
@@ -71,6 +72,10 @@ export default defineEventHandler(async (event) => {
       remoteOk: body.remoteOk ?? true,
       travelWilling: body.travelWilling ?? false
     })
+  }
+
+  if (session.user.email) {
+    sendWelcomeEmail(session.user.email, developer.name).catch(console.error)
   }
 
   return { id: developer.id, message: 'Profil créé' }

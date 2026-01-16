@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { $posthog } = useNuxtApp()
+const { $clientPosthog } = useNuxtApp()
 const { status, signIn } = useAuth()
 const router = useRouter()
 
@@ -101,7 +101,7 @@ async function transitionTo(newStep: Step) {
 }
 
 function start() {
-  $posthog()?.capture('quiz_started')
+  $clientPosthog?.capture('quiz_started')
   transitionTo('q1')
 }
 
@@ -173,7 +173,7 @@ async function generateProfile() {
       await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsed))
     }
 
-    $posthog()?.capture('quiz_completed', { profile_type: generatedProfile.value?.type })
+    $clientPosthog?.capture('quiz_completed', { profile_type: generatedProfile.value?.type })
     step.value = 'result'
   } catch (error) {
     console.error('Error generating profile:', error)

@@ -1,0 +1,102 @@
+import { Resend } from 'resend'
+
+let resendClient: Resend | null = null
+
+function getResend() {
+  if (!resendClient) {
+    const config = useRuntimeConfig()
+    resendClient = new Resend(config.resendApiKey)
+  }
+  return resendClient
+}
+
+const FROM_EMAIL = 'Camille de OSLD <contact@ousontlesdeveloppeuses.fr>'
+
+export async function sendWelcomeEmail(to: string, name: string) {
+  const resend = getResend()
+
+  return resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    subject: `Bienvenue sur OSLD, ${name}`,
+    html: `
+      <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #ffffff; color: #1a1a1a;">
+
+        <h1 style="font-size: 26px; font-weight: 600; margin-bottom: 24px; color: #1a1a1a;">
+          Ton profil est live
+        </h1>
+
+        <p style="font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 16px;">
+          Hey ${name}, c'est Camille :)
+        </p>
+
+        <p style="font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 16px;">
+          J'ai créé OSLD pour qu'on se retrouve entre développeuses. Ça démarre avec un annuaire, mais je te réserve une vraie expérience derrière.
+        </p>
+
+        <p style="font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 28px;">
+          Ton profil est live ! Je te tiens au courant de la suite.
+        </p>
+
+        <a href="https://ousontlesdeveloppeuses.fr/profil"
+           style="display: inline-block; padding: 14px 24px; background: #1a1a1a; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 15px;">
+          Compléter mon profil
+        </a>
+
+        <p style="font-size: 14px; line-height: 1.6; color: #6b7280; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+          Je suis une vraie personne et je lis toutes les réponses. Si t'as une question, réponds direct à cet email.
+        </p>
+
+        <p style="font-size: 14px; color: #6b7280; margin-top: 16px;">
+          Camille
+        </p>
+      </div>
+    `
+  })
+}
+
+export async function sendNotificationEmail(to: string, subject: string, content: string) {
+  const resend = getResend()
+
+  return resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    subject,
+    html: `
+      <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+        <p style="color: #64748b; line-height: 1.6;">
+          ${content}
+        </p>
+        <a href="https://ousontlesdeveloppeuses.fr/profil"
+           style="display: inline-block; margin-top: 24px; padding: 12px 24px; background: #f8fafc; color: #0a0a0f; text-decoration: none; border-radius: 8px; font-weight: 500;">
+          Voir mon profil
+        </a>
+        <p style="margin-top: 40px; color: #94a3b8; font-size: 14px;">
+          — L'équipe OSLD
+        </p>
+      </div>
+    `
+  })
+}
+
+export async function sendNewsletterEmail(to: string[], subject: string, content: string) {
+  const resend = getResend()
+
+  return resend.batch.send(
+    to.map(email => ({
+      from: FROM_EMAIL,
+      to: email,
+      subject,
+      html: `
+        <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+          ${content}
+          <hr style="margin: 40px 0; border: none; border-top: 1px solid #e2e8f0;" />
+          <p style="color: #94a3b8; font-size: 12px;">
+            Tu reçois cet email car tu es inscrite à la newsletter OSLD.
+            <a href="https://ousontlesdeveloppeuses.fr/profil" style="color: #94a3b8;">Se désinscrire</a>
+          </p>
+        </div>
+      `
+    }))
+  )
+}
