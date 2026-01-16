@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const { $posthog } = useNuxtApp()
+const { status, signIn } = useAuth()
+const router = useRouter()
+
 useSeoMeta({
   title: 'Découvre ton profil développeuse - OSLD',
   ogTitle: 'Découvre ton profil développeuse - OSLD',
@@ -7,9 +11,6 @@ useSeoMeta({
   ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
-
-const { status, signIn } = useAuth()
-const router = useRouter()
 
 type Step = 'intro' | 'q1' | 'q2' | 'q3' | 'q4' | 'q5' | 'generating' | 'result'
 
@@ -100,6 +101,7 @@ async function transitionTo(newStep: Step) {
 }
 
 function start() {
+  $posthog()?.capture('quiz_started')
   transitionTo('q1')
 }
 
@@ -171,6 +173,7 @@ async function generateProfile() {
       await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsed))
     }
 
+    $posthog()?.capture('quiz_completed', { profile_type: generatedProfile.value?.type })
     step.value = 'result'
   } catch (error) {
     console.error('Error generating profile:', error)

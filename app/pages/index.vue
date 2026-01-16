@@ -1,13 +1,6 @@
 <script setup lang="ts">
+const { $posthog } = useNuxtApp()
 const { status, signIn } = useAuth()
-
-function handleCreateProfile() {
-  if (status.value === 'authenticated') {
-    navigateTo('/profil')
-  } else {
-    signIn('github')
-  }
-}
 
 useSeoMeta({
   title: 'OSLD - Où Sont Les Développeuses',
@@ -26,11 +19,20 @@ const { data: statsData, status: statsStatus } = useLazyFetch('/api/stats', {
   server: false
 })
 
+const statsLoading = computed(() => statsStatus.value === 'pending')
+
 function pluralize(count: number, singular: string, plural: string) {
   return count <= 1 ? singular : plural
 }
 
-const statsLoading = computed(() => statsStatus.value === 'pending')
+function handleCreateProfile() {
+  $posthog()?.capture('cta_clicked', { cta: 'create_profile' })
+  if (status.value === 'authenticated') {
+    navigateTo('/profil')
+  } else {
+    signIn('github')
+  }
+}
 
 const stats = computed(() => {
   const devs = statsData.value?.developers || 0

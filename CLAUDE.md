@@ -149,6 +149,9 @@ const filtered = computed(() => data.value?.filter(...))
 
 // 5. Methods
 function handleAction() { }
+
+// 6. Watch
+
 </script>
 
 <template>

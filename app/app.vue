@@ -1,25 +1,17 @@
 <script setup lang="ts">
+const { $posthog } = useNuxtApp()
 const { data, status, signIn, signOut } = useAuth()
 const route = useRoute()
-const isHome = computed(() => route.path === '/')
-const menuOpen = ref(false)
-const userMenuOpen = ref(false)
 
 const { data: isAdmin, refresh: refreshAdmin } = useFetch('/api/admin/check', {
   immediate: false,
   default: () => false
 })
 
-watch(() => status.value, (newStatus) => {
-  if (newStatus === 'authenticated') {
-    refreshAdmin()
-  }
-}, { immediate: true })
+const menuOpen = ref(false)
+const userMenuOpen = ref(false)
 
-watch(() => route.path, () => {
-  menuOpen.value = false
-  userMenuOpen.value = false
-})
+const isHome = computed(() => route.path === '/')
 
 function handleClickOutside(e: MouseEvent) {
   const target = e.target as HTMLElement
@@ -27,6 +19,21 @@ function handleClickOutside(e: MouseEvent) {
     userMenuOpen.value = false
   }
 }
+
+watch(() => status.value, (newStatus) => {
+  if (newStatus === 'authenticated') {
+    refreshAdmin()
+    const user = data.value?.user
+    $posthog()?.identify((user as any)?.id, { name: user?.name, email: user?.email })
+  } else if (newStatus === 'unauthenticated') {
+    $posthog()?.reset()
+  }
+}, { immediate: true })
+
+watch(() => route.path, () => {
+  menuOpen.value = false
+  userMenuOpen.value = false
+})
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)

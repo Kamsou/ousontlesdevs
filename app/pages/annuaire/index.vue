@@ -10,6 +10,7 @@ useSeoMeta({
 
 import { openToOptions } from '~/utils/constants'
 
+const { $posthog } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
 
@@ -42,6 +43,7 @@ function toggleOpenTo(value: string) {
     filters.openTo.push(value)
   }
   updateUrl()
+  trackSearch()
 }
 
 function updateUrl() {
@@ -57,8 +59,25 @@ function clearFilters() {
   refresh()
 }
 
-watch(() => filters.location, () => updateUrl())
-watch(() => filters.skill, () => updateUrl())
+let searchTimeout: ReturnType<typeof setTimeout> | null = null
+
+function trackSearch() {
+  if (searchTimeout) clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    const hasFilters = filters.location || filters.skill || filters.openTo.length
+    if (!hasFilters) return
+    $posthog()?.capture('search_performed', {
+      page: 'annuaire',
+      location: filters.location || null,
+      skill: filters.skill || null,
+      openTo: filters.openTo.length ? filters.openTo : null,
+      results_count: developers.value?.length || 0
+    })
+  }, 1000)
+}
+
+watch(() => filters.location, () => { updateUrl(); trackSearch() })
+watch(() => filters.skill, () => { updateUrl(); trackSearch() })
 </script>
 
 <template>

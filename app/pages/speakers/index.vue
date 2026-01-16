@@ -23,6 +23,7 @@ interface Speaker {
   } | null
 }
 
+const { $posthog } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
 
@@ -63,10 +64,28 @@ function clearFilters() {
   refresh()
 }
 
-watch(() => filters.location, () => updateUrl())
-watch(() => filters.topic, () => updateUrl())
-watch(() => filters.remote, () => updateUrl())
-watch(() => filters.travel, () => updateUrl())
+let searchTimeout: ReturnType<typeof setTimeout> | null = null
+
+function trackSearch() {
+  if (searchTimeout) clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    const hasFilters = filters.location || filters.topic || filters.remote || filters.travel
+    if (!hasFilters) return
+    $posthog()?.capture('search_performed', {
+      page: 'speakers',
+      location: filters.location || null,
+      topic: filters.topic || null,
+      remote: filters.remote,
+      travel: filters.travel,
+      results_count: speakers.value?.length || 0
+    })
+  }, 1000)
+}
+
+watch(() => filters.location, () => { updateUrl(); trackSearch() })
+watch(() => filters.topic, () => { updateUrl(); trackSearch() })
+watch(() => filters.remote, () => { updateUrl(); trackSearch() })
+watch(() => filters.travel, () => { updateUrl(); trackSearch() })
 </script>
 
 <template>

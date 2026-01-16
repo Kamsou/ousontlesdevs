@@ -19,7 +19,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  modules: ['@nuxthub/core', '@sidebase/nuxt-auth', '@nuxtjs/seo', '@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@nuxt/a11y'],
+  modules: ['@nuxthub/core', '@sidebase/nuxt-auth', '@nuxtjs/seo', '@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@nuxt/a11y', '@posthog/nuxt'],
 
   css: ['@/assets/css/main.css'],
 
@@ -67,7 +67,15 @@ export default defineNuxtConfig({
     enabled: false
   },
   hub: {
-    database: true
+    db: 'sqlite'
+  },
+  posthog: {
+    publicKey: process.env.NUXT_PUBLIC_POSTHOG_PUBLIC_KEY!,
+    host: 'https://eu.i.posthog.com',
+    clientConfig: {
+      capture_pageview: true,
+      capture_pageleave: true
+    }
   },
   auth: {
     baseURL: process.env.NUXT_PUBLIC_AUTH_BASE_URL || 'http://localhost:3000/api/auth',

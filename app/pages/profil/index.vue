@@ -36,6 +36,7 @@ useSeoMeta({
 
 import { openToOptions } from '~/utils/constants'
 
+const { $posthog } = useNuxtApp()
 const { data: session, signOut } = useAuth()
 const router = useRouter()
 
@@ -145,6 +146,7 @@ onMounted(() => {
 async function handleOptInChoice(choice: boolean) {
   showOptInModal.value = false
   form.emailOptIn = choice
+  $posthog()?.capture('email_optin_response', { accepted: choice })
 
   if (profile.value) {
     try {
@@ -170,11 +172,17 @@ async function save() {
         method: 'POST',
         body: form
       })
+      $posthog()?.capture('profile_created', {
+        location: form.location,
+        skills_count: form.skills.length,
+        is_speaker: form.openTo.includes('conference')
+      })
     } else {
       await $fetch(`/api/developers/${profile.value!.id}`, {
         method: 'PUT',
         body: form
       })
+      $posthog()?.capture('profile_updated')
     }
     await refresh()
     router.push(`/profil/${profile.value?.id || 'me'}`)
@@ -191,6 +199,7 @@ async function deleteProfile() {
   deleting.value = true
   try {
     await $fetch('/api/developers/me', { method: 'DELETE' } as any)
+    $posthog()?.capture('profile_deleted')
     await signOut({ callbackUrl: '/' })
   } catch (e: any) {
     error.value = e.data?.message || 'Erreur lors de la suppression'
