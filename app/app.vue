@@ -10,13 +10,15 @@ const { data: isAdmin, refresh: refreshAdmin } = useFetch('/api/admin/check', {
 
 const menuOpen = ref(false)
 const userMenuOpen = ref(false)
-
-const isHome = computed(() => route.path === '/')
+const resourcesMenuOpen = ref(false)
 
 function handleClickOutside(e: MouseEvent) {
   const target = e.target as HTMLElement
   if (!target.closest('.user-menu')) {
     userMenuOpen.value = false
+  }
+  if (!target.closest('.resources-menu')) {
+    resourcesMenuOpen.value = false
   }
 }
 
@@ -33,6 +35,7 @@ watch(() => status.value, (newStatus) => {
 watch(() => route.path, () => {
   menuOpen.value = false
   userMenuOpen.value = false
+  resourcesMenuOpen.value = false
 })
 
 onMounted(() => {
@@ -58,10 +61,33 @@ onUnmounted(() => {
         </NuxtLink>
 
         <nav aria-label="Navigation principale" class="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
-          <NuxtLink v-if="!isHome" to="/" class="text-foreground-muted no-underline text-sm font-medium transition-colors hover:text-foreground whitespace-nowrap">Accueil</NuxtLink>
           <NuxtLink to="/annuaire" :class="['no-underline text-sm font-medium transition-colors whitespace-nowrap', route.path.startsWith('/annuaire') || route.path.startsWith('/profil/') ? 'text-foreground' : 'text-foreground-muted hover:text-foreground']">Annuaire</NuxtLink>
           <NuxtLink to="/speakers" :class="['no-underline text-sm font-medium transition-colors whitespace-nowrap', route.path === '/speakers' ? 'text-foreground' : 'text-foreground-muted hover:text-foreground']">Speakeuses</NuxtLink>
-          <NuxtLink to="/entreprises" :class="['no-underline text-sm font-medium transition-colors whitespace-nowrap', route.path === '/entreprises' ? 'text-foreground' : 'text-foreground-muted hover:text-foreground']">Entreprises</NuxtLink>
+          <div class="relative resources-menu">
+            <button
+              @click.stop="resourcesMenuOpen = !resourcesMenuOpen"
+              :class="['flex items-center gap-1 text-sm font-medium transition-colors whitespace-nowrap cursor-pointer bg-transparent border-none', route.path === '/entreprises' || route.path === '/programmes' ? 'text-foreground' : 'text-foreground-muted hover:text-foreground']"
+            >
+              Ressources
+              <svg :class="['w-3.5 h-3.5 transition-transform', resourcesMenuOpen ? 'rotate-180' : '']" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div v-if="resourcesMenuOpen" class="absolute left-0 top-full mt-2 w-44 py-2 bg-background border border-border rounded-lg shadow-xl">
+              <NuxtLink to="/entreprises" :class="['flex items-center gap-2 px-4 py-2 text-sm no-underline transition-colors', route.path === '/entreprises' ? 'text-foreground bg-border/30' : 'text-foreground-muted hover:bg-border/30 hover:text-foreground']">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
+                </svg>
+                Entreprises
+              </NuxtLink>
+              <NuxtLink to="/programmes" :class="['flex items-center gap-2 px-4 py-2 text-sm no-underline transition-colors', route.path === '/programmes' ? 'text-foreground bg-border/30' : 'text-foreground-muted hover:bg-border/30 hover:text-foreground']">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                Programmes
+              </NuxtLink>
+            </div>
+          </div>
           <NuxtLink to="/experience" :class="['no-underline text-sm font-medium transition-all whitespace-nowrap px-3 py-1 rounded-full border', route.path === '/experience' ? 'text-primary border-primary' : 'text-foreground-muted border-border hover:text-primary hover:border-primary']">Quiz</NuxtLink>
           <a href="https://github.com/Kamsou/ousontlesdevs" target="_blank" rel="noopener noreferrer" class="text-foreground-muted no-underline text-sm font-medium transition-colors hover:text-foreground whitespace-nowrap flex items-center gap-1.5">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -137,10 +163,15 @@ onUnmounted(() => {
 
     <div v-if="menuOpen" class="fixed inset-0 z-40 bg-background pt-20 px-6 lg:hidden">
       <nav aria-label="Navigation mobile" class="flex flex-col gap-6 py-8">
-        <NuxtLink v-if="!isHome" to="/" class="text-foreground-muted no-underline text-2xl font-medium">Accueil</NuxtLink>
         <NuxtLink to="/annuaire" :class="['no-underline text-2xl font-medium', route.path.startsWith('/annuaire') || route.path.startsWith('/profil/') ? 'text-foreground' : 'text-foreground-muted']">Annuaire</NuxtLink>
         <NuxtLink to="/speakers" :class="['no-underline text-2xl font-medium', route.path === '/speakers' ? 'text-foreground' : 'text-foreground-muted']">Speakeuses</NuxtLink>
-        <NuxtLink to="/entreprises" :class="['no-underline text-2xl font-medium', route.path === '/entreprises' ? 'text-foreground' : 'text-foreground-muted']">Entreprises</NuxtLink>
+        <div class="flex flex-col gap-3">
+          <span :class="['text-2xl font-medium', route.path === '/entreprises' || route.path === '/programmes' ? 'text-foreground' : 'text-foreground-muted']">Ressources</span>
+          <div class="flex flex-col gap-3 pl-4 border-l border-border">
+            <NuxtLink to="/entreprises" :class="['no-underline text-lg font-medium', route.path === '/entreprises' ? 'text-foreground' : 'text-foreground-muted']">Entreprises</NuxtLink>
+            <NuxtLink to="/programmes" :class="['no-underline text-lg font-medium', route.path === '/programmes' ? 'text-foreground' : 'text-foreground-muted']">Programmes</NuxtLink>
+          </div>
+        </div>
         <NuxtLink to="/experience" :class="['no-underline text-2xl font-medium inline-flex items-center gap-3', route.path === '/experience' ? 'text-primary' : 'text-foreground-muted']">
           Quiz
           <span class="text-xs px-2 py-0.5 rounded-full border border-primary text-primary">Fun</span>

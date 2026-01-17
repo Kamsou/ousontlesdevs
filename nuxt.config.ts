@@ -107,5 +107,6 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/experience': { prerender: true },
     '/experience/**': { prerender: true },
+    '/programmes': { prerender: true },
   }
 })

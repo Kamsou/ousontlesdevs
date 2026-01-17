@@ -29,16 +29,30 @@ function getRatingColor(rating: number | null) {
 
 <template>
   <div class="max-w-[1200px] mx-auto px-4 md:px-16 py-12">
+    <div class="flex flex-wrap gap-3 mb-8">
+      <NuxtLink
+        to="/admin"
+        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+      >
+        Développeuses
+      </NuxtLink>
+      <NuxtLink
+        to="/admin/feedbacks"
+        class="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium no-underline"
+      >
+        Feedbacks
+      </NuxtLink>
+      <NuxtLink
+        to="/admin/programs"
+        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+      >
+        Programmes
+      </NuxtLink>
+    </div>
+
     <div class="mb-8">
-      <div class="flex items-center gap-4 mb-2">
-        <NuxtLink to="/admin" class="text-foreground-muted hover:text-foreground transition-colors">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-        </NuxtLink>
-        <h1 class="font-display text-3xl md:text-4xl font-medium tracking-tight">Feedbacks</h1>
-      </div>
-      <p class="text-foreground-muted">Retours sur les mises en relation</p>
+      <h1 class="font-display text-3xl md:text-4xl font-medium tracking-tight">Feedbacks</h1>
+      <p class="text-foreground-muted mt-2">Retours sur les mises en relation</p>
     </div>
 
     <div v-if="error" class="p-6 border border-red-500/50 rounded-xl bg-red-500/10 text-red-400">

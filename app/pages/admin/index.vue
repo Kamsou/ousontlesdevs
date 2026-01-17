@@ -70,6 +70,12 @@ function formatDate(date: string | Date | null) {
       >
         Feedbacks
       </NuxtLink>
+      <NuxtLink
+        to="/admin/programs"
+        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+      >
+        Programmes
+      </NuxtLink>
     </div>
 
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">

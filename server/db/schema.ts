@@ -194,3 +194,16 @@ export const contactFeedbacksRelations = relations(contactFeedbacks, ({ one }) =
     references: [contactRequests.id]
   })
 }))
+
+export const programs = sqliteTable('programs', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  description: text('description').notNull(),
+  category: text('category', {
+    enum: ['community', 'mentoring', 'conference', 'funding']
+  }).notNull(),
+  url: text('url').notNull(),
+  highlight: integer('highlight', { mode: 'boolean' }).default(false),
+  active: integer('active', { mode: 'boolean' }).default(true),
+  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
+})

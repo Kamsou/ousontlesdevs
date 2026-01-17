@@ -43,6 +43,13 @@
       "when": 1768656547525,
       "tag": "0005_moaning_blizzard",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1768664234146,
+      "tag": "0006_green_quasimodo",
+      "breakpoints": true
     }
   ]
 }
