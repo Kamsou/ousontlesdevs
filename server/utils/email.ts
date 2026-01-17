@@ -110,6 +110,38 @@ export async function sendNewsletterEmail(to: string[], subject: string, content
   )
 }
 
+const ADMIN_EMAIL = 'contact@ousontlesdeveloppeuses.fr'
+
+export async function sendAdminNewHelpRequest(developerName: string, title: string, techs: string[]) {
+  const resend = getResend()
+
+  const techsHtml = techs.length
+    ? `<p style="font-size: 14px; color: #6b7280;">Technos : ${escapeHtml(techs.join(', '))}</p>`
+    : ''
+
+  return resend.emails.send({
+    from: FROM_EMAIL,
+    to: ADMIN_EMAIL,
+    subject: `[OSLD] Nouvelle demande : ${title}`,
+    html: `
+      <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+        <h1 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">Nouvelle demande d'aide</h1>
+        <p style="font-size: 16px; color: #374151; margin-bottom: 8px;">
+          <strong>${escapeHtml(developerName)}</strong> a posté une demande :
+        </p>
+        <p style="font-size: 18px; color: #1a1a1a; margin-bottom: 16px;">
+          "${escapeHtml(title)}"
+        </p>
+        ${techsHtml}
+        <a href="https://ousontlesdeveloppeuses.fr/qg"
+           style="display: inline-block; margin-top: 24px; padding: 12px 24px; background: #1a1a1a; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 500;">
+          Voir sur OSLD
+        </a>
+      </div>
+    `
+  })
+}
+
 interface ContactEmailParams {
   senderName: string
   senderEmail: string
@@ -117,6 +149,47 @@ interface ContactEmailParams {
   recipientEmail: string
   message: string
   helpRequestTitle?: string
+}
+
+export async function sendFeedbackRequestEmail(
+  to: string,
+  senderName: string,
+  recipientName: string,
+  feedbackToken: string
+) {
+  const resend = getResend()
+  const feedbackUrl = `https://ousontlesdeveloppeuses.fr/feedback/${feedbackToken}`
+
+  return resend.emails.send({
+    from: FROM_EMAIL,
+    to,
+    subject: 'Comment s\'est passé ton échange ?',
+    html: `
+      <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #ffffff; color: #1a1a1a;">
+
+        <h1 style="font-size: 24px; font-weight: 600; margin-bottom: 16px; color: #1a1a1a;">
+          Hey ${escapeHtml(senderName)}
+        </h1>
+
+        <p style="font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 16px;">
+          Tu as contacté <strong>${escapeHtml(recipientName)}</strong> via OSLD il y a quelques jours.
+        </p>
+
+        <p style="font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 28px;">
+          Ça s'est bien passé ? Ton retour m'aide à améliorer la plateforme.
+        </p>
+
+        <a href="${feedbackUrl}"
+           style="display: inline-block; padding: 14px 24px; background: #1a1a1a; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 15px;">
+          Donner mon avis (30 sec)
+        </a>
+
+        <p style="font-size: 14px; line-height: 1.6; color: #6b7280; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+          Camille
+        </p>
+      </div>
+    `
+  })
 }
 
 export async function sendContactEmail({

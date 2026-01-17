@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     anthropicApiKey: process.env.ANTHROPIC_API_KEY,
     resendApiKey: process.env.RESEND_API_KEY,
+    cronSecret: process.env.CRON_SECRET,
     public: {
       posthog: {
         publicKey: process.env.NUXT_PUBLIC_POSTHOG_PUBLIC_KEY,

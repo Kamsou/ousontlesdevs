@@ -1,5 +1,6 @@
 import { getServerSession, getToken } from '#auth'
 import { eq } from 'drizzle-orm'
+import { sendAdminNewHelpRequest } from '../../utils/email'
 
 export default defineEventHandler(async (event) => {
   useRateLimit(event, { windowMs: 60 * 60 * 1000, max: 5 })
@@ -48,14 +49,20 @@ export default defineEventHandler(async (event) => {
     helpType: body.helpType
   }).returning()
 
+  const techs: string[] = []
   if (body.techs?.length) {
     await db.insert(tables.helpRequestTechs).values(
-      body.techs.map((tech: string) => ({
-        helpRequestId: helpRequest.id,
-        techName: tech.trim()
-      }))
+      body.techs.map((tech: string) => {
+        techs.push(tech.trim())
+        return {
+          helpRequestId: helpRequest.id,
+          techName: tech.trim()
+        }
+      })
     )
   }
+
+  sendAdminNewHelpRequest(developer.name, body.title.trim(), techs).catch(console.error)
 
   return { id: helpRequest.id, message: 'Demande créée' }
 })

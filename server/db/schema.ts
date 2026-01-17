@@ -156,6 +156,17 @@ export const contactRequests = sqliteTable('contact_requests', {
   status: text('status', {
     enum: ['sent', 'read', 'replied']
   }).notNull().default('sent'),
+  feedbackToken: text('feedback_token').unique(),
+  feedbackRequestedAt: integer('feedback_requested_at', { mode: 'timestamp' }),
+  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
+})
+
+export const contactFeedbacks = sqliteTable('contact_feedbacks', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  contactRequestId: integer('contact_request_id').unique().notNull().references(() => contactRequests.id, { onDelete: 'cascade' }),
+  exchangeHappened: integer('exchange_happened', { mode: 'boolean' }).notNull(),
+  usefulnessRating: integer('usefulness_rating'),
+  comment: text('comment'),
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 })
 
@@ -173,5 +184,13 @@ export const contactRequestsRelations = relations(contactRequests, ({ one }) => 
   helpRequest: one(helpRequests, {
     fields: [contactRequests.helpRequestId],
     references: [helpRequests.id]
+  }),
+  feedback: one(contactFeedbacks)
+}))
+
+export const contactFeedbacksRelations = relations(contactFeedbacks, ({ one }) => ({
+  contactRequest: one(contactRequests, {
+    fields: [contactFeedbacks.contactRequestId],
+    references: [contactRequests.id]
   })
 }))
