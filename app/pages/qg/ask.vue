@@ -10,6 +10,11 @@ useSeoMeta({
 
 const router = useRouter()
 
+const { data: activity } = await useFetch<{ profileComplete?: boolean }>('/api/qg/activity')
+if (activity.value?.profileComplete === false) {
+  await navigateTo('/qg?tab=profil')
+}
+
 const form = ref({
   title: '',
   description: '',

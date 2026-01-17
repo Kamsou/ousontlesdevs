@@ -35,6 +35,7 @@ useSeoMeta({
 })
 
 import { openToOptions } from '~/utils/constants'
+import { useAuth } from '#imports'
 
 const route = useRoute()
 const router = useRouter()
@@ -43,7 +44,6 @@ const { data: session, signOut } = useAuth()
 
 const firstName = computed(() => session.value?.user?.name?.split(' ')[0] || 'toi')
 
-// Onglet actif (dashboard ou profil)
 const activeTab = ref<'dashboard' | 'profil'>(
   route.query.tab === 'profil' ? 'profil' : 'dashboard'
 )
@@ -52,11 +52,9 @@ watch(activeTab, (tab) => {
   router.replace({ query: tab === 'profil' ? { tab: 'profil' } : {} })
 })
 
-// Data pour le dashboard
 const { data: requests, status: requestsStatus, refresh: refreshRequests } = useLazyFetch('/api/help-requests')
 const isLoadingRequests = computed(() => requestsStatus.value === 'pending')
 
-// Activité narrative
 interface Activity {
   isNew: boolean
   weeklyContactsReceived?: number
@@ -64,6 +62,7 @@ interface Activity {
   recentExchanges?: { type: 'sent' | 'received'; name: string; avatarUrl?: string; helpRequestTitle?: string }[]
   totalHelpGiven?: number
   profileComplete?: boolean
+  missingFields?: string[]
   memberSince?: string
 }
 const { data: activity, status: activityStatus } = useLazyFetch<Activity>('/api/qg/activity')
@@ -135,7 +134,6 @@ async function markAsResolved(requestId: number, e: Event) {
   }
 }
 
-// Data pour le profil
 const { data: profile, refresh: refreshProfile } = await useFetch<Profile | null>('/api/developers/me')
 const isNewProfile = computed(() => !profile.value)
 
@@ -385,10 +383,88 @@ async function deleteProfile() {
       </nav>
 
       <div v-if="activeTab === 'dashboard'">
+        <div v-if="!isLoadingActivity && activity?.profileComplete === false" class="mb-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl">
+          <div class="flex items-start gap-3">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-400 shrink-0 mt-0.5">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <div>
+              <p class="text-sm text-foreground font-medium mb-1">Profil incomplet</p>
+              <p class="text-xs text-foreground-muted mb-3">
+                Pour accéder à l'entraide, il te manque : <span class="text-amber-400">{{ activity?.missingFields?.join(', ') }}</span>
+              </p>
+              <button
+                @click="activeTab = 'profil'"
+                class="text-xs text-amber-400 hover:text-amber-300 underline transition-colors"
+              >
+                Compléter mon profil
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <section v-if="!isLoadingActivity && activity && !activity.isNew" class="mb-12">
+          <h2 class="text-lg font-display font-medium mb-4">Cette semaine</h2>
+          <div class="flex flex-wrap gap-3">
+            <div v-if="activity.weeklyContactsReceived && activity.weeklyContactsReceived > 0" class="flex items-center gap-2 px-4 py-2 bg-primary/5 border border-primary/10 rounded-full">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+              <span class="text-sm text-foreground">
+                <span class="font-medium">{{ activity.weeklyContactsReceived }}</span>
+                {{ activity.weeklyContactsReceived === 1 ? 'message reçu' : 'messages reçus' }}
+              </span>
+            </div>
+
+            <div v-if="activity.weeklyContactsSent && activity.weeklyContactsSent > 0" class="flex items-center gap-2 px-4 py-2 bg-green-500/5 border border-green-500/10 rounded-full">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400">
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+              </svg>
+              <span class="text-sm text-foreground">
+                <span class="font-medium">{{ activity.weeklyContactsSent }}</span>
+                {{ activity.weeklyContactsSent === 1 ? 'message envoyé' : 'messages envoyés' }}
+              </span>
+            </div>
+
+            <div v-if="activity.profileComplete === false" class="flex items-center gap-2 px-4 py-2 bg-amber-500/5 border border-amber-500/10 rounded-full">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-400">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <button @click="activeTab = 'profil'" class="text-sm text-foreground hover:text-amber-400 transition-colors">
+                Profil incomplet
+              </button>
+            </div>
+
+            <div v-if="activity.profileComplete" class="flex items-center gap-2 px-4 py-2 bg-green-500/5 border border-green-500/10 rounded-full">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              <span class="text-sm text-foreground-muted">Profil complet</span>
+            </div>
+
+            <div v-if="!activity.weeklyContactsReceived && !activity.weeklyContactsSent" class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-border/20 rounded-full">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-foreground-muted">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <span class="text-sm text-foreground-muted">Pas d'échanges cette semaine</span>
+            </div>
+          </div>
+
+          <p v-if="activity.totalHelpGiven && activity.totalHelpGiven > 0" class="text-xs text-foreground-muted/50 mt-4">
+            Tu as proposé ton aide {{ activity.totalHelpGiven }} fois au total
+          </p>
+        </section>
+
         <section class="mb-16">
           <NuxtLink
+            v-if="activity?.profileComplete !== false"
             to="/qg/ask"
-            class="group block p-6 md:p-8 border border-border/30 rounded-2xl hover:border-primary/30 hover:bg-primary/[0.02] transition-all"
+            class="group block p-6 md:p-8 border border-border/30 rounded-2xl transition-all hover:border-primary/30 hover:bg-primary/[0.02]"
           >
             <div class="flex items-start justify-between gap-4">
               <div>
@@ -406,6 +482,26 @@ async function deleteProfile() {
               </span>
             </div>
           </NuxtLink>
+          <div
+            v-else
+            class="block p-6 md:p-8 border border-border/20 rounded-2xl cursor-not-allowed"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h2 class="text-xl md:text-2xl font-display font-medium mb-2 text-foreground-muted">
+                  Besoin d'un coup de main ?
+                </h2>
+                <p class="text-foreground-muted/60 text-sm">
+                  Complète ton profil pour demander de l'aide
+                </p>
+              </div>
+              <span class="w-10 h-10 flex items-center justify-center rounded-full bg-border/20 shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-foreground-muted/50">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </span>
+            </div>
+          </div>
         </section>
 
         <section class="mb-16">
@@ -500,61 +596,6 @@ async function deleteProfile() {
               {{ showClosedRequests ? 'Masquer' : `Voir ${closedRequests.length} résolu${closedRequests.length > 1 ? 'es' : 'e'}` }}
             </button>
           </div>
-        </section>
-
-        <section v-if="!isLoadingActivity && activity && !activity.isNew" class="mb-16">
-          <h2 class="text-lg font-display font-medium mb-4">Cette semaine</h2>
-          <div class="flex flex-wrap gap-3">
-            <div v-if="activity.weeklyContactsReceived && activity.weeklyContactsReceived > 0" class="flex items-center gap-2 px-4 py-2 bg-primary/5 border border-primary/10 rounded-full">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
-              <span class="text-sm text-foreground">
-                <span class="font-medium">{{ activity.weeklyContactsReceived }}</span>
-                {{ activity.weeklyContactsReceived === 1 ? 'message reçu' : 'messages reçus' }}
-              </span>
-            </div>
-
-            <div v-if="activity.weeklyContactsSent && activity.weeklyContactsSent > 0" class="flex items-center gap-2 px-4 py-2 bg-green-500/5 border border-green-500/10 rounded-full">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400">
-                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-              </svg>
-              <span class="text-sm text-foreground">
-                <span class="font-medium">{{ activity.weeklyContactsSent }}</span>
-                {{ activity.weeklyContactsSent === 1 ? 'message envoyé' : 'messages envoyés' }}
-              </span>
-            </div>
-
-            <div v-if="activity.profileComplete === false" class="flex items-center gap-2 px-4 py-2 bg-amber-500/5 border border-amber-500/10 rounded-full">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-400">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
-              </svg>
-              <button @click="activeTab = 'profil'" class="text-sm text-foreground hover:text-amber-400 transition-colors">
-                Profil incomplet
-              </button>
-            </div>
-
-            <div v-if="activity.profileComplete" class="flex items-center gap-2 px-4 py-2 bg-green-500/5 border border-green-500/10 rounded-full">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-              <span class="text-sm text-foreground-muted">Profil complet</span>
-            </div>
-
-            <div v-if="!activity.weeklyContactsReceived && !activity.weeklyContactsSent" class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-border/20 rounded-full">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-foreground-muted">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              <span class="text-sm text-foreground-muted">Pas d'échanges cette semaine</span>
-            </div>
-          </div>
-
-          <p v-if="activity.totalHelpGiven && activity.totalHelpGiven > 0" class="text-xs text-foreground-muted/50 mt-4">
-            Tu as proposé ton aide {{ activity.totalHelpGiven }} fois au total
-          </p>
         </section>
 
         <section>

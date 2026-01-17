@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  // Date de début de la semaine (lundi)
   const now = new Date()
   const dayOfWeek = now.getDay()
   const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
@@ -38,7 +37,6 @@ export default defineEventHandler(async (event) => {
   weekStart.setDate(now.getDate() + mondayOffset)
   weekStart.setHours(0, 0, 0, 0)
 
-  // Contacts reçus cette semaine (messages reçus)
   const receivedContacts = await db.query.contactRequests.findMany({
     where: and(
       eq(tables.contactRequests.recipientId, developer.id),
@@ -51,7 +49,6 @@ export default defineEventHandler(async (event) => {
     orderBy: [desc(tables.contactRequests.createdAt)]
   })
 
-  // Contacts envoyés cette semaine
   const sentContacts = await db.query.contactRequests.findMany({
     where: and(
       eq(tables.contactRequests.senderId, developer.id),
@@ -64,25 +61,24 @@ export default defineEventHandler(async (event) => {
     orderBy: [desc(tables.contactRequests.createdAt)]
   })
 
-  // Total des aides données (contacts envoyés en réponse à des help requests)
   const totalHelpGiven = await db.query.contactRequests.findMany({
     where: eq(tables.contactRequests.senderId, developer.id)
   })
 
-  // Vérifier si le profil est complet
   const skills = await db.query.developerSkills.findMany({
     where: eq(tables.developerSkills.developerId, developer.id)
   })
 
-  const profileComplete = Boolean(
-    developer.name &&
-    developer.bio &&
-    developer.location &&
-    developer.linkedinUrl &&
-    skills.length > 0
-  )
+  const missingFields: string[] = []
+  if (!developer.name) missingFields.push('nom')
+  if (!developer.bio) missingFields.push('bio')
+  if (!developer.location) missingFields.push('ville')
+  if (typeof developer.yearsExperience !== 'number') missingFields.push('années d\'expérience')
+  if (!developer.linkedinUrl) missingFields.push('LinkedIn')
+  if (skills.length === 0) missingFields.push('compétences')
 
-  // Formater les échanges récents
+  const profileComplete = missingFields.length === 0
+
   const recentExchanges = [
     ...receivedContacts.map(c => ({
       type: 'received' as const,
@@ -108,6 +104,7 @@ export default defineEventHandler(async (event) => {
     recentExchanges,
     totalHelpGiven: totalHelpGiven.filter(c => c.helpRequestId).length,
     profileComplete,
+    missingFields: profileComplete ? [] : missingFields,
     memberSince: developer.createdAt
   }
 })
