@@ -179,8 +179,7 @@ async function deleteProfile() {
     <ClientOnly>
       <div v-if="isNewProfile" class="mb-8 p-4 bg-primary/10 border border-primary/30 rounded-xl">
         <p class="text-sm text-foreground">
-          Cet annuaire est réservé aux <strong>développeuses basées en France</strong>.
-          Merci de renseigner ta ville française dans le champ "Ville" ci-dessous.
+          Cet espace est reservé aux <strong>développeuses francophones</strong>, contente de t'accueillir !
         </p>
       </div>
     </ClientOnly>
