@@ -38,6 +38,7 @@ const emit = defineEmits<{
 
 const { $clientPosthog } = useNuxtApp()
 const { signOut } = useAuth()
+const toast = useToast()
 
 const isNewProfile = computed(() => !props.profile)
 
@@ -148,9 +149,11 @@ async function save() {
       })
       $clientPosthog?.capture('profile_updated')
     }
+    toast.success(isNewProfile.value ? 'Profil créé' : 'Profil mis à jour')
     emit('saved')
   } catch (e: any) {
     error.value = e.data?.message || 'Une erreur est survenue'
+    toast.error(error.value)
   } finally {
     saving.value = false
   }
