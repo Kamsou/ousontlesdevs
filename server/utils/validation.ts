@@ -1,5 +1,5 @@
 const URL_PATTERNS: Record<string, RegExp> = {
-  linkedin: /^https:\/\/(www\.)?linkedin\.com\/in\/[\w-]+\/?$/,
+  linkedin: /^https:\/\/(www\.)?linkedin\.com\/in\/[\w%-]+\/?$/,
   twitter: /^https:\/\/(www\.)?(twitter\.com|x\.com)\/[\w-]+\/?$/,
   github: /^https:\/\/(www\.)?github\.com\/[\w-]+\/?$/,
   website: /^https?:\/\/[\w.-]+\.[a-z]{2,}(\/.*)?$/i
