@@ -48,6 +48,12 @@ function getRatingColor(rating: number | null) {
       >
         Programmes
       </NuxtLink>
+      <NuxtLink
+        to="/admin/podcasts"
+        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+      >
+        Podcasts
+      </NuxtLink>
     </div>
 
     <div class="mb-8">

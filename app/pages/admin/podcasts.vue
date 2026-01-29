@@ -4,39 +4,36 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'Programmes - Admin',
+  title: 'Podcasts - Admin',
   robots: 'noindex'
 })
 
-interface Program {
+interface Podcast {
   id: number
-  name: string
-  description: string
-  category: 'community' | 'mentoring' | 'conference' | 'funding'
+  title: string
+  podcastName: string
+  description: string | null
+  guestName: string | null
   url: string
+  imageUrl: string | null
   highlight: boolean
   active: boolean
 }
 
-const { data: programs, status, error, refresh } = await useFetch<Program[]>('/api/admin/programs')
-
-const categoryLabels: Record<string, string> = {
-  community: 'Communauté',
-  mentoring: 'Mentorat',
-  conference: 'Conférence',
-  funding: 'Formation'
-}
+const { data: podcasts, status, error, refresh } = await useFetch<Podcast[]>('/api/admin/podcasts')
 
 const showModal = ref(false)
-const editing = ref<Program | null>(null)
+const editing = ref<Podcast | null>(null)
 const saving = ref(false)
 const deleting = ref<number | null>(null)
 
 const form = ref({
-  name: '',
+  title: '',
+  podcastName: '',
   description: '',
-  category: 'community' as 'community' | 'mentoring' | 'conference' | 'funding',
+  guestName: '',
   url: '',
+  imageUrl: '',
   highlight: false,
   active: true
 })
@@ -44,25 +41,29 @@ const form = ref({
 function openNew() {
   editing.value = null
   form.value = {
-    name: '',
+    title: '',
+    podcastName: '',
     description: '',
-    category: 'community',
+    guestName: '',
     url: '',
+    imageUrl: '',
     highlight: false,
     active: true
   }
   showModal.value = true
 }
 
-function openEdit(program: Program) {
-  editing.value = program
+function openEdit(podcast: Podcast) {
+  editing.value = podcast
   form.value = {
-    name: program.name,
-    description: program.description,
-    category: program.category,
-    url: program.url,
-    highlight: program.highlight,
-    active: program.active
+    title: podcast.title,
+    podcastName: podcast.podcastName,
+    description: podcast.description || '',
+    guestName: podcast.guestName || '',
+    url: podcast.url,
+    imageUrl: podcast.imageUrl || '',
+    highlight: podcast.highlight,
+    active: podcast.active
   }
   showModal.value = true
 }
@@ -71,12 +72,12 @@ async function save() {
   saving.value = true
   try {
     if (editing.value) {
-      await $fetch(`/api/admin/programs/${editing.value.id}`, {
+      await $fetch(`/api/admin/podcasts/${editing.value.id}`, {
         method: 'PUT',
         body: form.value
       })
     } else {
-      await $fetch('/api/admin/programs', {
+      await $fetch('/api/admin/podcasts', {
         method: 'POST',
         body: form.value
       })
@@ -90,12 +91,12 @@ async function save() {
   }
 }
 
-async function deleteProgram(id: number, name: string) {
-  if (!confirm(`Supprimer "${name}" ?`)) return
+async function deletePodcast(id: number, title: string) {
+  if (!confirm(`Supprimer "${title}" ?`)) return
 
   deleting.value = id
   try {
-    await $fetch(`/api/admin/programs/${id}`, { method: 'DELETE' })
+    await $fetch(`/api/admin/podcasts/${id}`, { method: 'DELETE' })
     await refresh()
   } catch (e) {
     alert('Erreur lors de la suppression')
@@ -122,13 +123,13 @@ async function deleteProgram(id: number, name: string) {
       </NuxtLink>
       <NuxtLink
         to="/admin/programs"
-        class="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium no-underline"
+        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Programmes
       </NuxtLink>
       <NuxtLink
         to="/admin/podcasts"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium no-underline"
       >
         Podcasts
       </NuxtLink>
@@ -136,14 +137,14 @@ async function deleteProgram(id: number, name: string) {
 
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
       <div>
-        <h1 class="font-display text-3xl md:text-4xl font-medium tracking-tight">Programmes</h1>
-        <p class="text-foreground-muted mt-2">{{ programs?.length || 0 }} programme{{ (programs?.length || 0) > 1 ? 's' : '' }}</p>
+        <h1 class="font-display text-3xl md:text-4xl font-medium tracking-tight">Podcasts</h1>
+        <p class="text-foreground-muted mt-2">{{ podcasts?.length || 0 }} épisode{{ (podcasts?.length || 0) > 1 ? 's' : '' }}</p>
       </div>
       <button
         @click="openNew"
         class="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground-muted transition-colors"
       >
-        Ajouter un programme
+        Ajouter un épisode
       </button>
     </div>
 
@@ -155,53 +156,52 @@ async function deleteProgram(id: number, name: string) {
       <div class="w-8 h-8 border-2 border-foreground border-t-transparent rounded-full animate-spin"></div>
     </div>
 
-    <div v-else-if="programs?.length === 0" class="text-center py-12 text-foreground-muted border border-border rounded-2xl">
-      Aucun programme. Ajoute le premier !
+    <div v-else-if="podcasts?.length === 0" class="text-center py-12 text-foreground-muted border border-border rounded-2xl">
+      Aucun podcast. Ajoute le premier !
     </div>
 
     <div v-else class="space-y-4">
       <div
-        v-for="program in programs"
-        :key="program.id"
+        v-for="podcast in podcasts"
+        :key="podcast.id"
         :class="[
           'p-6 border rounded-2xl',
-          program.active ? 'border-border' : 'border-border/50 opacity-60'
+          podcast.active ? 'border-border' : 'border-border/50 opacity-60'
         ]"
       >
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-          <div class="flex-1">
-            <div class="flex items-center gap-3 mb-2">
-              <h2 class="font-display text-lg font-medium">{{ program.name }}</h2>
-              <span v-if="program.highlight" class="px-2 py-0.5 text-xs bg-primary/20 text-primary rounded-full">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-3 mb-2 flex-wrap">
+              <h2 class="font-display text-lg font-medium truncate">{{ podcast.title }}</h2>
+              <span v-if="podcast.highlight" class="px-2 py-0.5 text-xs bg-primary/20 text-primary rounded-full">
                 Highlight
               </span>
-              <span v-if="!program.active" class="px-2 py-0.5 text-xs bg-red-500/20 text-red-400 rounded-full">
+              <span v-if="!podcast.active" class="px-2 py-0.5 text-xs bg-red-500/20 text-red-400 rounded-full">
                 Inactif
               </span>
             </div>
-            <p class="text-sm text-foreground-muted mb-3">{{ program.description }}</p>
-            <div class="flex items-center gap-3">
-              <span class="px-2 py-1 text-xs border border-border rounded-full text-foreground-muted">
-                {{ categoryLabels[program.category] }}
-              </span>
-              <a :href="program.url" target="_blank" class="text-xs text-foreground-muted hover:text-foreground underline">
-                {{ program.url }}
-              </a>
-            </div>
+            <p class="text-sm text-foreground-muted mb-2">
+              {{ podcast.podcastName }}
+              <span v-if="podcast.guestName"> · avec {{ podcast.guestName }}</span>
+            </p>
+            <p v-if="podcast.description" class="text-sm text-foreground-muted mb-3 line-clamp-2">{{ podcast.description }}</p>
+            <a :href="podcast.url" target="_blank" class="text-xs text-foreground-muted hover:text-foreground underline">
+              {{ podcast.url }}
+            </a>
           </div>
-          <div class="flex gap-2">
+          <div class="flex gap-2 shrink-0">
             <button
-              @click="openEdit(program)"
+              @click="openEdit(podcast)"
               class="px-3 py-1.5 text-xs border border-border rounded-lg hover:border-foreground-muted transition-colors"
             >
               Modifier
             </button>
             <button
-              @click="deleteProgram(program.id, program.name)"
-              :disabled="deleting === program.id"
+              @click="deletePodcast(podcast.id, podcast.title)"
+              :disabled="deleting === podcast.id"
               class="px-3 py-1.5 text-xs border border-red-500/30 text-red-400 rounded-lg hover:bg-red-500/10 transition-colors disabled:opacity-50"
             >
-              {{ deleting === program.id ? '...' : 'Supprimer' }}
+              {{ deleting === podcast.id ? '...' : 'Supprimer' }}
             </button>
           </div>
         </div>
@@ -213,56 +213,73 @@ async function deleteProgram(id: number, name: string) {
   <Teleport to="body">
     <div v-if="showModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="showModal = false"></div>
-      <div class="relative z-10 w-full max-w-lg bg-[#0a0a0f] border border-border rounded-2xl p-6">
+      <div class="relative z-10 w-full max-w-lg bg-[#0a0a0f] border border-border rounded-2xl p-6 max-h-[90vh] overflow-y-auto">
         <h2 class="font-display text-xl font-medium mb-6 text-foreground">
-          {{ editing ? 'Modifier le programme' : 'Nouveau programme' }}
+          {{ editing ? 'Modifier l\'épisode' : 'Nouvel épisode' }}
         </h2>
 
         <form @submit.prevent="save" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium mb-2 text-foreground">Nom</label>
+            <label class="block text-sm font-medium mb-2 text-foreground">Titre de l'épisode</label>
             <input
-              v-model="form.name"
+              v-model="form.title"
               type="text"
               required
               class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
-              placeholder="Duchess France"
+              placeholder="Vue.js, Nuxt.js et projets concrets..."
             />
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-2 text-foreground">Description</label>
+            <label class="block text-sm font-medium mb-2 text-foreground">Nom du podcast</label>
+            <input
+              v-model="form.podcastName"
+              type="text"
+              required
+              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              placeholder="Dev Zone"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2 text-foreground">Invitée (optionnel)</label>
+            <input
+              v-model="form.guestName"
+              type="text"
+              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              placeholder="Camille Coutens"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2 text-foreground">Description (optionnel)</label>
             <textarea
               v-model="form.description"
-              required
               rows="3"
               class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted resize-none"
-              placeholder="Communauté de développeuses..."
+              placeholder="De quoi parle cet épisode..."
             ></textarea>
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-2 text-foreground">URL</label>
+            <label class="block text-sm font-medium mb-2 text-foreground">URL (Spotify, Apple...)</label>
             <input
               v-model="form.url"
               type="url"
               required
               class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
-              placeholder="https://..."
+              placeholder="https://open.spotify.com/episode/..."
             />
           </div>
 
           <div>
-            <label class="block text-sm font-medium mb-2 text-foreground">Catégorie</label>
-            <select
-              v-model="form.category"
-              class="w-full px-4 py-3 bg-[#0a0a0f] border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
-            >
-              <option value="community">Communauté</option>
-              <option value="mentoring">Mentorat</option>
-              <option value="conference">Conférence</option>
-              <option value="funding">Formation</option>
-            </select>
+            <label class="block text-sm font-medium mb-2 text-foreground">Image / Artwork (optionnel)</label>
+            <input
+              v-model="form.imageUrl"
+              type="url"
+              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              placeholder="https://..."
+            />
           </div>
 
           <div class="flex gap-6">

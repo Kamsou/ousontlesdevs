@@ -94,6 +94,12 @@ function formatDate(date: string | Date | null) {
       >
         Programmes
       </NuxtLink>
+      <NuxtLink
+        to="/admin/podcasts"
+        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+      >
+        Podcasts
+      </NuxtLink>
     </div>
 
     <div v-if="unverifiedOffers.length > 0" class="mb-8 p-6 border border-amber-500/30 bg-amber-500/5 rounded-xl">

@@ -232,6 +232,19 @@ export const programs = sqliteTable('programs', {
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 })
 
+export const podcasts = sqliteTable('podcasts', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  title: text('title').notNull(),
+  podcastName: text('podcast_name').notNull(),
+  description: text('description'),
+  guestName: text('guest_name'),
+  url: text('url').notNull(),
+  imageUrl: text('image_url'),
+  highlight: integer('highlight', { mode: 'boolean' }).default(false),
+  active: integer('active', { mode: 'boolean' }).default(true),
+  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
+})
+
 export const sideProjects = sqliteTable('side_projects', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   developerId: integer('developer_id').notNull().references(() => developers.id, { onDelete: 'cascade' }),

@@ -44,13 +44,19 @@ const filteredPrograms = computed(() => {
 <template>
   <div class="max-w-[1200px] mx-auto px-4 md:px-16 py-16 md:py-24">
     <div class="mb-16">
-      <span class="block text-[0.7rem] uppercase tracking-[0.2em] text-foreground-muted mb-4">Ressources</span>
-      <h1 class="font-display text-4xl md:text-6xl font-medium tracking-tight mb-6">
-        Programmes & Communautés
-      </h1>
-      <p class="text-foreground-muted text-lg max-w-2xl leading-relaxed">
-        Mentorat, formations, communautés et conférences pour les développeuses. On a fait le tri pour toi.
-      </p>
+      <div class="overflow-hidden">
+        <span class="block text-[0.7rem] uppercase tracking-[0.2em] text-foreground-muted mb-4 animate-slide-up">Ressources</span>
+      </div>
+      <div class="overflow-hidden">
+        <h1 class="font-display text-4xl md:text-6xl font-medium tracking-tight mb-6 animate-slide-up animation-delay-100">
+          Programmes & Communautés
+        </h1>
+      </div>
+      <div class="overflow-hidden">
+        <p class="text-foreground-muted text-lg max-w-2xl leading-relaxed animate-slide-up animation-delay-200">
+          Mentorat, formations, communautés et conférences pour les développeuses. On a fait le tri pour toi.
+        </p>
+      </div>
     </div>
 
     <div class="flex flex-wrap gap-3 mb-12">
@@ -125,3 +131,30 @@ const filteredPrograms = computed(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+</style>
