@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 p-6 bg-background-card border border-border rounded-2xl animate-pulse" :class="{ 'p-8 gap-5': variant === 'speaker' }">
+  <div class="flex flex-col gap-4 p-6 bg-background-card border border-border/10 rounded-2xl animate-pulse" :class="{ 'p-8 gap-5': variant === 'speaker' }">
     <div class="flex items-center gap-4">
       <div class="rounded-full bg-border" :class="variant === 'speaker' ? 'w-16 h-16' : 'w-12 h-12'" />
       <div class="flex-1">
@@ -20,7 +20,7 @@ defineProps<{
       <div class="bg-border rounded-full" :class="variant === 'speaker' ? 'h-8 w-28' : 'h-6 w-20'" />
       <div v-if="variant !== 'speaker'" class="h-6 w-14 bg-border rounded-full" />
     </div>
-    <div v-if="variant === 'speaker'" class="flex gap-2 pt-3 border-t border-border">
+    <div v-if="variant === 'speaker'" class="flex gap-2 pt-3 border-t border-border/10">
       <div class="h-6 w-16 bg-border rounded-full" />
       <div class="h-6 w-20 bg-border rounded-full" />
     </div>

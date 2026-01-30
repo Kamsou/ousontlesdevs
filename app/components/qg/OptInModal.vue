@@ -9,7 +9,7 @@ const emit = defineEmits<{
     <Transition name="modal">
       <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-md" @click="emit('choice', false)" />
-        <dialog open role="dialog" aria-labelledby="optin-title" aria-describedby="optin-desc" class="relative bg-background border border-border rounded-3xl p-10 max-w-lg w-full overflow-hidden">
+        <dialog open role="dialog" aria-labelledby="optin-title" aria-describedby="optin-desc" class="relative bg-background border border-border/10 rounded-3xl p-10 max-w-lg w-full overflow-hidden">
           <div class="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
           <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none" aria-hidden="true" />
 

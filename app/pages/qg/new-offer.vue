@@ -99,7 +99,7 @@ async function submit() {
             v-model="form.title"
             type="text"
             placeholder="Ex: Alternance développeuse Svelte - Paris"
-            class="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
           />
         </div>
 
@@ -117,7 +117,7 @@ async function submit() {
                 'p-4 border rounded-xl text-left transition-all',
                 form.type === opt.value
                   ? 'border-primary bg-primary/5'
-                  : 'border-border hover:border-foreground-muted'
+                  : 'border-border/10 hover:border-foreground-muted'
               ]"
             >
               <span class="block font-medium text-sm">{{ opt.label }}</span>
@@ -135,7 +135,7 @@ async function submit() {
             v-model="form.location"
             type="text"
             placeholder="Ex: Paris, Remote, Lyon..."
-            class="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
           />
         </div>
 
@@ -148,7 +148,7 @@ async function submit() {
             v-model="form.description"
             rows="3"
             placeholder="Quelques détails sur l'offre..."
-            class="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors resize-none"
+            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors resize-none"
           />
         </div>
 
@@ -161,7 +161,7 @@ async function submit() {
             v-model="form.url"
             type="url"
             placeholder="https://..."
-            class="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
           />
         </div>
 

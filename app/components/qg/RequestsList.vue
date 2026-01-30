@@ -55,7 +55,7 @@ async function markAsResolved(requestId: number, e: Event) {
         v-for="request in openRequests"
         :key="request.id"
         :to="`/qg/requests/${request.id}`"
-        class="flex items-center gap-4 p-4 border border-border/30 rounded-xl hover:border-primary/20 hover:bg-white/[0.02] transition-all group"
+        class="flex items-center gap-4 p-4 border border-border/30 rounded-xl hover:border-primary/20 hover:bg-foreground/[0.02] transition-all group"
       >
         <span class="w-2 h-2 bg-amber-400 rounded-full shrink-0"></span>
         <div class="min-w-0 flex-1">
@@ -66,7 +66,7 @@ async function markAsResolved(requestId: number, e: Event) {
             <span
               v-for="tech in request.techs.slice(0, 3)"
               :key="tech.id"
-              class="px-2 py-0.5 bg-white/5 rounded text-xs text-foreground-muted/70"
+              class="px-2 py-0.5 bg-subtle rounded text-xs text-foreground-muted/70"
             >
               {{ tech.techName }}
             </span>
@@ -91,7 +91,7 @@ async function markAsResolved(requestId: number, e: Event) {
       <div v-for="request in closedRequests.slice(0, showClosedRequests ? undefined : 0)" :key="request.id">
         <NuxtLink
           :to="`/qg/requests/${request.id}`"
-          class="flex items-center gap-4 p-4 rounded-xl hover:bg-white/[0.02] transition-all group"
+          class="flex items-center gap-4 p-4 rounded-xl hover:bg-foreground/[0.02] transition-all group"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-500/50 shrink-0">
             <path d="M20 6L9 17l-5-5" />

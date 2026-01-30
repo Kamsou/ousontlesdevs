@@ -44,7 +44,7 @@ const { data: podcasts, status } = await useFetch<Podcast[]>('/api/podcasts')
       <div class="w-8 h-8 border-2 border-foreground border-t-transparent rounded-full animate-spin"></div>
     </div>
 
-    <div v-else-if="!podcasts?.length" class="text-center py-12 text-foreground-muted border border-border rounded-2xl">
+    <div v-else-if="!podcasts?.length" class="text-center py-12 text-foreground-muted border border-border/10 rounded-2xl">
       Aucun podcast pour le moment.
     </div>
 
@@ -57,7 +57,7 @@ const { data: podcasts, status } = await useFetch<Podcast[]>('/api/podcasts')
         rel="noopener noreferrer"
         :class="[
           'group p-6 border rounded-2xl transition-all hover:border-foreground-muted no-underline',
-          podcast.highlight ? 'border-foreground/30 bg-foreground/5' : 'border-border'
+          podcast.highlight ? 'border-foreground/30 bg-foreground/5' : 'border-border/10'
         ]"
       >
         <div v-if="podcast.imageUrl" class="mb-4 rounded-xl overflow-hidden">
@@ -87,7 +87,7 @@ const { data: podcasts, status } = await useFetch<Podcast[]>('/api/podcasts')
       </a>
     </div>
 
-    <div class="mt-24 p-8 md:p-12 border border-border rounded-2xl text-center">
+    <div class="mt-24 p-8 md:p-12 border border-border/10 rounded-2xl text-center">
       <h2 class="font-display text-2xl md:text-3xl font-medium mb-4">
         Un podcast à suggérer ?
       </h2>

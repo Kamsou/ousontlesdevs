@@ -110,13 +110,13 @@ async function deleteProgram(id: number, name: string) {
     <div class="flex flex-wrap gap-3 mb-8">
       <NuxtLink
         to="/admin"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Développeuses
       </NuxtLink>
       <NuxtLink
         to="/admin/feedbacks"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Feedbacks
       </NuxtLink>
@@ -128,7 +128,7 @@ async function deleteProgram(id: number, name: string) {
       </NuxtLink>
       <NuxtLink
         to="/admin/podcasts"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Podcasts
       </NuxtLink>
@@ -155,7 +155,7 @@ async function deleteProgram(id: number, name: string) {
       <div class="w-8 h-8 border-2 border-foreground border-t-transparent rounded-full animate-spin"></div>
     </div>
 
-    <div v-else-if="programs?.length === 0" class="text-center py-12 text-foreground-muted border border-border rounded-2xl">
+    <div v-else-if="programs?.length === 0" class="text-center py-12 text-foreground-muted border border-border/10 rounded-2xl">
       Aucun programme. Ajoute le premier !
     </div>
 
@@ -165,7 +165,7 @@ async function deleteProgram(id: number, name: string) {
         :key="program.id"
         :class="[
           'p-6 border rounded-2xl',
-          program.active ? 'border-border' : 'border-border/50 opacity-60'
+          program.active ? 'border-border/10' : 'border-border/50 opacity-60'
         ]"
       >
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -181,7 +181,7 @@ async function deleteProgram(id: number, name: string) {
             </div>
             <p class="text-sm text-foreground-muted mb-3">{{ program.description }}</p>
             <div class="flex items-center gap-3">
-              <span class="px-2 py-1 text-xs border border-border rounded-full text-foreground-muted">
+              <span class="px-2 py-1 text-xs border border-border/10 rounded-full text-foreground-muted">
                 {{ categoryLabels[program.category] }}
               </span>
               <a :href="program.url" target="_blank" class="text-xs text-foreground-muted hover:text-foreground underline">
@@ -192,7 +192,7 @@ async function deleteProgram(id: number, name: string) {
           <div class="flex gap-2">
             <button
               @click="openEdit(program)"
-              class="px-3 py-1.5 text-xs border border-border rounded-lg hover:border-foreground-muted transition-colors"
+              class="px-3 py-1.5 text-xs border border-border/10 rounded-lg hover:border-foreground-muted transition-colors"
             >
               Modifier
             </button>
@@ -213,7 +213,7 @@ async function deleteProgram(id: number, name: string) {
   <Teleport to="body">
     <div v-if="showModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="showModal = false"></div>
-      <div class="relative z-10 w-full max-w-lg bg-[#0a0a0f] border border-border rounded-2xl p-6">
+      <div class="relative z-10 w-full max-w-lg bg-[#0a0a0f] border border-border/10 rounded-2xl p-6">
         <h2 class="font-display text-xl font-medium mb-6 text-foreground">
           {{ editing ? 'Modifier le programme' : 'Nouveau programme' }}
         </h2>
@@ -225,7 +225,7 @@ async function deleteProgram(id: number, name: string) {
               v-model="form.name"
               type="text"
               required
-              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
               placeholder="Duchess France"
             />
           </div>
@@ -236,7 +236,7 @@ async function deleteProgram(id: number, name: string) {
               v-model="form.description"
               required
               rows="3"
-              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted resize-none"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted resize-none"
               placeholder="Communauté de développeuses..."
             ></textarea>
           </div>
@@ -247,7 +247,7 @@ async function deleteProgram(id: number, name: string) {
               v-model="form.url"
               type="url"
               required
-              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
               placeholder="https://..."
             />
           </div>
@@ -256,7 +256,7 @@ async function deleteProgram(id: number, name: string) {
             <label class="block text-sm font-medium mb-2 text-foreground">Catégorie</label>
             <select
               v-model="form.category"
-              class="w-full px-4 py-3 bg-[#0a0a0f] border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              class="w-full px-4 py-3 bg-[#0a0a0f] border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
             >
               <option value="community">Communauté</option>
               <option value="mentoring">Mentorat</option>
@@ -280,7 +280,7 @@ async function deleteProgram(id: number, name: string) {
             <button
               type="button"
               @click="showModal = false"
-              class="flex-1 py-3 border border-border rounded-xl text-foreground hover:border-foreground-muted transition-colors"
+              class="flex-1 py-3 border border-border/10 rounded-xl text-foreground hover:border-foreground-muted transition-colors"
             >
               Annuler
             </button>

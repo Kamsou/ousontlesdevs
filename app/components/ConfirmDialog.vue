@@ -55,7 +55,7 @@ const variantClasses = computed(() => {
         >
           <div
             v-if="open"
-            class="relative w-full max-w-sm bg-background border border-border rounded-2xl p-6"
+            class="relative w-full max-w-sm bg-background border border-border/10 rounded-2xl p-6"
           >
             <h3 class="font-display text-lg font-medium mb-2">
               {{ title }}
@@ -68,7 +68,7 @@ const variantClasses = computed(() => {
               <button
                 @click="emit('cancel')"
                 :disabled="loading"
-                class="flex-1 py-2.5 text-sm text-foreground-muted border border-border rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50"
+                class="flex-1 py-2.5 text-sm text-foreground-muted border border-border/10 rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50"
               >
                 {{ cancelLabel || 'Annuler' }}
               </button>

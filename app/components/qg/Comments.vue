@@ -173,7 +173,7 @@ function formatDate(date: string) {
           v-model="newComment"
           rows="2"
           placeholder="Ajouter un commentaire..."
-          class="w-full px-4 py-3 bg-white/5 border border-border rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none text-sm"
+          class="w-full px-4 py-3 bg-subtle border border-border/10 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none text-sm"
           @keydown.meta.enter="submitComment"
           @keydown.ctrl.enter="submitComment"
         ></textarea>

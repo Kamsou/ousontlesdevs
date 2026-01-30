@@ -143,7 +143,7 @@ const features = [
               </svg>
             </span>
           </NuxtLink>
-          <button @click="handleCreateProfile" class="px-6 py-4 bg-transparent text-foreground border border-b-[3px] border-border border-b-border rounded-full text-sm font-medium cursor-pointer transition-all hover:border-foreground hover:bg-foreground hover:text-background hover:-translate-y-0.5 active:translate-y-px active:border-b">
+          <button @click="handleCreateProfile" class="px-6 py-4 bg-transparent text-foreground border border-b-[3px] border-border/10 border-b-border/30 rounded-full text-sm font-medium cursor-pointer transition-all hover:border-foreground hover:bg-foreground hover:text-background hover:-translate-y-0.5 active:translate-y-px active:border-b">
             Créer mon profil
           </button>
           </div>
@@ -153,15 +153,15 @@ const features = [
 
       <div class="hidden md:flex absolute bottom-8 right-16 flex-col items-center gap-4">
         <span class="text-[0.65rem] uppercase tracking-[0.2em] text-foreground-muted [writing-mode:vertical-rl]">Scroll</span>
-        <div class="relative w-px h-16 bg-border overflow-hidden">
-          <span class="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-text to-transparent scroll-line"></span>
+        <div class="relative w-px h-16 bg-foreground/20 overflow-hidden">
+          <span class="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-foreground to-transparent scroll-line"></span>
         </div>
       </div>
     </section>
 
-    <div class="py-6 border-y border-border overflow-hidden">
+    <div class="py-6 border-y border-border/10 overflow-hidden">
       <div class="flex gap-4 w-max animate-scroll">
-        <span v-for="(tag, i) in [...openToTags, ...openToTags]" :key="i" class="flex-shrink-0 px-4 py-2 border border-border rounded-full text-sm text-foreground-muted transition-all hover:border-foreground hover:text-foreground">
+        <span v-for="(tag, i) in [...openToTags, ...openToTags]" :key="i" class="flex-shrink-0 px-4 py-2 border border-border/10 rounded-full text-sm text-foreground-muted transition-all hover:border-foreground hover:text-foreground">
           {{ tag }}
         </span>
       </div>
@@ -169,7 +169,7 @@ const features = [
 
     <section class="py-24 px-4 md:px-16">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div v-for="(stat, index) in stats" :key="index" class="flex flex-col gap-6 py-8 border-t border-border">
+        <div v-for="(stat, index) in stats" :key="index" class="flex flex-col gap-6 py-8 border-t border-border/10">
           <span class="text-[0.7rem] text-foreground-muted tracking-widest">0{{ index + 1 }}</span>
           <div class="flex flex-col gap-1">
             <ClientOnly>
@@ -195,7 +195,7 @@ const features = [
       </div>
     </section>
 
-    <section class="py-24 px-4 md:px-16 border-t border-border">
+    <section class="py-24 px-4 md:px-16 border-t border-border/10">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <span class="block text-[0.7rem] uppercase tracking-[0.2em] text-foreground-muted mb-4">Le QG</span>
@@ -227,8 +227,8 @@ const features = [
           </NuxtLink>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="p-5 border border-border rounded-2xl text-center">
-            <div class="w-10 h-10 flex items-center justify-center border border-border rounded-full mb-3 mx-auto">
+          <div class="p-5 border border-border/10 rounded-2xl text-center">
+            <div class="w-10 h-10 flex items-center justify-center border border-border/10 rounded-full mb-3 mx-auto">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
               </svg>
@@ -236,8 +236,8 @@ const features = [
             <h3 class="font-display text-sm font-medium mb-1">Discussions</h3>
             <p class="text-foreground-muted text-xs">Échange avec d'autres devs</p>
           </div>
-          <div class="p-5 border border-border rounded-2xl text-center">
-            <div class="w-10 h-10 flex items-center justify-center border border-border rounded-full mb-3 mx-auto">
+          <div class="p-5 border border-border/10 rounded-2xl text-center">
+            <div class="w-10 h-10 flex items-center justify-center border border-border/10 rounded-full mb-3 mx-auto">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <circle cx="11" cy="11" r="8"/>
                 <path d="M21 21l-4.35-4.35"/>
@@ -246,8 +246,8 @@ const features = [
             <h3 class="font-display text-sm font-medium mb-1">Découvertes</h3>
             <p class="text-foreground-muted text-xs">Trouve des profils qui matchent</p>
           </div>
-          <div class="p-5 border border-border rounded-2xl text-center">
-            <div class="w-10 h-10 flex items-center justify-center border border-border rounded-full mb-3 mx-auto">
+          <div class="p-5 border border-border/10 rounded-2xl text-center">
+            <div class="w-10 h-10 flex items-center justify-center border border-border/10 rounded-full mb-3 mx-auto">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                 <circle cx="9" cy="7" r="4"/>
@@ -258,8 +258,8 @@ const features = [
             <h3 class="font-display text-sm font-medium mb-1">Entraide</h3>
             <p class="text-foreground-muted text-xs">Demande un coup de main</p>
           </div>
-          <div class="p-5 border border-border rounded-2xl text-center">
-            <div class="w-10 h-10 flex items-center justify-center border border-border rounded-full mb-3 mx-auto">
+          <div class="p-5 border border-border/10 rounded-2xl text-center">
+            <div class="w-10 h-10 flex items-center justify-center border border-border/10 rounded-full mb-3 mx-auto">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
               </svg>
@@ -271,7 +271,7 @@ const features = [
       </div>
     </section>
 
-    <section class="py-24 px-4 md:px-16 grid grid-cols-1 lg:grid-cols-3 gap-16 border-t border-border">
+    <section class="py-24 px-4 md:px-16 grid grid-cols-1 lg:grid-cols-3 gap-16 border-t border-border/10">
       <div class="lg:sticky lg:top-32 lg:h-fit">
         <span class="block text-[0.7rem] uppercase tracking-[0.2em] text-foreground-muted mb-4">Explore</span>
         <h2 class="font-display text-3xl md:text-5xl font-medium leading-tight tracking-tight">Découvre<br/>l'écosystème</h2>
@@ -284,7 +284,7 @@ const features = [
             :href="feature.link"
             target="_blank"
             rel="noopener noreferrer"
-            class="group grid grid-cols-[50px_1fr_40px] md:grid-cols-[80px_1fr_60px] gap-4 md:gap-8 py-8 md:py-12 border-t border-border last:border-b cursor-pointer transition-all hover:pl-4 no-underline"
+            class="group grid grid-cols-[50px_1fr_40px] md:grid-cols-[80px_1fr_60px] gap-4 md:gap-8 py-8 md:py-12 border-t border-border/10 last:border-b cursor-pointer transition-all hover:pl-4 no-underline"
           >
             <span class="font-display text-sm text-foreground-muted">{{ feature.number }}</span>
             <div class="flex flex-col gap-3">
@@ -300,7 +300,7 @@ const features = [
           <NuxtLink
             v-else
             :to="feature.link"
-            class="group grid grid-cols-[50px_1fr_40px] md:grid-cols-[80px_1fr_60px] gap-4 md:gap-8 py-8 md:py-12 border-t border-border last:border-b cursor-pointer transition-all hover:pl-4 no-underline"
+            class="group grid grid-cols-[50px_1fr_40px] md:grid-cols-[80px_1fr_60px] gap-4 md:gap-8 py-8 md:py-12 border-t border-border/10 last:border-b cursor-pointer transition-all hover:pl-4 no-underline"
           >
             <span class="font-display text-sm text-foreground-muted">{{ feature.number }}</span>
             <div class="flex flex-col gap-3">
@@ -317,10 +317,10 @@ const features = [
       </div>
     </section>
 
-    <section class="py-12 px-4 md:px-16 border-t border-border">
+    <section class="py-12 px-4 md:px-16 border-t border-border/10">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        <NuxtLink to="/entreprises" class="group flex items-center gap-4 p-5 border border-border rounded-xl hover:border-foreground-muted transition-colors no-underline">
-          <div class="w-12 h-12 flex items-center justify-center border border-border rounded-full shrink-0">
+        <NuxtLink to="/entreprises" class="group flex items-center gap-4 p-5 border border-border/10 rounded-xl hover:border-foreground-muted transition-colors no-underline">
+          <div class="w-12 h-12 flex items-center justify-center border border-border/10 rounded-full shrink-0">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M9 12l2 2 4-4"/>
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -331,8 +331,8 @@ const features = [
             <p class="text-foreground-muted text-sm truncate">5+ avis positifs = badge Certifiée Inclusive</p>
           </div>
         </NuxtLink>
-        <NuxtLink to="/programmes" class="group flex items-center gap-4 p-5 border border-border rounded-xl hover:border-foreground-muted transition-colors no-underline">
-          <div class="w-12 h-12 flex items-center justify-center border border-border rounded-full shrink-0">
+        <NuxtLink to="/programmes" class="group flex items-center gap-4 p-5 border border-border/10 rounded-xl hover:border-foreground-muted transition-colors no-underline">
+          <div class="w-12 h-12 flex items-center justify-center border border-border/10 rounded-full shrink-0">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
             </svg>
@@ -345,7 +345,7 @@ const features = [
       </div>
     </section>
 
-    <section class="py-32 px-4 md:px-16 flex justify-center border-t border-border">
+    <section class="py-32 px-4 md:px-16 flex justify-center border-t border-border/10">
       <div class="max-w-xl text-center">
         <span class="block text-[0.7rem] uppercase tracking-[0.2em] text-foreground-muted mb-6">Rejoindre</span>
         <h2 class="font-display text-2xl md:text-5xl font-medium leading-tight tracking-tight mb-6">

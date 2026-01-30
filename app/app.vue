@@ -3,6 +3,17 @@ const { $clientPosthog } = useNuxtApp()
 const { data, status, signIn, signOut } = useAuth()
 const route = useRoute()
 const isQg = computed(() => route.path.startsWith('/qg'))
+const { isDark } = useQgTheme()
+
+watchEffect(() => {
+  if (import.meta.client) {
+    if (isQg.value && !isDark.value) {
+      document.documentElement.classList.add('theme-light')
+    } else {
+      document.documentElement.classList.remove('theme-light')
+    }
+  }
+})
 
 const { data: isAdmin, refresh: refreshAdmin } = useFetch('/api/admin/check', {
   immediate: false,
@@ -67,7 +78,7 @@ onUnmounted(() => {
 
 <template>
   <div class="min-h-screen flex flex-col relative bg-background text-foreground">
-    <header v-if="!isQg" class="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4 backdrop-blur-xl bg-background/80 border-b border-border">
+    <header v-if="!isQg" class="fixed top-0 left-0 right-0 z-50 px-4 md:px-8 py-4 backdrop-blur-xl bg-background/80 border-b border-border/5">
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <NuxtLink to="/" class="flex items-center gap-3 no-underline text-foreground group z-10">
           <span class="flex flex-col gap-[3px] w-[18px]">
@@ -91,7 +102,7 @@ onUnmounted(() => {
                 <path d="M6 9l6 6 6-6"/>
               </svg>
             </button>
-            <div v-if="resourcesMenuOpen" class="absolute left-0 top-full mt-2 w-44 py-2 bg-background border border-border rounded-lg shadow-xl">
+            <div v-if="resourcesMenuOpen" class="absolute left-0 top-full mt-2 w-44 py-2 bg-background border border-border/10 rounded-lg shadow-xl">
               <NuxtLink to="/entreprises" :class="['flex items-center gap-2 px-4 py-2 text-sm no-underline transition-colors', route.path === '/entreprises' ? 'text-foreground bg-border/30' : 'text-foreground-muted hover:bg-border/30 hover:text-foreground']">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
@@ -115,7 +126,7 @@ onUnmounted(() => {
               </NuxtLink>
             </div>
           </div>
-          <NuxtLink to="/experience" :class="['no-underline text-sm font-medium transition-all whitespace-nowrap px-3 py-1 rounded-full border', route.path === '/experience' ? 'text-foreground border-foreground/40' : 'text-foreground-muted border-border hover:text-foreground hover:border-foreground/40']">Quiz</NuxtLink>
+          <NuxtLink to="/experience" :class="['no-underline text-sm font-medium transition-all whitespace-nowrap px-3 py-1 rounded-full border', route.path === '/experience' ? 'text-foreground border-foreground/40' : 'text-foreground-muted border-border/10 hover:text-foreground hover:border-foreground/40']">Quiz</NuxtLink>
           <a href="https://github.com/Kamsou/ousontlesdevs" target="_blank" rel="noopener noreferrer" class="text-foreground-muted no-underline text-sm font-medium transition-colors hover:text-foreground whitespace-nowrap flex items-center gap-1.5">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
@@ -144,8 +155,8 @@ onUnmounted(() => {
                   <path d="M6 9l6 6 6-6"/>
                 </svg>
               </button>
-              <div v-if="userMenuOpen" class="absolute right-0 top-full mt-2 w-48 py-2 bg-background border border-border rounded-lg shadow-xl">
-                <div class="px-4 py-2 border-b border-border">
+              <div v-if="userMenuOpen" class="absolute right-0 top-full mt-2 w-48 py-2 bg-background border border-border/10 rounded-lg shadow-xl">
+                <div class="px-4 py-2 border-b border-border/5">
                   <p class="font-medium text-sm text-foreground truncate">{{ displayName }}</p>
                 </div>
                 <NuxtLink to="/qg" class="flex items-center gap-2 px-4 py-2 text-sm text-foreground-muted no-underline hover:bg-border/30 hover:text-foreground transition-colors">
@@ -231,7 +242,7 @@ onUnmounted(() => {
               </div>
             </NuxtLink>
             <NuxtLink v-if="isAdmin" to="/admin" class="text-foreground-muted no-underline text-sm font-medium px-3 py-2 rounded-xl hover:bg-white/5 hover:text-foreground transition-colors">Admin</NuxtLink>
-            <button @click="signOut()" class="w-full inline-flex items-center justify-center px-6 py-3 rounded-full text-sm cursor-pointer transition-all border border-b-[3px] border-border border-b-foreground-muted/50 bg-transparent text-foreground-muted hover:text-foreground hover:border-foreground-muted/40 hover:bg-foreground/[0.03] hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">Déconnexion</button>
+            <button @click="signOut()" class="w-full inline-flex items-center justify-center px-6 py-3 rounded-full text-sm cursor-pointer transition-all border border-b-[3px] border-border/10 border-b-foreground-muted/50 bg-transparent text-foreground-muted hover:text-foreground hover:border-foreground-muted/40 hover:bg-foreground/[0.03] hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">Déconnexion</button>
           </div>
         </template>
       </div>
@@ -241,7 +252,7 @@ onUnmounted(() => {
       <NuxtPage />
     </main>
 
-    <footer v-if="!isQg" class="relative z-[1] text-center py-8 text-foreground-muted text-sm border-t border-border">
+    <footer v-if="!isQg" class="relative z-[1] text-center py-8 text-foreground-muted text-sm border-t border-border/5">
       <p>Fait pour toutes les développeuses par <a href="https://linkedin.com/in/camillecoutens" target="_blank" rel="noopener noreferrer" class="text-foreground-muted underline underline-offset-2 decoration-border hover:text-foreground hover:decoration-foreground transition-colors">Camille Coutens</a></p>
       <span class="inline-flex gap-4 mt-3">
         <NuxtLink to="/coc" class="text-foreground-muted underline underline-offset-2 decoration-border hover:text-foreground transition-colors">Code de conduite</NuxtLink>

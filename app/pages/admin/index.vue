@@ -76,19 +76,19 @@ function formatDate(date: string | Date | null) {
       </NuxtLink>
       <NuxtLink
         to="/admin/feedbacks"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Feedbacks
       </NuxtLink>
       <NuxtLink
         to="/admin/programs"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Programmes
       </NuxtLink>
       <NuxtLink
         to="/admin/podcasts"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Podcasts
       </NuxtLink>
@@ -132,7 +132,7 @@ function formatDate(date: string | Date | null) {
           v-model="searchQuery"
           type="text"
           placeholder="Rechercher..."
-          class="w-full md:w-80 px-4 py-3 bg-transparent border border-border rounded-xl text-foreground placeholder:text-foreground-muted focus:outline-none focus:border-foreground transition-colors"
+          class="w-full md:w-80 px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground placeholder:text-foreground-muted focus:outline-none focus:border-foreground transition-colors"
         />
         <svg class="absolute right-4 top-1/2 -translate-y-1/2 text-foreground-muted" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/>
@@ -153,7 +153,7 @@ function formatDate(date: string | Date | null) {
     <div v-else class="overflow-x-auto">
       <table class="w-full">
         <thead>
-          <tr class="border-b border-border text-left">
+          <tr class="border-b border-border/10 text-left">
             <th class="pb-4 pr-4 text-sm font-medium text-foreground-muted">Profil</th>
             <th class="pb-4 pr-4 text-sm font-medium text-foreground-muted">Contact</th>
             <th class="pb-4 pr-4 text-sm font-medium text-foreground-muted">Localisation</th>
@@ -209,7 +209,7 @@ function formatDate(date: string | Date | null) {
                 <span
                   v-for="skill in dev.skills?.slice(0, 3)"
                   :key="skill"
-                  class="px-2 py-0.5 text-xs border border-border rounded-full text-foreground-muted"
+                  class="px-2 py-0.5 text-xs border border-border/10 rounded-full text-foreground-muted"
                 >
                   {{ skill }}
                 </span>

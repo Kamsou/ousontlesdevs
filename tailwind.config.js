@@ -5,21 +5,22 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#3B82F6',
-          dark: '#2563EB'
+          DEFAULT: 'rgb(var(--primary) / <alpha-value>)',
+          dark: 'rgb(var(--primary-dark) / <alpha-value>)'
         },
         secondary: '#06b6d4',
         accent: '#22d3ee',
         background: {
-          DEFAULT: '#0a0a0f',
-          card: 'rgba(255, 255, 255, 0.03)',
-          'card-hover': 'rgba(255, 255, 255, 0.06)'
+          DEFAULT: 'rgb(var(--background) / <alpha-value>)',
+          card: 'rgb(var(--background-card) / var(--background-card-alpha))',
+          'card-hover': 'rgb(var(--background-card) / var(--background-card-hover-alpha))'
         },
         foreground: {
-          DEFAULT: '#f8fafc',
-          muted: '#94a3b8'
+          DEFAULT: 'rgb(var(--foreground) / <alpha-value>)',
+          muted: 'rgb(var(--foreground-muted) / <alpha-value>)'
         },
-        border: 'rgba(255, 255, 255, 0.1)'
+        subtle: 'rgb(var(--foreground) / var(--subtle-alpha))',
+        border: 'rgb(var(--border) / <alpha-value>)'
       },
       fontFamily: {
         sans: ['Satoshi', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
@@ -30,7 +31,7 @@ export default {
         sm: '8px'
       },
       boxShadow: {
-        glow: '0 0 20px rgba(59, 130, 246, 0.1)',
+        glow: '0 0 20px rgb(var(--primary) / var(--shadow-glow-alpha))',
       }
     }
   },

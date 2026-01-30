@@ -96,7 +96,7 @@ async function submit() {
             v-model="form.title"
             type="text"
             placeholder="Ex: App de gestion de tâches collaborative"
-            class="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
           />
         </div>
 
@@ -109,7 +109,7 @@ async function submit() {
             v-model="form.description"
             rows="4"
             placeholder="Décris ton projet, l'idée, ce que tu cherches..."
-            class="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors resize-none"
+            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors resize-none"
           />
         </div>
 
@@ -122,7 +122,7 @@ async function submit() {
             v-model="form.repoUrl"
             type="url"
             placeholder="https://github.com/..."
-            class="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
           />
         </div>
 
@@ -135,7 +135,7 @@ async function submit() {
             v-model="form.websiteUrl"
             type="url"
             placeholder="https://monprojet.fr"
-            class="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
           />
         </div>
 
@@ -153,7 +153,7 @@ async function submit() {
                 'p-4 border rounded-xl text-left transition-all',
                 form.status === status.value
                   ? 'border-green-500 bg-green-500/5'
-                  : 'border-border hover:border-foreground-muted'
+                  : 'border-border/10 hover:border-foreground-muted'
               ]"
             >
               <span class="block font-medium text-sm">{{ status.label }}</span>
@@ -174,12 +174,12 @@ async function submit() {
               placeholder="Ex: Vue, TypeScript, Node..."
               @keydown="handleTechKeydown"
               @input="handleTechInput"
-              class="flex-1 px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+              class="flex-1 px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
             />
             <button
               type="button"
               @click="addTech"
-              class="px-4 py-3 border border-border rounded-lg text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
+              class="px-4 py-3 border border-border/10 rounded-lg text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
             >
               Ajouter
             </button>
@@ -188,7 +188,7 @@ async function submit() {
             <span
               v-for="tech in techs"
               :key="tech"
-              class="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-border rounded-full text-sm"
+              class="inline-flex items-center gap-2 px-3 py-1 bg-subtle border border-border/10 rounded-full text-sm"
             >
               {{ tech }}
               <button type="button" @click="removeTech(tech)" class="text-foreground-muted hover:text-foreground" :aria-label="`Supprimer ${tech}`">

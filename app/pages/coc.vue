@@ -130,7 +130,7 @@ useSeoMeta({
         </p>
       </section>
 
-      <section class="p-6 border border-border rounded-2xl bg-white/[0.02]">
+      <section class="p-6 border border-border/10 rounded-2xl bg-white/[0.02]">
         <p class="text-foreground-muted leading-relaxed text-center">
           Nous ne cherchons pas la perfection, mais la <strong class="text-foreground">sécurité et la progression</strong> — individuelle comme collective.<br />
           Ensemble, faisons d'OSLD un lieu d'apprentissage, de confiance et d'entraide.

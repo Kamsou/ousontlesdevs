@@ -70,7 +70,7 @@ const filteredPrograms = computed(() => {
           'px-4 py-2 rounded-full text-sm font-medium transition-all border',
           activeCategory === cat.key
             ? 'bg-foreground/10 border-foreground/30 text-foreground'
-            : 'border-border text-foreground-muted hover:border-border hover:text-foreground'
+            : 'border-border/10 text-foreground-muted hover:border-border/10 hover:text-foreground'
         ]"
       >
         {{ cat.label }}
@@ -81,7 +81,7 @@ const filteredPrograms = computed(() => {
       <div class="w-8 h-8 border-2 border-foreground border-t-transparent rounded-full animate-spin"></div>
     </div>
 
-    <div v-else-if="filteredPrograms.length === 0" class="text-center py-12 text-foreground-muted border border-border rounded-2xl">
+    <div v-else-if="filteredPrograms.length === 0" class="text-center py-12 text-foreground-muted border border-border/10 rounded-2xl">
       Aucun programme dans cette catégorie.
     </div>
 
@@ -94,7 +94,7 @@ const filteredPrograms = computed(() => {
         rel="noopener noreferrer"
         :class="[
           'group p-6 border rounded-2xl transition-all hover:border-foreground-muted no-underline',
-          program.highlight ? 'border-foreground/30 bg-foreground/5' : 'border-border'
+          program.highlight ? 'border-foreground/30 bg-foreground/5' : 'border-border/10'
         ]"
       >
         <div class="flex items-start justify-between gap-4 mb-4">
@@ -108,13 +108,13 @@ const filteredPrograms = computed(() => {
         <p class="text-foreground-muted text-sm leading-relaxed mb-4">
           {{ program.description }}
         </p>
-        <span class="inline-block px-3 py-1 text-xs border border-border rounded-full text-foreground-muted">
+        <span class="inline-block px-3 py-1 text-xs border border-border/10 rounded-full text-foreground-muted">
           {{ categoryLabels[program.category] }}
         </span>
       </a>
     </div>
 
-    <div class="mt-24 p-8 md:p-12 border border-border rounded-2xl text-center">
+    <div class="mt-24 p-8 md:p-12 border border-border/10 rounded-2xl text-center">
       <h2 class="font-display text-2xl md:text-3xl font-medium mb-4">
         Un programme à suggérer ?
       </h2>

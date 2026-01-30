@@ -72,7 +72,7 @@ async function submit() {
           Comment ça s'est passé ?
         </h1>
         <p class="text-foreground-muted text-center mb-8">
-          Tu as contacté <span class="text-foreground">{{ data.recipientName }}</span> il y a quelques jours.
+          Tu as contacté <span class="text-foreground">{{ data?.recipientName }}</span> il y a quelques jours.
         </p>
 
         <form @submit.prevent="submit" class="space-y-8">
@@ -86,7 +86,7 @@ async function submit() {
                   'flex-1 py-3 rounded-xl border transition-all',
                   form.exchangeHappened === true
                     ? 'border-green-500 bg-green-500/10 text-green-400'
-                    : 'border-border hover:border-foreground-muted'
+                    : 'border-border/10 hover:border-foreground-muted'
                 ]"
               >
                 Oui
@@ -98,7 +98,7 @@ async function submit() {
                   'flex-1 py-3 rounded-xl border transition-all',
                   form.exchangeHappened === false
                     ? 'border-red-500 bg-red-500/10 text-red-400'
-                    : 'border-border hover:border-foreground-muted'
+                    : 'border-border/10 hover:border-foreground-muted'
                 ]"
               >
                 Non
@@ -118,7 +118,7 @@ async function submit() {
                   'flex-1 py-3 rounded-xl border transition-all text-sm',
                   form.usefulnessRating === n
                     ? 'border-foreground bg-foreground text-background'
-                    : 'border-border hover:border-foreground-muted'
+                    : 'border-border/10 hover:border-foreground-muted'
                 ]"
               >
                 {{ n }}
@@ -137,7 +137,7 @@ async function submit() {
               rows="3"
               maxlength="500"
               placeholder="Ce qui a bien marché, ce qu'on pourrait améliorer..."
-              class="w-full px-4 py-3 bg-white/5 border border-border rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none"
+              class="w-full px-4 py-3 bg-white/5 border border-border/10 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none"
             ></textarea>
           </div>
 

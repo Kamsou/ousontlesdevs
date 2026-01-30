@@ -312,7 +312,7 @@ function restart() {
                 v-for="(option, index) in (questions[step as keyof typeof questions] as { options: { value: string; label: string }[] }).options"
                 :key="option.value"
                 @click="selectOption(step as keyof typeof answers, option.value)"
-                class="group w-full text-left px-6 md:px-8 py-5 md:py-6 bg-transparent border border-border text-foreground cursor-pointer transition-all duration-300 hover:bg-foreground hover:text-background hover:border-foreground hover:pl-10 flex items-center gap-4"
+                class="group w-full text-left px-6 md:px-8 py-5 md:py-6 bg-transparent border border-border/10 text-foreground cursor-pointer transition-all duration-300 hover:bg-foreground hover:text-background hover:border-foreground hover:pl-10 flex items-center gap-4"
               >
                 <span class="text-xs text-foreground-muted group-hover:text-background/50 font-mono w-6">{{ String.fromCharCode(65 + index) }}</span>
                 <span class="text-base md:text-lg">{{ option.label }}</span>
@@ -364,7 +364,7 @@ function restart() {
                 v-model="answers.q4"
                 :placeholder="questions.q4.placeholder"
                 maxlength="200"
-                class="w-full px-0 py-6 bg-transparent border-0 border-b-2 border-border text-foreground text-xl md:text-2xl resize-none min-h-[150px] focus:outline-none focus:border-foreground placeholder:text-foreground/30 transition-colors"
+                class="w-full px-0 py-6 bg-transparent border-0 border-b-2 border-border/10 text-foreground text-xl md:text-2xl resize-none min-h-[150px] focus:outline-none focus:border-foreground placeholder:text-foreground/30 transition-colors"
               ></textarea>
               <div class="flex justify-between items-center">
                 <span class="text-xs text-foreground-muted font-mono">{{ answers.q4.length }}/200</span>
@@ -443,7 +443,7 @@ function restart() {
             </button>
             <button
               @click="shareProfile"
-              class="px-8 py-4 bg-transparent border border-b-[3px] border-border border-b-border text-foreground text-base cursor-pointer transition-all hover:border-foreground hover:-translate-y-0.5 active:translate-y-px active:border-b"
+              class="px-8 py-4 bg-transparent border border-b-[3px] border-border/10 border-b-border/30 text-foreground text-base cursor-pointer transition-all hover:border-foreground hover:-translate-y-0.5 active:translate-y-px active:border-b"
             >
               Partager
             </button>

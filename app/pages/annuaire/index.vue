@@ -127,7 +127,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
 
 <template>
   <div class="max-w-7xl mx-auto px-4 md:px-16">
-    <header class="py-16 border-b border-border">
+    <header class="py-16 border-b border-border/10">
       <span class="text-xs uppercase tracking-[0.2em] text-foreground-muted mb-6 block">Annuaire</span>
       <h1 class="font-display text-4xl md:text-7xl font-medium tracking-tight mb-2">Développeuses</h1>
       <p class="text-foreground-muted text-base">
@@ -136,7 +136,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
       </p>
     </header>
 
-    <section class="py-8 border-b border-border">
+    <section class="py-8 border-b border-border/10">
       <div class="flex flex-col md:flex-row gap-6 items-stretch md:items-end mb-6">
         <div class="flex-1 max-w-none md:max-w-[250px]">
           <label class="block text-xs uppercase tracking-widest text-foreground-muted mb-2">Ville</label>
@@ -144,7 +144,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
             v-model="filters.location"
             type="text"
             placeholder="Paris, Lyon..."
-            class="w-full px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
+            class="w-full px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
           />
         </div>
 
@@ -154,11 +154,11 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
             v-model="filters.skill"
             type="text"
             placeholder="Vue.js, Python..."
-            class="w-full px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
+            class="w-full px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
           />
         </div>
 
-        <button v-if="filters.location || filters.skill || filters.openTo.length" @click="clearFilters" class="px-6 py-3 bg-transparent border border-border rounded-lg text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground">
+        <button v-if="filters.location || filters.skill || filters.openTo.length" @click="clearFilters" class="px-6 py-3 bg-transparent border border-border/10 rounded-lg text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground">
           Effacer
         </button>
       </div>
@@ -173,7 +173,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
               'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all',
               filters.openTo.includes(option.value)
                 ? 'bg-foreground/10 border-foreground/30 text-foreground'
-                : 'bg-transparent border-border/40 text-foreground-muted hover:border-border hover:text-foreground'
+                : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
             ]"
             @click="toggleOpenTo(option.value)"
           >
@@ -191,7 +191,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
 
       <div v-else-if="!developers?.length" class="text-center py-16 text-foreground-muted">
         <p class="mb-4">Aucun profil trouvé</p>
-        <button @click="clearFilters" class="px-6 py-3 bg-transparent border border-border rounded-lg text-foreground cursor-pointer">Effacer les filtres</button>
+        <button @click="clearFilters" class="px-6 py-3 bg-transparent border border-border/10 rounded-lg text-foreground cursor-pointer">Effacer les filtres</button>
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -199,7 +199,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
           v-for="dev in developers"
           :key="dev.id"
           :to="`/annuaire/${dev.slug}`"
-          class="flex flex-col gap-4 p-6 bg-background-card border border-border rounded-2xl no-underline text-foreground transition-all hover:bg-background-card-hover hover:border-foreground-muted hover:-translate-y-0.5"
+          class="flex flex-col gap-4 p-6 bg-background-card border border-border/10 rounded-2xl no-underline text-foreground transition-all hover:bg-background-card-hover hover:border-foreground-muted hover:-translate-y-0.5"
         >
           <div class="flex items-center gap-4">
             <img
@@ -211,13 +211,13 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
               <h3 class="font-display text-lg font-medium">{{ dev.name }}</h3>
               <p v-if="dev.location" class="text-sm text-foreground-muted">{{ dev.location }}</p>
             </div>
-            <span v-if="dev.isSpeaker" class="px-3 py-1 bg-background-card border border-border rounded-full text-[0.7rem] uppercase tracking-widest text-foreground-muted">Speakeuse</span>
+            <span v-if="dev.isSpeaker" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-[0.7rem] uppercase tracking-widest text-foreground-muted">Speakeuse</span>
           </div>
 
           <p v-if="dev.bio" class="text-sm text-foreground-muted leading-relaxed line-clamp-2">{{ dev.bio }}</p>
 
           <div v-if="dev.skills?.length" class="flex flex-wrap gap-2">
-            <span v-for="skill in dev.skills.slice(0, 5)" :key="skill" class="px-3 py-1 bg-background-card border border-border rounded-full text-xs text-foreground-muted">
+            <span v-for="skill in dev.skills.slice(0, 5)" :key="skill" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-xs text-foreground-muted">
               {{ skill }}
             </span>
             <span v-if="dev.skills.length > 5" class="px-2 py-1 text-xs text-foreground-muted">
@@ -225,7 +225,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
             </span>
           </div>
 
-          <div v-if="dev.openTo?.length" class="flex flex-wrap gap-2 pt-2 border-t border-border">
+          <div v-if="dev.openTo?.length" class="flex flex-wrap gap-2 pt-2 border-t border-border/10">
             <span v-for="(tag, index) in dev.openTo" :key="tag" class="text-[0.7rem] text-foreground-muted">
               {{ openToOptions.find(o => o.value === tag)?.label || tag }}{{ index < dev.openTo.length - 1 ? ' ·' : '' }}
             </span>
@@ -237,7 +237,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
         <button
           @click="loadMore"
           :disabled="isLoadingMore"
-          class="px-8 py-3 border border-b-[3px] border-border border-b-border rounded-full text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground hover:-translate-y-0.5 active:translate-y-px active:border-b disabled:opacity-50 disabled:cursor-not-allowed"
+          class="px-8 py-3 border border-b-[3px] border-border/10 border-b-border/30 rounded-full text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground hover:-translate-y-0.5 active:translate-y-px active:border-b disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span v-if="isLoadingMore" class="flex items-center gap-2">
             <span class="w-4 h-4 border-2 border-foreground-muted border-t-transparent rounded-full animate-spin"></span>

@@ -32,7 +32,7 @@ function getRatingColor(rating: number | null) {
     <div class="flex flex-wrap gap-3 mb-8">
       <NuxtLink
         to="/admin"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Développeuses
       </NuxtLink>
@@ -44,13 +44,13 @@ function getRatingColor(rating: number | null) {
       </NuxtLink>
       <NuxtLink
         to="/admin/programs"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Programmes
       </NuxtLink>
       <NuxtLink
         to="/admin/podcasts"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Podcasts
       </NuxtLink>
@@ -72,21 +72,21 @@ function getRatingColor(rating: number | null) {
 
     <div v-else-if="data">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-        <div class="p-6 border border-border rounded-2xl">
+        <div class="p-6 border border-border/10 rounded-2xl">
           <p class="text-3xl font-display font-medium">{{ data.stats.totalContacts }}</p>
           <p class="text-sm text-foreground-muted mt-1">Contacts total</p>
         </div>
-        <div class="p-6 border border-border rounded-2xl">
+        <div class="p-6 border border-border/10 rounded-2xl">
           <p class="text-3xl font-display font-medium">{{ data.stats.feedbackReceived }}</p>
           <p class="text-sm text-foreground-muted mt-1">Feedbacks reçus</p>
           <p class="text-xs text-foreground-muted mt-2">{{ data.stats.responseRate }}% de réponse</p>
         </div>
-        <div class="p-6 border border-border rounded-2xl">
+        <div class="p-6 border border-border/10 rounded-2xl">
           <p class="text-3xl font-display font-medium text-green-400">{{ data.stats.successRate }}%</p>
           <p class="text-sm text-foreground-muted mt-1">Échanges réussis</p>
           <p class="text-xs text-foreground-muted mt-2">{{ data.stats.exchangeHappened }} / {{ data.stats.feedbackReceived }}</p>
         </div>
-        <div class="p-6 border border-border rounded-2xl">
+        <div class="p-6 border border-border/10 rounded-2xl">
           <p class="text-3xl font-display font-medium" :class="getRatingColor(Number(data.stats.avgRating))">
             {{ data.stats.avgRating || '-' }}<span v-if="data.stats.avgRating" class="text-lg">/5</span>
           </p>
@@ -97,7 +97,7 @@ function getRatingColor(rating: number | null) {
 
       <h2 class="font-display text-xl font-medium mb-6">Détail des retours</h2>
 
-      <div v-if="data.feedbacks.length === 0" class="text-center py-12 text-foreground-muted border border-border rounded-2xl">
+      <div v-if="data.feedbacks.length === 0" class="text-center py-12 text-foreground-muted border border-border/10 rounded-2xl">
         Aucun feedback reçu pour le moment
       </div>
 
@@ -105,7 +105,7 @@ function getRatingColor(rating: number | null) {
         <div
           v-for="feedback in data.feedbacks"
           :key="feedback.id"
-          class="p-6 border border-border rounded-2xl"
+          class="p-6 border border-border/10 rounded-2xl"
         >
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
             <div class="flex items-center gap-3">

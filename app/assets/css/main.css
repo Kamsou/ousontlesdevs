@@ -2,9 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: 10 10 15;
+  --background-card: 255 255 255;
+  --background-card-alpha: 0.03;
+  --background-card-hover-alpha: 0.06;
+  --foreground: 248 250 252;
+  --foreground-muted: 148 163 184;
+  --border: 255 255 255;
+  --primary: 59 130 246;
+  --primary-dark: 37 99 235;
+  --shadow-glow-alpha: 0.1;
+  --subtle-alpha: 0.05;
+}
+
+.theme-light {
+  --background: 249 247 243;
+  --background-card: 0 0 0;
+  --background-card-alpha: 0.04;
+  --background-card-hover-alpha: 0.07;
+  --foreground: 15 23 42;
+  --foreground-muted: 71 85 105;
+  --border: 0 0 0;
+  --shadow-glow-alpha: 0.2;
+  --subtle-alpha: 0.07;
+  --primary: 37 99 235;
+  --primary-dark: 29 78 216;
+}
+
 html {
-  background-color: #0a0a0f;
-  color: #f8fafc;
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
 }
 
 body {

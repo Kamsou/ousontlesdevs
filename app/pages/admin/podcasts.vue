@@ -111,19 +111,19 @@ async function deletePodcast(id: number, title: string) {
     <div class="flex flex-wrap gap-3 mb-8">
       <NuxtLink
         to="/admin"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Développeuses
       </NuxtLink>
       <NuxtLink
         to="/admin/feedbacks"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Feedbacks
       </NuxtLink>
       <NuxtLink
         to="/admin/programs"
-        class="px-4 py-2 border border-border rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
+        class="px-4 py-2 border border-border/10 rounded-lg text-sm font-medium hover:border-foreground-muted transition-colors no-underline"
       >
         Programmes
       </NuxtLink>
@@ -156,7 +156,7 @@ async function deletePodcast(id: number, title: string) {
       <div class="w-8 h-8 border-2 border-foreground border-t-transparent rounded-full animate-spin"></div>
     </div>
 
-    <div v-else-if="podcasts?.length === 0" class="text-center py-12 text-foreground-muted border border-border rounded-2xl">
+    <div v-else-if="podcasts?.length === 0" class="text-center py-12 text-foreground-muted border border-border/10 rounded-2xl">
       Aucun podcast. Ajoute le premier !
     </div>
 
@@ -166,7 +166,7 @@ async function deletePodcast(id: number, title: string) {
         :key="podcast.id"
         :class="[
           'p-6 border rounded-2xl',
-          podcast.active ? 'border-border' : 'border-border/50 opacity-60'
+          podcast.active ? 'border-border/10' : 'border-border/50 opacity-60'
         ]"
       >
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
@@ -192,7 +192,7 @@ async function deletePodcast(id: number, title: string) {
           <div class="flex gap-2 shrink-0">
             <button
               @click="openEdit(podcast)"
-              class="px-3 py-1.5 text-xs border border-border rounded-lg hover:border-foreground-muted transition-colors"
+              class="px-3 py-1.5 text-xs border border-border/10 rounded-lg hover:border-foreground-muted transition-colors"
             >
               Modifier
             </button>
@@ -213,7 +213,7 @@ async function deletePodcast(id: number, title: string) {
   <Teleport to="body">
     <div v-if="showModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="showModal = false"></div>
-      <div class="relative z-10 w-full max-w-lg bg-[#0a0a0f] border border-border rounded-2xl p-6 max-h-[90vh] overflow-y-auto">
+      <div class="relative z-10 w-full max-w-lg bg-[#0a0a0f] border border-border/10 rounded-2xl p-6 max-h-[90vh] overflow-y-auto">
         <h2 class="font-display text-xl font-medium mb-6 text-foreground">
           {{ editing ? 'Modifier l\'épisode' : 'Nouvel épisode' }}
         </h2>
@@ -225,7 +225,7 @@ async function deletePodcast(id: number, title: string) {
               v-model="form.title"
               type="text"
               required
-              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
               placeholder="Vue.js, Nuxt.js et projets concrets..."
             />
           </div>
@@ -236,7 +236,7 @@ async function deletePodcast(id: number, title: string) {
               v-model="form.podcastName"
               type="text"
               required
-              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
               placeholder="Dev Zone"
             />
           </div>
@@ -246,7 +246,7 @@ async function deletePodcast(id: number, title: string) {
             <input
               v-model="form.guestName"
               type="text"
-              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
               placeholder="Camille Coutens"
             />
           </div>
@@ -256,7 +256,7 @@ async function deletePodcast(id: number, title: string) {
             <textarea
               v-model="form.description"
               rows="3"
-              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted resize-none"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted resize-none"
               placeholder="De quoi parle cet épisode..."
             ></textarea>
           </div>
@@ -267,7 +267,7 @@ async function deletePodcast(id: number, title: string) {
               v-model="form.url"
               type="url"
               required
-              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
               placeholder="https://open.spotify.com/episode/..."
             />
           </div>
@@ -277,7 +277,7 @@ async function deletePodcast(id: number, title: string) {
             <input
               v-model="form.imageUrl"
               type="url"
-              class="w-full px-4 py-3 bg-transparent border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
               placeholder="https://..."
             />
           </div>
@@ -297,7 +297,7 @@ async function deletePodcast(id: number, title: string) {
             <button
               type="button"
               @click="showModal = false"
-              class="flex-1 py-3 border border-border rounded-xl text-foreground hover:border-foreground-muted transition-colors"
+              class="flex-1 py-3 border border-border/10 rounded-xl text-foreground hover:border-foreground-muted transition-colors"
             >
               Annuler
             </button>

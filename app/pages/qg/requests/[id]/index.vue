@@ -198,7 +198,7 @@ async function sendContact() {
             <div
               v-for="dev in matches"
               :key="dev.id"
-              class="flex items-center gap-3 p-3 -mx-3 rounded-lg hover:bg-white/[0.02] transition-colors group"
+              class="flex items-center gap-3 p-3 -mx-3 rounded-lg hover:bg-foreground/[0.02] transition-colors group"
             >
               <img
                 v-if="dev.avatarUrl"
@@ -285,7 +285,7 @@ async function sendContact() {
           @click="closeContactModal"
         ></div>
 
-        <div class="relative w-full max-w-md bg-background border border-border rounded-2xl p-6">
+        <div class="relative w-full max-w-md bg-background border border-border/10 rounded-2xl p-6">
           <button
             @click="closeContactModal"
             class="absolute top-4 right-4 text-foreground-muted hover:text-foreground transition-colors"
@@ -329,7 +329,7 @@ async function sendContact() {
                   rows="5"
                   maxlength="1000"
                   placeholder="Salut ! J'ai vu que tu connaissais..."
-                  class="w-full px-4 py-3 bg-white/5 border border-border rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none"
+                  class="w-full px-4 py-3 bg-subtle border border-border/10 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none"
                 ></textarea>
                 <p class="text-xs text-foreground-muted mt-1 text-right">
                   {{ contactMessage.length }}/1000

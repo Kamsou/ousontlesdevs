@@ -191,7 +191,7 @@ onUnmounted(() => stickyObserver?.disconnect())
             </div>
             <NuxtLink to="/experience" class="group/btn flex items-center gap-3 px-5 py-3 border border-b-[3px] border-primary/20 border-b-primary/60 rounded-full transition-all duration-300 shrink-0 hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">
               <span class="text-sm text-foreground-muted group-hover/btn:text-foreground transition-colors">Refaire</span>
-              <span class="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 group-hover/btn:bg-white/10 transition-colors">
+              <span class="w-6 h-6 flex items-center justify-center rounded-full bg-subtle group-hover/btn:bg-foreground/10 transition-colors">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-foreground-muted group-hover/btn:text-foreground transition-colors">
                   <path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/>
                 </svg>
@@ -205,7 +205,7 @@ onUnmounted(() => stickyObserver?.disconnect())
     <ClientOnly>
       <template #fallback>
         <div class="animate-pulse space-y-8">
-          <div class="py-5 border-b border-border">
+          <div class="py-5 border-b border-border/10">
             <div class="h-6 bg-border/50 rounded w-24 mb-6"></div>
             <div class="space-y-6">
               <div class="h-12 bg-border/50 rounded"></div>
@@ -218,45 +218,45 @@ onUnmounted(() => stickyObserver?.disconnect())
       <form @submit.prevent="save">
         <div v-if="error" class="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-500 mb-8">{{ error }}</div>
 
-        <section class="py-5 border-b border-border">
+        <section class="py-5 border-b border-border/10">
           <h2 class="font-display text-xl font-medium mb-4">Identité</h2>
 
           <div class="flex flex-col gap-4">
             <div class="grid grid-cols-2 gap-4">
               <div class="flex flex-col gap-2">
                 <label for="lastName" class="text-xs uppercase tracking-wide text-foreground-muted">Nom *</label>
-                <input id="lastName" v-model="form.lastName" type="text" required class="px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted" />
+                <input id="lastName" v-model="form.lastName" type="text" required class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted" />
               </div>
               <div class="flex flex-col gap-2">
                 <label for="firstName" class="text-xs uppercase tracking-wide text-foreground-muted">Prénom *</label>
-                <input id="firstName" v-model="form.firstName" type="text" required class="px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted" />
+                <input id="firstName" v-model="form.firstName" type="text" required class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted" />
               </div>
             </div>
 
             <div class="flex flex-col gap-2">
               <label for="bio" class="text-xs uppercase tracking-wide text-foreground-muted">Bio</label>
-              <textarea id="bio" v-model="form.bio" rows="3" placeholder="Ce que tu fais, ce qui te passionne..." class="px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted resize-y min-h-[80px] placeholder:text-foreground-muted"></textarea>
+              <textarea id="bio" v-model="form.bio" rows="3" placeholder="Ce que tu fais, ce qui te passionne..." class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted resize-y min-h-[80px] placeholder:text-foreground-muted"></textarea>
             </div>
           </div>
         </section>
 
-        <section class="py-5 border-b border-border">
+        <section class="py-5 border-b border-border/10">
           <h2 class="font-display text-xl font-medium mb-4">Localisation & Expérience</h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
               <label for="location" class="text-xs uppercase tracking-wide text-foreground-muted">Ville</label>
-              <input id="location" v-model="form.location" type="text" placeholder="Paris" class="px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
+              <input id="location" v-model="form.location" type="text" placeholder="Paris" class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
             </div>
 
             <div class="flex flex-col gap-2">
               <label for="years-experience" class="text-xs uppercase tracking-wide text-foreground-muted">Années d'expérience</label>
-              <input id="years-experience" v-model.number="form.yearsExperience" type="number" min="0" max="50" class="px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted" />
+              <input id="years-experience" v-model.number="form.yearsExperience" type="number" min="0" max="50" class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted" />
             </div>
           </div>
         </section>
 
-        <section class="py-5 border-b border-border">
+        <section class="py-5 border-b border-border/10">
           <h2 id="competences-label" class="font-display text-xl font-medium mb-4">Compétences</h2>
 
           <div class="flex gap-2 mb-4">
@@ -266,14 +266,14 @@ onUnmounted(() => stickyObserver?.disconnect())
               type="text"
               placeholder="Vue.js, TypeScript, Node..."
               aria-labelledby="competences-label"
-              class="flex-1 px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
+              class="flex-1 px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
               @keydown.enter.prevent="addSkill"
             />
             <button type="button" @click="addSkill" class="px-6 py-3 bg-background-card border border-b-[3px] border-primary/20 border-b-primary/60 rounded-lg text-foreground cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">Ajouter</button>
           </div>
 
           <div class="flex flex-wrap gap-2">
-            <span v-for="skill in form.skills" :key="skill" class="flex items-center gap-2 px-4 py-2 bg-background-card border border-border rounded-full text-sm">
+            <span v-for="skill in form.skills" :key="skill" class="flex items-center gap-2 px-4 py-2 bg-background-card border border-border/10 rounded-full text-sm">
               {{ skill }}
               <button type="button" @click="removeSkill(skill)" class="bg-transparent border-none text-foreground-muted cursor-pointer text-lg leading-none p-0 hover:text-foreground">&times;</button>
             </span>
@@ -281,7 +281,7 @@ onUnmounted(() => stickyObserver?.disconnect())
           </div>
         </section>
 
-        <section class="py-5 border-b border-border">
+        <section class="py-5 border-b border-border/10">
           <h2 class="font-display text-xl font-medium mb-2">Disponible pour</h2>
           <p class="text-foreground-muted text-sm mb-6">Qu'est-ce qui t'intéresse ?</p>
 
@@ -294,7 +294,7 @@ onUnmounted(() => stickyObserver?.disconnect())
                 'px-5 py-2.5 border rounded-full cursor-pointer text-sm transition-all w-full md:w-auto text-center',
                 form.openTo.includes(option.value)
                   ? 'bg-primary/10 border-primary/40 text-primary'
-                  : 'bg-transparent border-border/40 text-foreground-muted hover:border-border hover:text-foreground'
+                  : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
               ]"
               @click="toggleOpenTo(option.value)"
             >
@@ -314,13 +314,13 @@ onUnmounted(() => stickyObserver?.disconnect())
                   v-model="newTopic"
                   type="text"
                   placeholder="Vue.js, Women in Tech..."
-                  class="flex-1 px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
+                  class="flex-1 px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
                   @keydown.enter.prevent="addTopic"
                 />
                 <button type="button" @click="addTopic" class="px-6 py-3 bg-background-card border border-b-[3px] border-primary/20 border-b-primary/60 rounded-lg text-foreground cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">Ajouter</button>
               </div>
               <div class="flex flex-wrap gap-2">
-                <span v-for="topic in form.speakerTopics" :key="topic" class="flex items-center gap-2 px-4 py-2 bg-background-card border border-border rounded-full text-sm">
+                <span v-for="topic in form.speakerTopics" :key="topic" class="flex items-center gap-2 px-4 py-2 bg-background-card border border-border/10 rounded-full text-sm">
                   {{ topic }}
                   <button type="button" @click="removeTopic(topic)" class="bg-transparent border-none text-foreground-muted cursor-pointer text-lg leading-none p-0 hover:text-foreground">&times;</button>
                 </span>
@@ -341,29 +341,29 @@ onUnmounted(() => stickyObserver?.disconnect())
           </div>
         </section>
 
-        <section class="py-5 border-b border-border">
+        <section class="py-5 border-b border-border/10">
           <h2 class="font-display text-xl font-medium mb-2">Liens</h2>
           <p class="text-foreground-muted text-sm mb-6">Où te trouver sur le web</p>
 
           <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
               <label for="linkedin" class="text-xs uppercase tracking-wide text-foreground-muted">LinkedIn *</label>
-              <input id="linkedin" v-model="form.linkedinUrl" type="url" placeholder="https://linkedin.com/in/..." required class="px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
+              <input id="linkedin" v-model="form.linkedinUrl" type="url" placeholder="https://linkedin.com/in/..." required class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
             </div>
 
             <div class="flex flex-col gap-2">
               <label for="website" class="text-xs uppercase tracking-wide text-foreground-muted">Site web / Portfolio</label>
-              <input id="website" v-model="form.website" type="url" placeholder="https://..." class="px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
+              <input id="website" v-model="form.website" type="url" placeholder="https://..." class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
             </div>
 
             <div class="flex flex-col gap-2">
               <label for="twitter" class="text-xs uppercase tracking-wide text-foreground-muted">Twitter / X</label>
-              <input id="twitter" v-model="form.twitterUrl" type="url" placeholder="https://twitter.com/..." class="px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
+              <input id="twitter" v-model="form.twitterUrl" type="url" placeholder="https://twitter.com/..." class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
             </div>
           </div>
         </section>
 
-        <section class="py-5 border-b border-border">
+        <section class="py-5 border-b border-border/10">
           <h2 class="font-display text-xl font-medium mb-4">Préférences</h2>
 
           <label class="flex items-start gap-3 cursor-pointer group">
