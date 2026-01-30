@@ -182,7 +182,7 @@ function formatDate(date: string) {
           <button
             @click="submitComment"
             :disabled="!newComment.trim() || isSending"
-            class="px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium transition-opacity disabled:opacity-50"
+            class="px-4 py-2 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-lg text-sm font-medium transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {{ isSending ? '...' : 'Envoyer' }}
           </button>

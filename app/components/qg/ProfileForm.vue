@@ -1,34 +1,9 @@
 <script setup lang="ts">
 import { openToOptions } from '~/utils/constants'
-
-interface Profile {
-  id: number
-  name: string
-  email: string | null
-  avatarUrl: string | null
-  bio: string | null
-  location: string | null
-  yearsExperience: number | null
-  website: string | null
-  githubUrl: string | null
-  linkedinUrl: string | null
-  twitterUrl: string | null
-  profileType: string | null
-  profilePhrase: string | null
-  skills: string[]
-  openTo: string[]
-  speakerProfile: {
-    topics: string[]
-    available: boolean | null
-    remoteOk: boolean | null
-    travelWilling: boolean | null
-  } | null
-  emailOptIn: boolean
-  emailOptInAsked: boolean
-}
+import type { QgProfile } from '~/types/qg'
 
 const props = defineProps<{
-  profile: Profile | null
+  profile: QgProfile | null
   sessionUserName?: string
 }>()
 
@@ -204,7 +179,7 @@ async function deleteProfile() {
               <p class="font-display text-2xl md:text-3xl font-medium tracking-tight mb-1">{{ profile?.profileType }}</p>
               <p class="text-foreground-muted text-sm leading-relaxed">{{ profile?.profilePhrase }}</p>
             </div>
-            <NuxtLink to="/experience" class="group/btn flex items-center gap-3 px-5 py-3 border border-border/50 rounded-full hover:border-foreground/30 hover:bg-white/[0.02] transition-all duration-300 shrink-0">
+            <NuxtLink to="/experience" class="group/btn flex items-center gap-3 px-5 py-3 border border-b-[3px] border-primary/20 border-b-primary/60 rounded-full transition-all duration-300 shrink-0 hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">
               <span class="text-sm text-foreground-muted group-hover/btn:text-foreground transition-colors">Refaire</span>
               <span class="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 group-hover/btn:bg-white/10 transition-colors">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-foreground-muted group-hover/btn:text-foreground transition-colors">
@@ -284,7 +259,7 @@ async function deleteProfile() {
               class="flex-1 px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
               @keydown.enter.prevent="addSkill"
             />
-            <button type="button" @click="addSkill" class="px-6 py-3 bg-background-card border border-border rounded-lg text-foreground cursor-pointer transition-all hover:bg-background-card-hover">Ajouter</button>
+            <button type="button" @click="addSkill" class="px-6 py-3 bg-background-card border border-b-[3px] border-primary/20 border-b-primary/60 rounded-lg text-foreground cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">Ajouter</button>
           </div>
 
           <div class="flex flex-wrap gap-2">
@@ -306,10 +281,10 @@ async function deleteProfile() {
               :key="option.value"
               type="button"
               :class="[
-                'px-6 py-3 border rounded-full cursor-pointer text-sm transition-all w-full md:w-auto text-center',
+                'px-5 py-2.5 border rounded-full cursor-pointer text-sm transition-all w-full md:w-auto text-center',
                 form.openTo.includes(option.value)
-                  ? 'bg-foreground border-foreground text-background'
-                  : 'bg-transparent border-border text-foreground-muted hover:border-foreground hover:text-foreground'
+                  ? 'bg-primary/10 border-primary/40 text-primary'
+                  : 'bg-transparent border-border/40 text-foreground-muted hover:border-border hover:text-foreground'
               ]"
               @click="toggleOpenTo(option.value)"
             >
@@ -332,7 +307,7 @@ async function deleteProfile() {
                   class="flex-1 px-4 py-3 bg-background-card border border-border rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
                   @keydown.enter.prevent="addTopic"
                 />
-                <button type="button" @click="addTopic" class="px-6 py-3 bg-background-card border border-border rounded-lg text-foreground cursor-pointer transition-all hover:bg-background-card-hover">Ajouter</button>
+                <button type="button" @click="addTopic" class="px-6 py-3 bg-background-card border border-b-[3px] border-primary/20 border-b-primary/60 rounded-lg text-foreground cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">Ajouter</button>
               </div>
               <div class="flex flex-wrap gap-2">
                 <span v-for="topic in form.speakerTopics" :key="topic" class="flex items-center gap-2 px-4 py-2 bg-background-card border border-border rounded-full text-sm">
@@ -419,7 +394,7 @@ async function deleteProfile() {
         </section>
 
         <div class="flex justify-end gap-4 pt-8">
-          <button type="submit" :disabled="saving || (isNewProfile && !form.cocAccepted)" class="px-8 py-4 bg-foreground border-none rounded-full text-background text-sm font-medium cursor-pointer transition-all hover:bg-foreground-muted disabled:opacity-50 disabled:cursor-not-allowed">
+          <button type="submit" :disabled="saving || (isNewProfile && !form.cocAccepted)" class="px-8 py-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 rounded-full text-background text-sm font-medium cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed">
             {{ saving ? 'Enregistrement...' : 'Enregistrer' }}
           </button>
         </div>

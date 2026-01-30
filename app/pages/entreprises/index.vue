@@ -120,7 +120,7 @@ function openReviewModal(company: any) {
           </div>
         </div>
 
-        <button v-if="status === 'authenticated'" @click="showAddModal = true" class="px-6 py-3 bg-foreground text-background border-none rounded-lg text-sm font-medium cursor-pointer transition-opacity hover:opacity-80">
+        <button v-if="status === 'authenticated'" @click="showAddModal = true" class="px-6 py-3 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-lg text-sm font-medium cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none">
           Ajouter une entreprise
         </button>
       </div>
@@ -210,10 +210,10 @@ function openReviewModal(company: any) {
           </div>
 
           <div class="flex gap-3">
-            <a v-if="company.website" :href="company.website" target="_blank" class="flex-1 py-3 px-4 bg-transparent border border-border rounded-lg text-sm text-foreground text-center no-underline transition-colors hover:border-foreground">
+            <a v-if="company.website" :href="company.website" target="_blank" class="flex-1 py-3 px-4 bg-transparent border border-b-[3px] border-border border-b-border rounded-lg text-sm text-foreground text-center no-underline transition-all hover:border-foreground hover:-translate-y-0.5 active:translate-y-px active:border-b">
               Site web
             </a>
-            <button v-if="status === 'authenticated'" @click="openReviewModal(company)" class="flex-1 py-3 px-4 bg-foreground text-background border-none rounded-lg text-sm cursor-pointer transition-opacity hover:opacity-80">
+            <button v-if="status === 'authenticated'" @click="openReviewModal(company)" class="flex-1 py-3 px-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-lg text-sm cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none">
               Donner un avis
             </button>
           </div>
@@ -246,8 +246,8 @@ function openReviewModal(company: any) {
         </div>
 
         <div class="flex gap-4 mt-8">
-          <button @click="showAddModal = false" class="flex-1 py-3 px-6 bg-transparent border border-border rounded-lg text-foreground cursor-pointer transition-colors hover:border-foreground">Annuler</button>
-          <button @click="addCompany" class="flex-1 py-3 px-6 bg-foreground text-background border-none rounded-lg cursor-pointer transition-opacity hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed" :disabled="!newCompany.name">Ajouter</button>
+          <button @click="showAddModal = false" class="flex-1 py-3 px-6 bg-transparent border border-b-[3px] border-border border-b-border rounded-lg text-foreground cursor-pointer transition-all hover:border-foreground hover:-translate-y-0.5 active:translate-y-px active:border-b">Annuler</button>
+          <button @click="addCompany" class="flex-1 py-3 px-6 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-lg cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed" :disabled="!newCompany.name">Ajouter</button>
         </div>
       </div>
     </div>
@@ -296,8 +296,8 @@ function openReviewModal(company: any) {
         </div>
 
         <div class="flex gap-4 mt-8">
-          <button @click="showReviewModal = false" class="flex-1 py-3 px-6 bg-transparent border border-border rounded-lg text-foreground cursor-pointer transition-colors hover:border-foreground">Annuler</button>
-          <button @click="submitReview" class="flex-1 py-3 px-6 bg-foreground text-background border-none rounded-lg cursor-pointer transition-opacity hover:opacity-80">Envoyer</button>
+          <button @click="showReviewModal = false" class="flex-1 py-3 px-6 bg-transparent border border-b-[3px] border-border border-b-border rounded-lg text-foreground cursor-pointer transition-all hover:border-foreground hover:-translate-y-0.5 active:translate-y-px active:border-b">Annuler</button>
+          <button @click="submitReview" class="flex-1 py-3 px-6 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-lg cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none">Envoyer</button>
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@ function formatDate(date: string) {
       <div
         v-for="offer in communityOffers"
         :key="offer.id"
-        class="p-4 border border-border/20 rounded-xl transition-colors hover:border-border/40"
+        class="p-4 border border-border/20 rounded-xl transition-colors hover:border-primary/20"
       >
         <div class="flex items-start justify-between gap-3">
           <div class="min-w-0 flex-1">

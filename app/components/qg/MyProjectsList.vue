@@ -42,9 +42,9 @@ async function markAsCompleted(projectId: number, e: Event) {
   <div class="mb-10">
     <div class="flex items-center justify-between mb-5">
       <h3 class="text-sm font-medium text-foreground-muted uppercase tracking-wide">Side projects</h3>
-      <span v-if="activeProjects.length > 0" class="flex items-center gap-2 px-2.5 py-1 bg-green-500/10 rounded-full">
+      <span v-if="activeProjects.length > 0" class="flex items-center gap-2 px-2.5 py-1 bg-foreground/[0.08] rounded-full">
         <span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>
-        <span class="text-xs text-green-400">{{ activeProjects.length }} actif{{ activeProjects.length > 1 ? 's' : '' }}</span>
+        <span class="text-xs text-foreground-muted">{{ activeProjects.length }} actif{{ activeProjects.length > 1 ? 's' : '' }}</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@ async function markAsCompleted(projectId: number, e: Event) {
         v-for="project in activeProjects"
         :key="project.id"
         :to="`/qg/projects/${project.id}`"
-        class="flex items-center gap-4 p-4 border border-border/30 rounded-xl hover:border-border/60 hover:bg-white/[0.02] transition-all group"
+        class="flex items-center gap-4 p-4 border border-border/30 rounded-xl hover:border-primary/20 hover:bg-white/[0.02] transition-all group"
       >
         <span :class="['px-2 py-0.5 rounded text-xs shrink-0', statusColors[project.status]]">
           {{ statusLabels[project.status] }}
@@ -76,7 +76,7 @@ async function markAsCompleted(projectId: number, e: Event) {
           </div>
           <span
             v-if="project.commentsCount > 0"
-            class="flex items-center gap-1 text-xs text-foreground-muted ml-auto"
+            class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-sky-500/10 rounded-full text-xs text-sky-400 mt-1.5"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />

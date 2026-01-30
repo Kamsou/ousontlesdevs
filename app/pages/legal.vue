@@ -21,7 +21,7 @@ useSeoMeta({
         </p>
         <ul class="mt-4 space-y-2 text-foreground-muted">
           <li>Camille Coutens</li>
-          <li>Email : <a href="mailto:contact@ousontlesdeveloppeuses.fr" class="text-foreground underline hover:text-primary">contact@ousontlesdeveloppeuses.fr</a></li>
+          <li>Email : <a href="mailto:contact@ousontlesdeveloppeuses.fr" class="text-foreground underline hover:text-foreground-muted">contact@ousontlesdeveloppeuses.fr</a></li>
         </ul>
       </section>
 
@@ -33,14 +33,14 @@ useSeoMeta({
         <ul class="mt-4 space-y-2 text-foreground-muted">
           <li>Netlify, Inc.</li>
           <li>44 Montgomery Street, Suite 300, San Francisco, CA 94104, USA</li>
-          <li>Site : <a href="https://www.netlify.com" target="_blank" rel="noopener" class="text-foreground underline hover:text-primary">netlify.com</a></li>
+          <li>Site : <a href="https://www.netlify.com" target="_blank" rel="noopener" class="text-foreground underline hover:text-foreground-muted">netlify.com</a></li>
         </ul>
       </section>
 
       <section>
         <h2 class="font-display text-2xl font-medium mb-6">Propriété intellectuelle</h2>
         <p class="text-foreground-muted leading-relaxed">
-          Le code source de ce site est open source et disponible sur <a href="https://github.com/Kamsou/ousontlesdevs" target="_blank" rel="noopener" class="text-foreground underline hover:text-primary">GitHub</a>.
+          Le code source de ce site est open source et disponible sur <a href="https://github.com/Kamsou/ousontlesdevs" target="_blank" rel="noopener" class="text-foreground underline hover:text-foreground-muted">GitHub</a>.
         </p>
         <p class="text-foreground-muted leading-relaxed mt-4">
           Les contenus publiés par les utilisatrices (profils, descriptions, etc.) restent leur propriété.
@@ -60,7 +60,7 @@ useSeoMeta({
           Ces données sont utilisées uniquement pour le fonctionnement de la plateforme et ne sont pas transmises à des tiers.
         </p>
         <p class="text-foreground-muted leading-relaxed mt-4">
-          Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ces droits, contactez-nous à <a href="mailto:contact@ousontlesdeveloppeuses.fr" class="text-foreground underline hover:text-primary">contact@ousontlesdeveloppeuses.fr</a>.
+          Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ces droits, contactez-nous à <a href="mailto:contact@ousontlesdeveloppeuses.fr" class="text-foreground underline hover:text-foreground-muted">contact@ousontlesdeveloppeuses.fr</a>.
         </p>
       </section>
 

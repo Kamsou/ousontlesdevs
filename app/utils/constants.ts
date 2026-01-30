@@ -9,3 +9,7 @@ export const openToOptions = [
 ] as const
 
 export type OpenToValue = typeof openToOptions[number]['value']
+
+export const openToLabels: Record<string, string> = Object.fromEntries(
+  openToOptions.map(o => [o.value, o.label])
+)

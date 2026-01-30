@@ -80,7 +80,7 @@ onMounted(() => {
       <div
         v-for="request in feedData.requests"
         :key="request.id"
-        class="p-4 border border-border/20 rounded-xl hover:border-border/40 transition-colors"
+        class="p-4 border border-border/20 rounded-xl hover:border-primary/20 transition-colors"
       >
         <div class="flex items-center justify-between gap-3 mb-3">
           <NuxtLink

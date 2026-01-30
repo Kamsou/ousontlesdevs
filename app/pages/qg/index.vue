@@ -1,46 +1,6 @@
 <script setup lang="ts">
 import { useAuth } from '#imports'
-
-interface Profile {
-  id: number
-  name: string
-  email: string | null
-  avatarUrl: string | null
-  bio: string | null
-  location: string | null
-  yearsExperience: number | null
-  website: string | null
-  githubUrl: string | null
-  linkedinUrl: string | null
-  twitterUrl: string | null
-  profileType: string | null
-  profilePhrase: string | null
-  skills: string[]
-  openTo: string[]
-  speakerProfile: {
-    topics: string[]
-    available: boolean | null
-    remoteOk: boolean | null
-    travelWilling: boolean | null
-  } | null
-  emailOptIn: boolean
-  emailOptInAsked: boolean
-}
-
-interface Activity {
-  isNew: boolean
-  weeklyContactsReceived?: number
-  weeklyContactsSent?: number
-  recentExchanges?: { type: 'sent' | 'received'; name: string; avatarUrl?: string; helpRequestTitle?: string }[]
-  totalHelpGiven?: number
-  profileComplete?: boolean
-  missingFields?: string[]
-  memberSince?: string
-  communityNewMembers?: number
-  communityHelpRequests?: number
-  communityNewProjects?: number
-  unreadComments?: { type: 'project' | 'request'; id: number; title: string; count: number }[]
-}
+import type { QgProfile, QgActivity, HelpRequest, Offer } from '~/types/qg'
 
 definePageMeta({
   middleware: 'sidebase-auth'
@@ -71,29 +31,29 @@ watch(activeTab, (tab) => {
   router.replace({ query: tab === 'entraide' ? {} : { tab } })
 })
 
-const { data: requests, status: requestsStatus, refresh: refreshRequests } = useLazyFetch('/api/help-requests')
+const { data: requests, status: requestsStatus, refresh: refreshRequests } = useLazyFetch<HelpRequest[]>('/api/help-requests')
 const isLoadingRequests = computed(() => requestsStatus.value === 'pending')
 
-const { data: activity, status: activityStatus, refresh: refreshActivity } = useLazyFetch<Activity>('/api/qg/activity')
+const { data: activity, status: activityStatus, refresh: refreshActivity } = useLazyFetch<QgActivity>('/api/qg/activity')
 const isLoadingActivity = computed(() => activityStatus.value === 'pending')
 
 const openRequests = computed(() =>
-  requests.value?.filter((r: any) => r.status === 'open') || []
+  requests.value?.filter(r => r.status === 'open') || []
 )
 const closedRequests = computed(() =>
-  requests.value?.filter((r: any) => r.status === 'closed') || []
+  requests.value?.filter(r => r.status === 'closed') || []
 )
 
 const { data: myProjects, status: projectsStatus, refresh: refreshProjects } = useLazyFetch<any[]>('/api/side-projects/mine')
 const isLoadingProjects = computed(() => projectsStatus.value === 'pending')
 
-const { data: offers, status: offersStatus, refresh: refreshOffers } = useLazyFetch<any[]>('/api/offers')
+const { data: offers, status: offersStatus, refresh: refreshOffers } = useLazyFetch<Offer[]>('/api/offers')
 const isLoadingOffers = computed(() => offersStatus.value === 'pending')
 
-const { data: profile, refresh: refreshProfile } = await useFetch<Profile | null>('/api/developers/me')
+const { data: profile, refresh: refreshProfile } = await useFetch<QgProfile | null>('/api/developers/me')
 
 const myOffers = computed(() =>
-  offers.value?.filter((o: any) => o.developer?.id === profile.value?.id) || []
+  offers.value?.filter(o => o.developer?.id === profile.value?.id) || []
 )
 const isNewProfile = computed(() => !profile.value)
 
@@ -167,15 +127,22 @@ async function handleMarkProjectCompleted(projectId: number) {
           </svg>
           Retour
         </NuxtLink>
-        <h1 class="font-display text-sm font-semibold tracking-widest text-foreground-muted m-0">MON QG</h1>
+        <h1 class="font-display text-sm font-semibold tracking-widest text-primary m-0">MON QG</h1>
         <img v-if="session?.user?.image" :src="session.user.image" :alt="session.user.name || ''" class="w-8 h-8 rounded-full border border-border" />
         <span v-else class="w-8 h-8 rounded-full bg-border/50"></span>
       </div>
     </header>
 
     <div class="max-w-3xl mx-auto px-6 pt-4 md:pt-8">
+      <div v-if="isLoadingActivity" class="mb-4 md:mb-6">
+        <div class="h-4 w-28 bg-border/20 rounded animate-pulse mb-3"></div>
+        <div class="flex flex-wrap gap-2">
+          <div class="h-8 w-32 bg-border/20 rounded-full animate-pulse"></div>
+          <div class="h-8 w-44 bg-border/20 rounded-full animate-pulse"></div>
+        </div>
+      </div>
       <QgWeeklyActivity
-        v-if="!isLoadingActivity && activity && !activity.isNew"
+        v-else-if="activity && !activity.isNew"
         :activity="activity"
         class="mb-4 md:mb-6"
         @go-to-profile="activeTab = 'profil'"
@@ -194,7 +161,7 @@ async function handleMarkProjectCompleted(projectId: number) {
           ]"
         >
           Entraide
-          <span v-if="activeTab === 'entraide'" class="absolute bottom-0 left-0 right-0 h-px bg-foreground"></span>
+          <span v-if="activeTab === 'entraide'" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
         </button>
         <button
           @click="activeTab = 'offres'"
@@ -206,7 +173,7 @@ async function handleMarkProjectCompleted(projectId: number) {
           ]"
         >
           Offres
-          <span v-if="activeTab === 'offres'" class="absolute bottom-0 left-0 right-0 h-px bg-foreground"></span>
+          <span v-if="activeTab === 'offres'" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
         </button>
         <button
           @click="activeTab = 'profil'"
@@ -218,7 +185,7 @@ async function handleMarkProjectCompleted(projectId: number) {
           ]"
         >
           Profil
-          <span v-if="activeTab === 'profil'" class="absolute bottom-0 left-0 right-0 h-px bg-foreground"></span>
+          <span v-if="activeTab === 'profil'" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
         </button>
       </div>
     </nav>
@@ -229,7 +196,7 @@ async function handleMarkProjectCompleted(projectId: number) {
           @click="activeTab = 'entraide'"
           :class="[
             'flex flex-col items-center gap-1 pt-2.5 pb-2 px-4 text-[11px] font-medium transition-colors',
-            activeTab === 'entraide' ? 'text-foreground' : 'text-foreground-muted'
+            activeTab === 'entraide' ? 'text-primary' : 'text-foreground-muted'
           ]"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" :stroke="activeTab === 'entraide' ? 'currentColor' : 'currentColor'" stroke-width="1.5">
@@ -241,7 +208,7 @@ async function handleMarkProjectCompleted(projectId: number) {
           @click="activeTab = 'offres'"
           :class="[
             'flex flex-col items-center gap-1 pt-2.5 pb-2 px-4 text-[11px] font-medium transition-colors',
-            activeTab === 'offres' ? 'text-foreground' : 'text-foreground-muted'
+            activeTab === 'offres' ? 'text-primary' : 'text-foreground-muted'
           ]"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -253,7 +220,7 @@ async function handleMarkProjectCompleted(projectId: number) {
           @click="activeTab = 'profil'"
           :class="[
             'flex flex-col items-center gap-1 pt-2.5 pb-2 px-4 text-[11px] font-medium transition-colors',
-            activeTab === 'profil' ? 'text-foreground' : 'text-foreground-muted'
+            activeTab === 'profil' ? 'text-primary' : 'text-foreground-muted'
           ]"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -265,8 +232,8 @@ async function handleMarkProjectCompleted(projectId: number) {
     </nav>
 
     <div class="max-w-3xl mx-auto px-6 py-4 md:py-8 pb-24 md:pb-8">
-      <div v-if="activeTab === 'entraide'">
-        <div v-if="!isLoadingActivity && activity?.profileComplete === false" class="mb-6 md:mb-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl">
+      <div v-if="activeTab === 'entraide'" class="space-y-10 md:space-y-14">
+        <div v-if="!isLoadingActivity && activity?.profileComplete === false" class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl">
           <div class="flex items-start gap-3">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-400 shrink-0 mt-0.5">
               <circle cx="12" cy="12" r="10" />
@@ -288,13 +255,13 @@ async function handleMarkProjectCompleted(projectId: number) {
           </div>
         </div>
 
-        <section class="mb-8 md:mb-16">
+        <section>
           <NuxtLink
             v-if="activity?.profileComplete !== false"
             to="/qg/ask"
-            class="group block p-5 md:p-8 border border-border/30 rounded-2xl transition-all hover:border-primary/30 hover:bg-primary/[0.02]"
+            class="group block p-5 md:p-8 border border-b-[3px] border-primary/20 border-b-primary/60 rounded-2xl transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none"
           >
-            <div class="flex items-start justify-between gap-4">
+            <div class="flex items-center justify-between gap-4">
               <div>
                 <h2 class="text-xl md:text-2xl font-display font-medium mb-2">
                   Besoin d'un coup de main ?
@@ -332,21 +299,21 @@ async function handleMarkProjectCompleted(projectId: number) {
           </div>
         </section>
 
+        <QgFeed />
+
         <QgRequestsList
           :open-requests="openRequests"
           :closed-requests="closedRequests"
           :is-loading="isLoadingRequests"
           @mark-resolved="handleMarkResolved"
         />
-
-        <QgFeed />
       </div>
 
       <div v-else-if="activeTab === 'offres'">
         <div v-if="activity?.profileComplete !== false" class="flex flex-col sm:flex-row gap-3 mb-8 md:mb-12">
           <NuxtLink
             to="/qg/new-offer"
-            class="group flex-1 block p-5 border border-border/30 rounded-2xl transition-all hover:border-primary/30 hover:bg-primary/[0.02] no-underline"
+            class="group flex-1 block p-5 border border-b-[3px] border-primary/20 border-b-primary/60 rounded-2xl transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none no-underline"
           >
             <div class="flex items-center gap-3">
               <span class="w-9 h-9 flex items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors shrink-0">
@@ -362,11 +329,11 @@ async function handleMarkProjectCompleted(projectId: number) {
           </NuxtLink>
           <NuxtLink
             to="/qg/new-project"
-            class="group flex-1 block p-5 border border-border/30 rounded-2xl transition-all hover:border-green-500/30 hover:bg-green-500/[0.02] no-underline"
+            class="group flex-1 block p-5 border border-b-[3px] border-primary/20 border-b-primary/60 rounded-2xl transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none no-underline"
           >
             <div class="flex items-center gap-3">
-              <span class="w-9 h-9 flex items-center justify-center rounded-full bg-green-500/10 group-hover:bg-green-500/20 transition-colors shrink-0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400">
+              <span class="w-9 h-9 flex items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors shrink-0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
                   <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
                 </svg>
               </span>
@@ -419,16 +386,3 @@ async function handleMarkProjectCompleted(projectId: number) {
     </div>
   </div>
 </template>
-
-<style scoped>
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.2s ease;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-</style>

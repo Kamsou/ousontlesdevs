@@ -172,8 +172,8 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
             :class="[
               'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all',
               filters.openTo.includes(option.value)
-                ? 'bg-foreground border-foreground text-background'
-                : 'bg-transparent border-border text-foreground-muted hover:border-foreground hover:text-foreground'
+                ? 'bg-foreground/10 border-foreground/30 text-foreground'
+                : 'bg-transparent border-border/40 text-foreground-muted hover:border-border hover:text-foreground'
             ]"
             @click="toggleOpenTo(option.value)"
           >
@@ -237,7 +237,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
         <button
           @click="loadMore"
           :disabled="isLoadingMore"
-          class="px-8 py-3 border border-border rounded-full text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+          class="px-8 py-3 border border-b-[3px] border-border border-b-border rounded-full text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground hover:-translate-y-0.5 active:translate-y-px active:border-b disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span v-if="isLoadingMore" class="flex items-center gap-2">
             <span class="w-4 h-4 border-2 border-foreground-muted border-t-transparent rounded-full animate-spin"></span>

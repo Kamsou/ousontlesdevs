@@ -177,26 +177,24 @@ watch(() => filters.travel, () => { updateUrl(); trackSearch() })
 
           <p v-if="speaker.bio" class="text-sm text-foreground-muted leading-relaxed line-clamp-2">{{ speaker.bio }}</p>
 
-          <div v-if="speaker.speakerProfile?.topics?.length" class="flex flex-col gap-2">
-            <span class="text-[0.7rem] uppercase tracking-widest text-foreground-muted">Sujets</span>
-            <div class="flex flex-wrap gap-2">
-              <span v-for="topic in speaker.speakerProfile.topics" :key="topic" class="px-4 py-2 bg-foreground text-background rounded-full text-sm font-medium">
-                {{ topic }}
-              </span>
-            </div>
-          </div>
-
-          <div class="flex gap-3">
-            <span v-if="speaker.speakerProfile?.remoteOk" class="px-3 py-1.5 bg-background-card border border-border rounded-full text-xs text-foreground-muted">Remote possible</span>
-            <span v-if="speaker.speakerProfile?.travelWilling" class="px-3 py-1.5 bg-background-card border border-border rounded-full text-xs text-foreground-muted">Se déplace</span>
-          </div>
-
-          <div v-if="speaker.skills?.length" class="flex flex-wrap gap-2 pt-3 border-t border-border">
-            <span v-for="skill in speaker.skills.slice(0, 4)" :key="skill" class="px-3 py-1 bg-background-card border border-border rounded-full text-xs text-foreground-muted">
-              {{ skill }}
+          <div v-if="speaker.speakerProfile?.topics?.length" class="flex flex-wrap items-center gap-2">
+            <span class="text-[0.65rem] uppercase tracking-widest text-foreground-muted mr-1">Sujets</span>
+            <span v-for="topic in speaker.speakerProfile.topics" :key="topic" class="px-3 py-1.5 bg-foreground/10 border border-foreground/20 rounded-full text-xs text-foreground">
+              {{ topic }}
             </span>
-            <span v-if="speaker.skills.length > 4" class="px-2 py-1 text-xs text-foreground-muted">
-              +{{ speaker.skills.length - 4 }}
+          </div>
+
+          <div class="flex items-center gap-4 text-xs text-foreground-muted">
+            <span v-if="speaker.speakerProfile?.remoteOk" class="flex items-center gap-1.5">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-foreground-muted/60"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              Remote
+            </span>
+            <span v-if="speaker.speakerProfile?.travelWilling" class="flex items-center gap-1.5">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-foreground-muted/60"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Se déplace
+            </span>
+            <span v-if="speaker.skills?.length" class="ml-auto text-foreground-muted/40">
+              {{ speaker.skills.slice(0, 3).join(' · ') }}<template v-if="speaker.skills.length > 3"> · +{{ speaker.skills.length - 3 }}</template>
             </span>
           </div>
         </NuxtLink>

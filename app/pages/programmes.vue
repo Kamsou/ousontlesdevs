@@ -65,10 +65,10 @@ const filteredPrograms = computed(() => {
         :key="cat.key"
         @click="activeCategory = cat.key"
         :class="[
-          'px-4 py-2 rounded-full text-sm font-medium transition-all',
+          'px-4 py-2 rounded-full text-sm font-medium transition-all border',
           activeCategory === cat.key
-            ? 'bg-foreground text-background'
-            : 'border border-border hover:border-foreground-muted'
+            ? 'bg-foreground/10 border-foreground/30 text-foreground'
+            : 'border-border text-foreground-muted hover:border-border hover:text-foreground'
         ]"
       >
         {{ cat.label }}
@@ -92,7 +92,7 @@ const filteredPrograms = computed(() => {
         rel="noopener noreferrer"
         :class="[
           'group p-6 border rounded-2xl transition-all hover:border-foreground-muted no-underline',
-          program.highlight ? 'border-primary/50 bg-primary/5' : 'border-border'
+          program.highlight ? 'border-foreground/30 bg-foreground/5' : 'border-border'
         ]"
       >
         <div class="flex items-start justify-between gap-4 mb-4">
@@ -121,7 +121,7 @@ const filteredPrograms = computed(() => {
       </p>
       <a
         href="mailto:contact@ousontlesdeveloppeuses.fr?subject=Suggestion de programme"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background rounded-full text-sm font-medium no-underline hover:bg-foreground-muted transition-colors"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full text-sm font-medium no-underline transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none"
       >
         <span>Proposer un programme</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { openToLabels } from '~/utils/constants'
+
 definePageMeta({
   middleware: 'sidebase-auth'
 })
@@ -36,16 +38,6 @@ const filteredDevelopers = computed(() => {
     d.skills?.some(s => s.toLowerCase().includes(query))
   )
 })
-
-const openToLabels: Record<string, string> = {
-  conference: 'Conférence',
-  mentoring: 'Mentoring',
-  freelance: 'Freelance',
-  cdi: 'CDI',
-  coffee_chat: 'Coffee chat',
-  pair_programming: 'Pair programming',
-  cv_review: 'Relecture CV'
-}
 
 const unverifiedOffers = computed(() =>
   pendingOffers.value?.filter((o: any) => !o.verified) || []

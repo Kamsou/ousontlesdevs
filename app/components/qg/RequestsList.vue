@@ -55,7 +55,7 @@ async function markAsResolved(requestId: number, e: Event) {
         v-for="request in openRequests"
         :key="request.id"
         :to="`/qg/requests/${request.id}`"
-        class="flex items-center gap-4 p-4 border border-border/30 rounded-xl hover:border-border/60 hover:bg-white/[0.02] transition-all group"
+        class="flex items-center gap-4 p-4 border border-border/30 rounded-xl hover:border-primary/20 hover:bg-white/[0.02] transition-all group"
       >
         <span class="w-2 h-2 bg-amber-400 rounded-full shrink-0"></span>
         <div class="min-w-0 flex-1">

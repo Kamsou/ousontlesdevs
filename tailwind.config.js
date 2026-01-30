@@ -5,8 +5,8 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#8b5cf6',
-          dark: '#7c3aed'
+          DEFAULT: '#3B82F6',
+          dark: '#2563EB'
         },
         secondary: '#06b6d4',
         accent: '#22d3ee',
@@ -28,6 +28,9 @@ export default {
       borderRadius: {
         DEFAULT: '16px',
         sm: '8px'
+      },
+      boxShadow: {
+        glow: '0 0 20px rgba(59, 130, 246, 0.1)',
       }
     }
   },

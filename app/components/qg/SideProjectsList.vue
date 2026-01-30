@@ -48,7 +48,7 @@ const isLoading = computed(() => status.value === 'pending')
         v-for="project in projects"
         :key="project.id"
         :to="`/qg/projects/${project.id}`"
-        class="block p-4 border border-border/20 rounded-xl hover:border-border/40 transition-colors"
+        class="block p-4 border border-border/20 rounded-xl hover:border-primary/20 transition-colors"
       >
         <div class="flex items-center justify-between gap-3 mb-3">
           <div class="flex items-center gap-3 min-w-0">
@@ -87,7 +87,7 @@ const isLoading = computed(() => status.value === 'pending')
           <div class="flex items-center gap-3 shrink-0">
             <span
               v-if="project.commentsCount > 0"
-              class="flex items-center gap-1 text-xs text-foreground-muted/60"
+              class="flex items-center gap-1.5 px-2 py-0.5 bg-sky-500/10 rounded-full text-xs text-sky-400"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />

@@ -21,19 +21,11 @@ interface Developer {
   } | null
 }
 
+import { openToLabels } from '~/utils/constants'
+
 const { $clientPosthog } = useNuxtApp()
 const route = useRoute()
 const slug = route.params.slug as string
-
-const openToLabels: Record<string, string> = {
-  conference: 'Conférence',
-  mentoring: 'Mentoring',
-  freelance: 'Freelance',
-  cdi: 'CDI',
-  coffee_chat: 'Coffee chat',
-  pair_programming: 'Pair programming',
-  cv_review: 'Relecture CV'
-}
 
 const { data: developer, error } = await useFetch<Developer>(`/api/developers/${slug}`)
 
@@ -187,7 +179,7 @@ onMounted(() => {
       <section v-if="developer.openTo?.length" class="py-8 border-b border-border">
         <h2 class="font-display text-sm font-medium uppercase tracking-widest text-foreground-muted mb-4">Disponible pour</h2>
         <div class="flex flex-wrap gap-3">
-          <span v-for="tag in developer.openTo" :key="tag" class="px-6 py-3 bg-foreground text-background rounded-full text-sm font-medium">
+          <span v-for="tag in developer.openTo" :key="tag" class="px-5 py-2.5 bg-foreground/10 border border-foreground/20 text-foreground rounded-full text-sm">
             {{ openToLabels[tag] || tag }}
           </span>
         </div>

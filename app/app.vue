@@ -9,6 +9,13 @@ const { data: isAdmin, refresh: refreshAdmin } = useFetch('/api/admin/check', {
   default: () => false
 })
 
+const { data: profile, refresh: refreshProfile } = useLazyFetch<{ name: string } | null>('/api/developers/me', {
+  immediate: false,
+  default: () => null
+})
+
+const displayName = computed(() => profile.value?.name || data.value?.user?.name)
+
 const menuOpen = ref(false)
 const userMenuOpen = ref(false)
 const resourcesMenuOpen = ref(false)
@@ -31,6 +38,7 @@ function handleSignIn(source: string) {
 watch(() => status.value, (newStatus, oldStatus) => {
   if (newStatus === 'authenticated') {
     refreshAdmin()
+    refreshProfile()
     const user = data.value?.user
     $clientPosthog?.identify((user as any)?.id, { name: user?.name, email: user?.email })
 
@@ -121,7 +129,7 @@ onUnmounted(() => {
             <div class="w-10 h-10 bg-background-card rounded-full opacity-50"></div>
           </template>
           <template v-else-if="status !== 'authenticated'">
-            <button @click="handleSignIn('header')" class="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-sm text-sm font-medium cursor-pointer transition-all border-none bg-foreground text-background hover:bg-foreground-muted">
+            <button @click="handleSignIn('header')" class="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-sm text-sm font-medium cursor-pointer transition-all bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none">
               <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
               </svg>
@@ -138,7 +146,7 @@ onUnmounted(() => {
               </button>
               <div v-if="userMenuOpen" class="absolute right-0 top-full mt-2 w-48 py-2 bg-background border border-border rounded-lg shadow-xl">
                 <div class="px-4 py-2 border-b border-border">
-                  <p class="font-medium text-sm text-foreground truncate">{{ data?.user?.name }}</p>
+                  <p class="font-medium text-sm text-foreground truncate">{{ displayName }}</p>
                 </div>
                 <NuxtLink to="/qg" class="flex items-center gap-2 px-4 py-2 text-sm text-foreground-muted no-underline hover:bg-border/30 hover:text-foreground transition-colors">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -180,46 +188,50 @@ onUnmounted(() => {
       </div>
     </header>
 
-    <div v-if="menuOpen && !isQg" class="fixed inset-0 z-40 bg-background pt-20 px-6 lg:hidden">
-      <nav aria-label="Navigation mobile" class="flex flex-col gap-6 py-8">
-        <NuxtLink to="/annuaire" :class="['no-underline text-2xl font-medium', route.path.startsWith('/annuaire') || route.path.startsWith('/profil/') ? 'text-foreground' : 'text-foreground-muted']">Annuaire</NuxtLink>
-        <NuxtLink to="/speakers" :class="['no-underline text-2xl font-medium', route.path === '/speakers' ? 'text-foreground' : 'text-foreground-muted']">Speakeuses</NuxtLink>
-        <div class="flex flex-col gap-3">
-          <span :class="['text-2xl font-medium', ['/entreprises', '/programmes', '/podcasts'].includes(route.path) ? 'text-foreground' : 'text-foreground-muted']">Ressources</span>
-          <div class="flex flex-col gap-3 pl-4 border-l border-border">
-            <NuxtLink to="/entreprises" :class="['no-underline text-lg font-medium', route.path === '/entreprises' ? 'text-foreground' : 'text-foreground-muted']">Entreprises</NuxtLink>
-            <NuxtLink to="/programmes" :class="['no-underline text-lg font-medium', route.path === '/programmes' ? 'text-foreground' : 'text-foreground-muted']">Programmes</NuxtLink>
-            <NuxtLink to="/podcasts" :class="['no-underline text-lg font-medium', route.path === '/podcasts' ? 'text-foreground' : 'text-foreground-muted']">Podcasts</NuxtLink>
+    <div v-if="menuOpen && !isQg" class="fixed inset-0 z-40 bg-background pt-20 px-6 lg:hidden overflow-y-auto flex flex-col">
+      <nav aria-label="Navigation mobile" class="flex flex-col gap-1 py-6 flex-1">
+        <NuxtLink to="/annuaire" :class="['no-underline text-lg font-medium px-3 py-2.5 rounded-xl transition-colors', route.path.startsWith('/annuaire') || route.path.startsWith('/profil/') ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Annuaire</NuxtLink>
+        <NuxtLink to="/speakers" :class="['no-underline text-lg font-medium px-3 py-2.5 rounded-xl transition-colors', route.path === '/speakers' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Speakeuses</NuxtLink>
+        <div class="flex flex-col gap-0.5 mt-1">
+          <span :class="['text-lg font-medium px-3 py-2.5', ['/entreprises', '/programmes', '/podcasts'].includes(route.path) ? 'text-foreground' : 'text-foreground-muted']">Ressources</span>
+          <div class="flex flex-col gap-0.5 ml-3 pl-3 border-l border-border/30">
+            <NuxtLink to="/entreprises" :class="['no-underline text-base px-3 py-2 rounded-xl transition-colors', route.path === '/entreprises' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Entreprises</NuxtLink>
+            <NuxtLink to="/programmes" :class="['no-underline text-base px-3 py-2 rounded-xl transition-colors', route.path === '/programmes' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Programmes</NuxtLink>
+            <NuxtLink to="/podcasts" :class="['no-underline text-base px-3 py-2 rounded-xl transition-colors', route.path === '/podcasts' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Podcasts</NuxtLink>
           </div>
         </div>
-        <NuxtLink to="/experience" :class="['no-underline text-2xl font-medium inline-flex items-center gap-3', route.path === '/experience' ? 'text-primary' : 'text-foreground-muted']">
+        <NuxtLink to="/experience" :class="['no-underline text-lg font-medium px-3 py-2.5 rounded-xl transition-colors inline-flex items-center gap-2 mt-1', route.path === '/experience' ? 'text-primary bg-primary/5' : 'text-foreground-muted']">
           Quiz
-          <span class="text-xs px-2 py-0.5 rounded-full border border-primary text-primary">Fun</span>
+          <span class="text-[10px] px-1.5 py-0.5 rounded-full border border-primary/40 text-primary leading-none">Fun</span>
         </NuxtLink>
-        <a href="https://github.com/Kamsou/ousontlesdevs" target="_blank" rel="noopener noreferrer" class="text-foreground-muted no-underline text-2xl font-medium inline-flex items-center gap-3">
-          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+        <a href="https://github.com/Kamsou/ousontlesdevs" target="_blank" rel="noopener noreferrer" class="text-foreground-muted no-underline text-lg font-medium px-3 py-2.5 rounded-xl inline-flex items-center gap-2.5">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
           </svg>
           Contribuer
         </a>
       </nav>
-      <div class="pt-6 border-t border-border">
+
+      <div class="py-6 border-t border-border/20">
         <template v-if="status !== 'authenticated'">
-          <button @click="handleSignIn('mobile_menu')" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-base font-medium cursor-pointer transition-all border-none bg-foreground text-background hover:bg-foreground-muted">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <button @click="handleSignIn('mobile_menu')" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-sm font-medium cursor-pointer transition-all bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none">
+            <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
             </svg>
             Connexion GitHub
           </button>
         </template>
         <template v-else>
-          <div class="flex flex-col gap-4">
-            <NuxtLink to="/qg" class="flex items-center gap-3 no-underline text-foreground">
+          <div class="flex flex-col gap-3">
+            <NuxtLink to="/qg" class="flex items-center gap-3 no-underline text-foreground px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors">
               <img :src="data?.user?.image || ''" :alt="data?.user?.name || ''" class="w-10 h-10 rounded-full border-2 border-primary" />
-              <span class="font-medium">Mon QG</span>
+              <div class="flex flex-col min-w-0">
+                <span class="font-medium text-sm truncate">{{ displayName }}</span>
+                <span class="text-xs text-foreground-muted">Mon QG</span>
+              </div>
             </NuxtLink>
-            <NuxtLink v-if="isAdmin" to="/admin" class="text-primary no-underline text-xl font-medium">Admin</NuxtLink>
-            <button @click="signOut()" class="inline-flex items-center justify-center px-6 py-3 rounded-lg text-base font-medium cursor-pointer transition-all bg-transparent text-foreground-muted border border-border hover:bg-background-card hover:text-foreground">Déconnexion</button>
+            <NuxtLink v-if="isAdmin" to="/admin" class="text-primary no-underline text-sm font-medium px-3 py-2 rounded-xl hover:bg-primary/5 transition-colors">Admin</NuxtLink>
+            <button @click="signOut()" class="w-full inline-flex items-center justify-center px-6 py-3 rounded-full text-sm cursor-pointer transition-all border border-b-[3px] border-primary/20 border-b-primary/60 bg-transparent text-foreground-muted hover:text-foreground hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">Déconnexion</button>
           </div>
         </template>
       </div>

@@ -1,25 +1,8 @@
 <script setup lang="ts">
-interface UnreadComment {
-  type: 'project' | 'request'
-  id: number
-  title: string
-  count: number
-}
-
-interface Activity {
-  isNew: boolean
-  weeklyContactsReceived?: number
-  weeklyContactsSent?: number
-  unreadComments?: UnreadComment[]
-  totalHelpGiven?: number
-  profileComplete?: boolean
-  communityNewMembers?: number
-  communityHelpRequests?: number
-  communityNewProjects?: number
-}
+import type { QgActivity } from '~/types/qg'
 
 defineProps<{
-  activity: Activity
+  activity: QgActivity
 }>()
 
 const emit = defineEmits<{
@@ -31,8 +14,8 @@ const emit = defineEmits<{
   <section>
     <h2 class="text-sm font-medium text-foreground-muted mb-3">Cette semaine</h2>
     <div class="flex flex-wrap gap-2">
-      <div v-if="activity.weeklyContactsReceived && activity.weeklyContactsReceived > 0" class="flex items-center gap-2 px-3 py-1.5 bg-primary/5 border border-primary/10 rounded-full">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+      <div v-if="activity.weeklyContactsReceived && activity.weeklyContactsReceived > 0" class="flex items-center gap-2 px-3 py-1.5 bg-sky-500/5 border border-sky-500/10 rounded-full">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-sky-400">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
         <span class="text-xs text-foreground">
@@ -41,8 +24,8 @@ const emit = defineEmits<{
         </span>
       </div>
 
-      <div v-if="activity.weeklyContactsSent && activity.weeklyContactsSent > 0" class="flex items-center gap-2 px-3 py-1.5 bg-green-500/5 border border-green-500/10 rounded-full">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400">
+      <div v-if="activity.weeklyContactsSent && activity.weeklyContactsSent > 0" class="flex items-center gap-2 px-3 py-1.5 bg-sky-500/5 border border-sky-500/10 rounded-full">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-sky-400">
           <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
         </svg>
         <span class="text-xs text-foreground">
@@ -55,9 +38,9 @@ const emit = defineEmits<{
         v-for="comment in activity.unreadComments"
         :key="`${comment.type}-${comment.id}`"
         :to="comment.type === 'project' ? `/qg/projects/${comment.id}` : `/qg/requests/${comment.id}`"
-        class="flex items-center gap-2 px-3 py-1.5 bg-primary/5 border border-primary/10 rounded-full no-underline hover:bg-primary/10 transition-colors"
+        class="flex items-center gap-2 px-3 py-1.5 bg-sky-500/5 border border-sky-500/10 rounded-full no-underline hover:bg-sky-500/10 transition-colors"
       >
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary shrink-0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-sky-400 shrink-0">
           <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
         </svg>
         <span class="text-xs text-foreground">

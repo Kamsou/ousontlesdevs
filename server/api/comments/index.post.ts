@@ -23,6 +23,10 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Contenu requis' })
   }
 
+  if (body.content.trim().length > 2000) {
+    throw createError({ statusCode: 400, message: 'Commentaire trop long (2000 caractères max)' })
+  }
+
   if (!body.helpRequestId && !body.sideProjectId) {
     throw createError({ statusCode: 400, message: 'helpRequestId ou sideProjectId requis' })
   }

@@ -42,9 +42,9 @@ async function deleteOffer(id: number, e: Event) {
   <div class="mb-10">
     <div class="flex items-center justify-between mb-5">
       <h3 class="text-sm font-medium text-foreground-muted uppercase tracking-wide">Offres</h3>
-      <span v-if="offers.length > 0" class="flex items-center gap-2 px-2.5 py-1 bg-primary/10 rounded-full">
-        <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
-        <span class="text-xs text-primary">{{ offers.length }} offre{{ offers.length > 1 ? 's' : '' }}</span>
+      <span v-if="offers.length > 0" class="flex items-center gap-2 px-2.5 py-1 bg-foreground/[0.08] rounded-full">
+        <span class="w-1.5 h-1.5 bg-foreground-muted rounded-full"></span>
+        <span class="text-xs text-foreground-muted">{{ offers.length }} offre{{ offers.length > 1 ? 's' : '' }}</span>
       </span>
     </div>
 
@@ -52,7 +52,7 @@ async function deleteOffer(id: number, e: Event) {
       <div
         v-for="offer in offers"
         :key="offer.id"
-        class="flex items-center gap-4 p-4 border border-border/30 rounded-xl hover:border-border/60 hover:bg-white/[0.02] transition-all group"
+        class="flex items-center gap-4 p-4 border border-border/30 rounded-xl hover:border-primary/20 hover:bg-white/[0.02] transition-all group"
       >
         <span
           class="px-2 py-0.5 text-xs font-medium border rounded-full shrink-0"

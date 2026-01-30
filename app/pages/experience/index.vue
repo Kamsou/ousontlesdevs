@@ -437,13 +437,13 @@ function restart() {
           <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up animation-delay-300">
             <button
               @click="handleSignUp"
-              class="px-8 py-4 bg-foreground text-background border-none text-base font-medium cursor-pointer transition-all hover:opacity-80"
+              class="px-8 py-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background text-base font-medium cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none"
             >
               {{ status === 'authenticated' ? 'Voir mon profil' : 'Créer mon compte (développeuse only)' }}
             </button>
             <button
               @click="shareProfile"
-              class="px-8 py-4 bg-transparent border border-border text-foreground text-base cursor-pointer transition-all hover:border-foreground"
+              class="px-8 py-4 bg-transparent border border-b-[3px] border-border border-b-border text-foreground text-base cursor-pointer transition-all hover:border-foreground hover:-translate-y-0.5 active:translate-y-px active:border-b"
             >
               Partager
             </button>

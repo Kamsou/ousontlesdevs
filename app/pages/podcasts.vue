@@ -55,7 +55,7 @@ const { data: podcasts, status } = await useFetch<Podcast[]>('/api/podcasts')
         rel="noopener noreferrer"
         :class="[
           'group p-6 border rounded-2xl transition-all hover:border-foreground-muted no-underline',
-          podcast.highlight ? 'border-primary/50 bg-primary/5' : 'border-border'
+          podcast.highlight ? 'border-foreground/30 bg-foreground/5' : 'border-border'
         ]"
       >
         <div v-if="podcast.imageUrl" class="mb-4 rounded-xl overflow-hidden">
@@ -66,7 +66,7 @@ const { data: podcasts, status } = await useFetch<Podcast[]>('/api/podcasts')
           />
         </div>
         <div class="flex items-start justify-between gap-4 mb-2">
-          <span class="px-2 py-0.5 text-[11px] font-medium border border-primary/30 text-primary rounded-full">
+          <span class="px-2 py-0.5 text-[11px] font-medium border border-foreground/20 text-foreground-muted rounded-full">
             {{ podcast.podcastName }}
           </span>
           <svg class="w-5 h-5 text-foreground-muted opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -94,7 +94,7 @@ const { data: podcasts, status } = await useFetch<Podcast[]>('/api/podcasts')
       </p>
       <a
         href="mailto:contact@ousontlesdeveloppeuses.fr?subject=Suggestion de podcast"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background rounded-full text-sm font-medium no-underline hover:bg-foreground-muted transition-colors"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full text-sm font-medium no-underline transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none"
       >
         <span>Proposer un podcast</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
