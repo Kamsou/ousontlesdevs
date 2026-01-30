@@ -19,6 +19,12 @@ export default defineEventHandler(async (event) => {
 
   let filtered = developers
 
+  // Shuffle pour une visibilité équitable
+  for (let i = filtered.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [filtered[i], filtered[j]] = [filtered[j], filtered[i]]
+  }
+
   if (query.location) {
     filtered = filtered.filter(d =>
       d.location?.toLowerCase().includes((query.location as string).toLowerCase())

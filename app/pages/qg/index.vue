@@ -25,7 +25,9 @@ const { data: requests, status: requestsStatus, refresh: refreshRequests } = use
 const { data: activity, status: activityStatus, refresh: refreshActivity } = useLazyFetch<QgActivity>('/api/qg/activity')
 const { data: myProjects, status: projectsStatus, refresh: refreshProjects } = useLazyFetch<any[]>('/api/side-projects/mine')
 const { data: offers, status: offersStatus, refresh: refreshOffers } = useLazyFetch<Offer[]>('/api/offers')
-const { data: profile, refresh: refreshProfile } = await useFetch<QgProfile | null>('/api/developers/me')
+const { data: profile, refresh: refreshProfile } = await useFetch<QgProfile | null>('/api/developers/me', {
+  default: () => null
+})
 type TabType = 'entraide' | 'offres' | 'profil'
 
 const activeTab = ref<TabType>(

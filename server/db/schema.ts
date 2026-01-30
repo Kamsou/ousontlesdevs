@@ -243,6 +243,7 @@ export const podcasts = sqliteTable('podcasts', {
   imageUrl: text('image_url'),
   highlight: integer('highlight', { mode: 'boolean' }).default(false),
   active: integer('active', { mode: 'boolean' }).default(true),
+  publishedAt: integer('published_at', { mode: 'timestamp' }),
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 })
 

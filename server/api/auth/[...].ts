@@ -25,10 +25,7 @@ export default NuxtAuthHandler({
       return session
     },
     redirect({ url, baseUrl }) {
-      if (url === baseUrl || url === `${baseUrl}/`) {
-        return `${baseUrl}/profil`
-      }
-      return url.startsWith(baseUrl) ? url : baseUrl
+      return `${baseUrl}/profil`
     }
   },
   providers: [

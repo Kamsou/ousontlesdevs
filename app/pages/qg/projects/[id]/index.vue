@@ -30,7 +30,9 @@ const toast = useToast()
 
 const projectUrl = `/api/side-projects/${projectId}`
 const { data: project, status: projectStatus, refresh } = await useFetch<SideProject>(projectUrl)
-const { data: currentUser } = useLazyFetch<{ id: number } | null>('/api/developers/me')
+const { data: currentUser } = useLazyFetch<{ id: number } | null>('/api/developers/me', {
+  default: () => null
+})
 
 const currentUserId = computed(() => currentUser.value?.id ?? null)
 const isOwner = computed(() => currentUserId.value === project.value?.developer.id)

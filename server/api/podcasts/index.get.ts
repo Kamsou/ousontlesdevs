@@ -5,7 +5,7 @@ export default defineEventHandler(async () => {
 
   const podcasts = await db.query.podcasts.findMany({
     where: eq(tables.podcasts.active, true),
-    orderBy: (podcasts, { desc }) => [desc(podcasts.highlight), desc(podcasts.createdAt)]
+    orderBy: (podcasts, { desc }) => [desc(podcasts.highlight), desc(podcasts.publishedAt)]
   })
 
   return podcasts

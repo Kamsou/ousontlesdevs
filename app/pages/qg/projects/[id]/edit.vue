@@ -24,7 +24,9 @@ const { data: project, status: projectStatus } = await useFetch<{
   developer: { id: number }
 }>(`/api/side-projects/${projectId}`)
 
-const { data: currentUser } = await useFetch<{ id: number } | null>('/api/developers/me')
+const { data: currentUser } = await useFetch<{ id: number } | null>('/api/developers/me', {
+  default: () => null
+})
 
 if (project.value && currentUser.value?.id !== project.value.developer.id) {
   await navigateTo(`/qg/projects/${projectId}`)

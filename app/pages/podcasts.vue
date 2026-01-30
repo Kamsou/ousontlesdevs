@@ -17,6 +17,13 @@ interface Podcast {
   url: string
   imageUrl: string | null
   highlight: boolean
+  publishedAt: string | null
+}
+
+function formatDate(dateStr: string | null) {
+  if (!dateStr) return null
+  const d = new Date(dateStr)
+  return d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
 }
 
 const { data: podcasts, status } = await useFetch<Podcast[]>('/api/podcasts')
@@ -91,6 +98,9 @@ async function copyEmail() {
         </p>
         <p v-if="podcast.description" class="text-foreground-muted text-sm leading-relaxed line-clamp-3">
           {{ podcast.description }}
+        </p>
+        <p v-if="podcast.publishedAt" class="text-xs text-foreground-muted mt-3">
+          {{ formatDate(podcast.publishedAt) }}
         </p>
       </a>
     </div>

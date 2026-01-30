@@ -27,7 +27,9 @@ const { data: matchesData, status: matchesStatus } = useLazyFetch<{
   total: number
   hasMore: boolean
 }>(`/api/help-requests/${requestId}/matches`)
-const { data: currentUser } = useLazyFetch<{ id: number } | null>('/api/developers/me')
+const { data: currentUser } = useLazyFetch<{ id: number } | null>('/api/developers/me', {
+  default: () => null
+})
 const currentUserId = computed(() => currentUser.value?.id ?? null)
 
 const isLoadingMatches = computed(() => matchesStatus.value === 'pending')
