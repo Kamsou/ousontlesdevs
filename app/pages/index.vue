@@ -133,7 +133,7 @@ const features = [
           </p>
         </div>
 
-        <div class="overflow-hidden">
+        <div>
           <div class="flex gap-4 items-center flex-wrap animate-slide-up animation-delay-400">
           <NuxtLink to="/annuaire" class="group flex items-center gap-4 px-6 py-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full text-sm font-medium cursor-pointer transition-all hover:gap-6 hover:pr-5 hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none no-underline">
             <span>Elles sont là</span>
