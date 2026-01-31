@@ -315,6 +315,7 @@ onMounted(() => {
         <QgFeed />
 
         <QgRequestsList
+          v-if="isLoadingRequests || openRequests.length > 0 || closedRequests.length > 0"
           :open-requests="openRequests"
           :closed-requests="closedRequests"
           :is-loading="isLoadingRequests"
