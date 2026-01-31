@@ -199,37 +199,62 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
           v-for="dev in developers"
           :key="dev.id"
           :to="`/annuaire/${dev.slug}`"
-          class="flex flex-col gap-4 p-6 bg-background-card border border-border/10 rounded-2xl no-underline text-foreground transition-all hover:bg-background-card-hover hover:border-foreground-muted hover:-translate-y-0.5"
+          :class="[
+            'flex flex-col p-6 bg-background-card border border-border/10 rounded-2xl no-underline text-foreground transition-all hover:bg-background-card-hover hover:border-foreground-muted hover:-translate-y-0.5',
+            !dev.bio && !dev.openTo?.length ? 'items-center text-center justify-center' : 'gap-4'
+          ]"
         >
-          <div class="flex items-center gap-4">
+          <template v-if="!dev.bio && !dev.openTo?.length">
             <img
               :src="dev.avatarUrl || '/default-avatar.png'"
               :alt="`Photo de profil de ${dev.name}, développeuse${dev.location ? ` basée à ${dev.location}` : ''}`"
-              class="w-12 h-12 rounded-full object-cover"
+              class="w-16 h-16 rounded-full object-cover mb-2"
             />
-            <div class="flex-1">
-              <h3 class="font-display text-lg font-medium">{{ dev.name }}</h3>
-              <p v-if="dev.location" class="text-sm text-foreground-muted">{{ dev.location }}</p>
+            <h3 class="font-display text-lg font-medium">{{ dev.name }}</h3>
+            <p v-if="dev.location" class="text-sm text-foreground-muted">{{ dev.location }}</p>
+            <span v-if="dev.isSpeaker" class="mt-1 px-3 py-1 bg-background-card border border-border/10 rounded-full text-[0.7rem] uppercase tracking-widest text-foreground-muted">Speakeuse</span>
+            <div v-if="dev.skills?.length" class="flex flex-wrap justify-center gap-2 mt-2">
+              <span v-for="skill in dev.skills.slice(0, 5)" :key="skill" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-xs text-foreground-muted">
+                {{ skill }}
+              </span>
+              <span v-if="dev.skills.length > 5" class="px-2 py-1 text-xs text-foreground-muted">
+                +{{ dev.skills.length - 5 }}
+              </span>
             </div>
-            <span v-if="dev.isSpeaker" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-[0.7rem] uppercase tracking-widest text-foreground-muted">Speakeuse</span>
-          </div>
+            <span class="mt-3 text-xs text-foreground-muted/40">Voir le profil →</span>
+          </template>
 
-          <p v-if="dev.bio" class="text-sm text-foreground-muted leading-relaxed line-clamp-2">{{ dev.bio }}</p>
+          <template v-else>
+            <div class="flex items-center gap-4">
+              <img
+                :src="dev.avatarUrl || '/default-avatar.png'"
+                :alt="`Photo de profil de ${dev.name}, développeuse${dev.location ? ` basée à ${dev.location}` : ''}`"
+                class="w-12 h-12 rounded-full object-cover"
+              />
+              <div class="flex-1">
+                <h3 class="font-display text-lg font-medium">{{ dev.name }}</h3>
+                <p v-if="dev.location" class="text-sm text-foreground-muted">{{ dev.location }}</p>
+              </div>
+              <span v-if="dev.isSpeaker" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-[0.7rem] uppercase tracking-widest text-foreground-muted">Speakeuse</span>
+            </div>
 
-          <div v-if="dev.skills?.length" class="flex flex-wrap gap-2">
-            <span v-for="skill in dev.skills.slice(0, 5)" :key="skill" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-xs text-foreground-muted">
-              {{ skill }}
-            </span>
-            <span v-if="dev.skills.length > 5" class="px-2 py-1 text-xs text-foreground-muted">
-              +{{ dev.skills.length - 5 }}
-            </span>
-          </div>
+            <p v-if="dev.bio" class="text-sm text-foreground-muted leading-relaxed line-clamp-2">{{ dev.bio }}</p>
 
-          <div v-if="dev.openTo?.length" class="flex flex-wrap gap-2 pt-2 border-t border-border/10">
-            <span v-for="(tag, index) in dev.openTo" :key="tag" class="text-[0.7rem] text-foreground-muted">
-              {{ openToOptions.find(o => o.value === tag)?.label || tag }}{{ index < dev.openTo.length - 1 ? ' ·' : '' }}
-            </span>
-          </div>
+            <div v-if="dev.skills?.length" class="flex flex-wrap gap-2">
+              <span v-for="skill in dev.skills.slice(0, 5)" :key="skill" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-xs text-foreground-muted">
+                {{ skill }}
+              </span>
+              <span v-if="dev.skills.length > 5" class="px-2 py-1 text-xs text-foreground-muted">
+                +{{ dev.skills.length - 5 }}
+              </span>
+            </div>
+
+            <div v-if="dev.openTo?.length" class="flex flex-wrap gap-2 pt-2 border-t border-border/10">
+              <span v-for="(tag, index) in dev.openTo" :key="tag" class="text-[0.7rem] text-foreground-muted">
+                {{ openToOptions.find(o => o.value === tag)?.label || tag }}{{ index < dev.openTo.length - 1 ? ' ·' : '' }}
+              </span>
+            </div>
+          </template>
         </NuxtLink>
       </div>
 
