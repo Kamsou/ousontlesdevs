@@ -49,6 +49,7 @@ export default defineEventHandler(async (event) => {
       guestName: body.guestName?.trim() || null,
       url: body.url.trim(),
       imageUrl: body.imageUrl?.trim() || null,
+      publishedAt: body.publishedAt ? new Date(body.publishedAt) : null,
       highlight: body.highlight || false,
       active: body.active !== false
     })

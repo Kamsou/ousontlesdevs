@@ -18,6 +18,7 @@ interface Podcast {
   imageUrl: string | null
   highlight: boolean
   active: boolean
+  publishedAt: string | null
 }
 
 const { data: podcasts, status, error, refresh } = await useFetch<Podcast[]>('/api/admin/podcasts')
@@ -34,9 +35,16 @@ const form = ref({
   guestName: '',
   url: '',
   imageUrl: '',
+  publishedAt: '',
   highlight: false,
   active: true
 })
+
+function formatDateForInput(dateStr: string | null) {
+  if (!dateStr) return ''
+  const d = new Date(dateStr)
+  return d.toISOString().split('T')[0] || ''
+}
 
 function openNew() {
   editing.value = null
@@ -47,6 +55,7 @@ function openNew() {
     guestName: '',
     url: '',
     imageUrl: '',
+    publishedAt: '',
     highlight: false,
     active: true
   }
@@ -62,6 +71,7 @@ function openEdit(podcast: Podcast) {
     guestName: podcast.guestName || '',
     url: podcast.url,
     imageUrl: podcast.imageUrl || '',
+    publishedAt: formatDateForInput(podcast.publishedAt),
     highlight: podcast.highlight,
     active: podcast.active
   }
@@ -183,6 +193,7 @@ async function deletePodcast(id: number, title: string) {
             <p class="text-sm text-foreground-muted mb-2">
               {{ podcast.podcastName }}
               <span v-if="podcast.guestName"> · avec {{ podcast.guestName }}</span>
+              <span v-if="podcast.publishedAt"> · {{ new Date(podcast.publishedAt).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) }}</span>
             </p>
             <p v-if="podcast.description" class="text-sm text-foreground-muted mb-3 line-clamp-2">{{ podcast.description }}</p>
             <a :href="podcast.url" target="_blank" class="text-xs text-foreground-muted hover:text-foreground underline">
@@ -269,6 +280,15 @@ async function deletePodcast(id: number, title: string) {
               required
               class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
               placeholder="https://open.spotify.com/episode/..."
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-2 text-foreground">Date de publication (optionnel)</label>
+            <input
+              v-model="form.publishedAt"
+              type="date"
+              class="w-full px-4 py-3 bg-transparent border border-border/10 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted"
             />
           </div>
 
