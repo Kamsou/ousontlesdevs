@@ -61,7 +61,7 @@ const initialQuery = computed(() => {
   return params
 })
 
-const { data, status } = useLazyFetch<ApiResponse>('/api/developers', {
+const { data, status } = await useFetch<ApiResponse>('/api/developers', {
   query: initialQuery
 })
 
