@@ -74,7 +74,7 @@ watch(data, (d) => {
     hasMore.value = d.pagination.hasMore
     page.value = 1
   }
-})
+}, { immediate: true })
 
 watch([() => filters.location, () => filters.skill, () => filters.openTo], () => {
   hasMore.value = false
