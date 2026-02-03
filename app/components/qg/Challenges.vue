@@ -362,7 +362,10 @@ onMounted(() => {
               >
                 <div
                   @click="(getStatus(template.id) || !activeChallenge) && toggleChallenge(template.id)"
-                  class="w-full flex items-center gap-3 text-left py-2.5 -ml-2 px-2 rounded-lg transition-colors group/item relative"
+                  @keydown.enter="(getStatus(template.id) || !activeChallenge) && toggleChallenge(template.id)"
+                  :tabindex="getStatus(template.id) || !activeChallenge ? 0 : -1"
+                  role="button"
+                  class="w-full flex items-center gap-3 text-left py-2.5 -ml-2 px-2 rounded-lg transition-colors group/item relative outline-none focus-visible:ring-1 focus-visible:ring-primary/30"
                   :class="getStatus(template.id) || !activeChallenge ? 'hover:bg-white/[0.02] cursor-pointer' : 'cursor-default'"
                 >
                   <span class="shrink-0 w-4 flex items-center justify-center">
@@ -409,7 +412,7 @@ onMounted(() => {
                     v-if="!getStatus(template.id)"
                     @click.stop="!activeChallenge && (openChallengeId = template.id, startChallenge(template.id))"
                     :disabled="starting || !!activeChallenge"
-                    class="hidden md:group-hover/item:inline-flex absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 rounded-full text-xs font-medium border bg-background"
+                    class="hidden md:group-hover/item:inline-flex md:group-focus-within/item:inline-flex absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 rounded-full text-xs font-medium border bg-background"
                     :style="{
                       borderColor: categoryColors[cat.value] + ((starting || activeChallenge) ? '15' : '30'),
                       color: categoryColors[cat.value] + ((starting || activeChallenge) ? '40' : 'ff')
@@ -455,13 +458,12 @@ onMounted(() => {
 
                   <div v-else class="mt-5 md:hidden">
                     <button
-                      v-if="!activeChallenge"
-                      @click="startChallenge(template.id)"
-                      :disabled="starting"
-                      class="px-5 py-2 rounded-full text-sm font-medium border transition-all disabled:opacity-50"
+                      @click="!activeChallenge && startChallenge(template.id)"
+                      :disabled="starting || !!activeChallenge"
+                      class="px-5 py-2 rounded-full text-sm font-medium border transition-all"
                       :style="{
-                        borderColor: categoryColors[cat.value] + '30',
-                        color: categoryColors[cat.value]
+                        borderColor: categoryColors[cat.value] + ((starting || activeChallenge) ? '15' : '30'),
+                        color: categoryColors[cat.value] + ((starting || activeChallenge) ? '40' : 'ff')
                       }"
                     >
                       {{ starting ? '...' : 'Commencer' }}
