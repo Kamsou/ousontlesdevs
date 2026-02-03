@@ -42,6 +42,9 @@ export default defineEventHandler(async (event) => {
     where: whereClause,
     with: {
       techs: true,
+      comments: {
+        columns: { id: true }
+      },
       developer: {
         columns: {
           id: true,
@@ -58,7 +61,11 @@ export default defineEventHandler(async (event) => {
   })
 
   return {
-    requests,
+    requests: requests.map(r => ({
+      ...r,
+      commentCount: r.comments.length,
+      comments: undefined
+    })),
     pagination: {
       page,
       pageSize: PAGE_SIZE,

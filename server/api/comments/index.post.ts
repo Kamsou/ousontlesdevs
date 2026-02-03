@@ -1,16 +1,23 @@
-import { getServerSession } from '#auth'
+import { getServerSession, getToken } from '#auth'
 import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
-  if (!session?.user?.email) {
+  const token = await getToken({ event })
+
+  if (!session?.user) {
     throw createError({ statusCode: 401, message: 'Non autorisé' })
+  }
+
+  const githubId = (token?.id || token?.sub) as string
+  if (!githubId) {
+    throw createError({ statusCode: 400, message: 'ID GitHub non trouvé' })
   }
 
   const db = useDrizzle()
 
   const developer = await db.query.developers.findFirst({
-    where: eq(tables.developers.email, session.user.email)
+    where: eq(tables.developers.githubId, githubId)
   })
 
   if (!developer) {

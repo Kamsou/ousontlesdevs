@@ -2,6 +2,7 @@
 interface FeedRequest {
   id: number
   title: string
+  commentCount?: number
   developer?: {
     id: number
     slug: string
@@ -115,19 +116,27 @@ onMounted(() => {
 
         <NuxtLink
           :to="`/qg/requests/${request.id}`"
-          class="text-sm font-medium text-foreground hover:text-primary transition-colors block mb-1.5"
+          class="text-sm font-medium text-foreground hover:text-primary transition-colors block"
         >{{ request.title }}</NuxtLink>
 
-        <div v-if="request.techs?.length" class="flex flex-wrap gap-1.5">
-          <span
-            v-for="tech in request.techs.slice(0, 4)"
-            :key="tech.id"
-            class="px-2 py-0.5 bg-subtle rounded text-xs text-foreground-muted"
-          >
-            {{ tech.techName }}
-          </span>
-          <span v-if="request.techs.length > 4" class="text-xs text-foreground-muted/40">
-            +{{ request.techs.length - 4 }}
+        <div class="flex items-center gap-3 mt-2.5">
+          <div v-if="request.techs?.length" class="flex flex-wrap gap-1.5">
+            <span
+              v-for="tech in request.techs.slice(0, 4)"
+              :key="tech.id"
+              class="px-2 py-0.5 bg-subtle rounded text-xs text-foreground-muted"
+            >
+              {{ tech.techName }}
+            </span>
+            <span v-if="request.techs.length > 4" class="text-xs text-foreground-muted/40">
+              +{{ request.techs.length - 4 }}
+            </span>
+          </div>
+          <span v-if="request.commentCount" class="flex items-center gap-1 px-2 py-0.5 bg-subtle rounded text-xs text-foreground-muted ml-auto">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            {{ request.commentCount }}
           </span>
         </div>
       </div>
