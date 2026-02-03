@@ -82,7 +82,7 @@ onMounted(() => {
         :key="request.id"
         class="p-4 border border-border/20 rounded-xl hover:border-primary/20 transition-colors"
       >
-        <div class="flex items-center justify-between gap-3 mb-3">
+        <div class="flex items-center justify-between gap-3 mb-2">
           <NuxtLink
             :to="`/annuaire/${request.developer?.slug}`"
             class="flex items-center gap-3 min-w-0 group/dev"
@@ -115,7 +115,7 @@ onMounted(() => {
 
         <NuxtLink
           :to="`/qg/requests/${request.id}`"
-          class="text-sm font-medium text-foreground hover:text-primary transition-colors block mb-2"
+          class="text-sm font-medium text-foreground hover:text-primary transition-colors block mb-1.5"
         >{{ request.title }}</NuxtLink>
 
         <div v-if="request.techs?.length" class="flex flex-wrap gap-1.5">
