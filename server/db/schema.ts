@@ -117,7 +117,8 @@ export const developersRelations = relations(developers, ({ many, one }) => ({
   reviews: many(companyReviews),
   helpRequests: many(helpRequests),
   sideProjects: many(sideProjects),
-  offers: many(offers)
+  offers: many(offers),
+  challenges: many(challenges)
 }))
 
 export const developerSkillsRelations = relations(developerSkills, ({ one }) => ({
@@ -334,3 +335,27 @@ export const accountDeletionStats = sqliteTable('account_deletion_stats', {
 }, (table) => [
   uniqueIndex('account_deletion_stats_month_deleted_by_unique').on(table.month, table.deletedBy)
 ])
+
+export const challenges = sqliteTable('challenges', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  developerId: integer('developer_id').notNull().references(() => developers.id, { onDelete: 'cascade' }),
+  templateId: text('template_id').notNull(),
+  title: text('title').notNull(),
+  description: text('description').notNull(),
+  category: text('category', {
+    enum: ['comparer', 'verifier', 'enseigner', 'collaborer', 'resister']
+  }).notNull(),
+  status: text('status', {
+    enum: ['active', 'completed', 'skipped']
+  }).notNull().default('active'),
+  reflection: text('reflection'),
+  completedAt: integer('completed_at', { mode: 'timestamp' }),
+  createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
+})
+
+export const challengesRelations = relations(challenges, ({ one }) => ({
+  developer: one(developers, {
+    fields: [challenges.developerId],
+    references: [developers.id]
+  })
+}))

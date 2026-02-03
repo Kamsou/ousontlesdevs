@@ -113,6 +113,20 @@
       "when": 1769900000000,
       "tag": "0015_account_deletion_stats",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "6",
+      "when": 1770051929096,
+      "tag": "0016_outstanding_blue_blade",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "6",
+      "when": 1770052800827,
+      "tag": "0017_graceful_the_leader",
+      "breakpoints": true
     }
   ]
 }

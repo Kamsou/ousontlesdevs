@@ -1,0 +1,1 @@
+ALTER TABLE `challenges` ADD `template_id` text NOT NULL DEFAULT '';

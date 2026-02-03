@@ -50,6 +50,18 @@ export interface Offer {
   }
 }
 
+export interface Challenge {
+  id: number
+  templateId: string
+  title: string
+  description: string
+  category: 'comparer' | 'verifier' | 'enseigner' | 'collaborer' | 'resister'
+  status: 'active' | 'completed' | 'skipped'
+  reflection: string | null
+  completedAt: string | null
+  createdAt: string
+}
+
 export interface QgActivity {
   isNew: boolean
   weeklyContactsReceived?: number

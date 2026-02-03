@@ -99,6 +99,7 @@ export default defineNuxtConfig({
       isEnabled: false
     }
   },
+  a11y: {},
   nitro: {
     preset: 'netlify',
     experimental: {

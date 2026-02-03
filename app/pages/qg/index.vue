@@ -28,10 +28,11 @@ const { data: offers, status: offersStatus, refresh: refreshOffers } = useLazyFe
 const { data: profile, refresh: refreshProfile } = await useFetch<QgProfile | null>('/api/developers/me', {
   default: () => null
 })
-type TabType = 'entraide' | 'offres' | 'profil'
+type TabType = 'entraide' | 'challenges' | 'offres' | 'profil'
 
 const activeTab = ref<TabType>(
   route.query.tab === 'profil' ? 'profil' :
+  route.query.tab === 'challenges' ? 'challenges' :
   (route.query.tab === 'offres' || route.query.tab === 'projects') ? 'offres' : 'entraide'
 )
 const showOptInModal = ref(false)
@@ -99,7 +100,7 @@ async function handleMarkProjectCompleted(projectId: number) {
   }
 }
 watch(() => route.query.tab, (tab) => {
-  activeTab.value = tab === 'profil' ? 'profil' : (tab === 'offres' || tab === 'projects') ? 'offres' : 'entraide'
+  activeTab.value = tab === 'profil' ? 'profil' : tab === 'challenges' ? 'challenges' : (tab === 'offres' || tab === 'projects') ? 'offres' : 'entraide'
 })
 
 watch(activeTab, (tab) => {
@@ -177,6 +178,18 @@ onMounted(() => {
           <span v-if="activeTab === 'entraide'" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
         </button>
         <button
+          @click="activeTab = 'challenges'"
+          :class="[
+            'pt-3 pb-3 text-sm font-medium transition-colors relative',
+            activeTab === 'challenges'
+              ? 'text-foreground'
+              : 'text-foreground-muted hover:text-foreground'
+          ]"
+        >
+          Challenges <span class="text-[10px] text-foreground-muted font-normal">(beta)</span>
+          <span v-if="activeTab === 'challenges'" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
+        </button>
+        <button
           @click="activeTab = 'offres'"
           :class="[
             'pt-3 pb-3 text-sm font-medium transition-colors relative',
@@ -216,6 +229,18 @@ onMounted(() => {
             <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
           Entraide
+        </button>
+        <button
+          @click="activeTab = 'challenges'"
+          :class="[
+            'flex flex-col items-center gap-1 pt-2.5 pb-2 px-4 text-[11px] font-medium transition-colors',
+            activeTab === 'challenges' ? 'text-primary' : 'text-foreground-muted'
+          ]"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+          Challenges <span class="text-[8px] text-foreground-muted">(beta)</span>
         </button>
         <button
           @click="activeTab = 'offres'"
@@ -321,6 +346,10 @@ onMounted(() => {
           :is-loading="isLoadingRequests"
           @mark-resolved="handleMarkResolved"
         />
+      </div>
+
+      <div v-else-if="activeTab === 'challenges'">
+        <QgChallenges />
       </div>
 
       <div v-else-if="activeTab === 'offres'">

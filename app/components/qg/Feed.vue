@@ -73,7 +73,7 @@ onMounted(() => {
     </div>
 
     <div v-else-if="!feedData?.requests?.length" class="py-12 text-center border border-dashed border-border/20 rounded-xl">
-      <p class="text-foreground-muted/50 text-sm">Aucune demande pour le moment</p>
+      <p class="text-foreground-muted/70 text-sm">Aucune demande pour le moment</p>
     </div>
 
     <div v-else class="space-y-4">
@@ -113,7 +113,10 @@ onMounted(() => {
           </a>
         </div>
 
-        <p class="text-sm font-medium text-foreground mb-2">{{ request.title }}</p>
+        <NuxtLink
+          :to="`/qg/requests/${request.id}`"
+          class="text-sm font-medium text-foreground hover:text-primary transition-colors block mb-2"
+        >{{ request.title }}</NuxtLink>
 
         <div v-if="request.techs?.length" class="flex flex-wrap gap-1.5">
           <span
