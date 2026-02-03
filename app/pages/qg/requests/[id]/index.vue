@@ -23,16 +23,20 @@ useSeoMeta({
   robots: 'noindex'
 })
 
-const { data: request, status: requestStatus, refresh: refreshRequest } = await useFetch<HelpRequest>(`/api/help-requests/${requestId}`)
+const { data: request, status: requestStatus, refresh: refreshRequest } = useLazyFetch<HelpRequest>(`/api/help-requests/${requestId}`)
 
 const isOwner = computed(() => request.value?.isOwner ?? false)
 
-const { data: matchesData, status: matchesStatus } = useLazyFetch<{
+const { data: matchesData, status: matchesStatus, execute: fetchMatches } = useLazyFetch<{
   matches: any[]
   total: number
   hasMore: boolean
 }>(`/api/help-requests/${requestId}/matches`, {
-  immediate: request.value?.isOwner === true
+  immediate: false
+})
+
+watch(() => request.value?.isOwner, (owner) => {
+  if (owner) fetchMatches()
 })
 
 const { data: currentUser } = useLazyFetch<{ id: number } | null>('/api/developers/me', {
