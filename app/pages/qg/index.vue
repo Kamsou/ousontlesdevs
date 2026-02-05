@@ -88,6 +88,7 @@ async function handleProfileSaved() {
   await Promise.all([refreshProfile(), refreshActivity()])
   if (wasNew) {
     activeTab.value = 'entraide'
+    showOptInModal.value = true
   }
 }
 
@@ -111,8 +112,7 @@ watch(activeTab, (tab) => {
   $clientPosthog?.capture('qg_tab_clicked', { tab })
 })
 onMounted(() => {
-  const shouldShow = isNewProfile.value || (profile.value && !profile.value.emailOptInAsked)
-  if (shouldShow) {
+  if (profile.value && !profile.value.emailOptInAsked) {
     showOptInModal.value = true
   }
 })
