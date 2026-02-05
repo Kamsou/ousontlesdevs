@@ -256,7 +256,9 @@ onUnmounted(() => {
     </div>
 
     <main :class="['flex-1 relative z-[1]', isPrivateArea ? '' : 'pt-20']">
-      <NuxtPage />
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
     </main>
 
     <footer v-if="!isPrivateArea" class="relative z-[1] text-center py-8 text-foreground-muted text-sm border-t border-border/5">

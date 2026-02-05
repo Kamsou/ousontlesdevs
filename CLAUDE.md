@@ -28,13 +28,16 @@ app/
 │   │   └── projects/   → Side project detail + edit
 │   ├── profil/         → Auth redirect (animated loading → QG)
 │   ├── feedback/       → Contact feedback (token-based)
-│   ├── admin/          → Admin dashboard
+│   ├── admin/          → Admin dashboard (layout: admin)
 │   ├── legal.vue       → Legal notices
 │   └── coc.vue         → Code of conduct
+├── layouts/
+│   ├── default.vue     → Empty layout (pass-through)
+│   └── admin.vue       → Admin layout (header, nav tabs)
 ├── components/
 │   └── qg/             → QG components (Feed, Comments, ProfileForm,
 │                          RequestsList, OffersList, SideProjectsList, etc.)
-├── app.vue             → Main layout (public header/footer + QG routing)
+├── app.vue             → Root layout (public header/footer, theme handling)
 server/
 ├── api/                → API routes (Nitro)
 │   ├── auth/[...].ts   → Auth.js (GitHub OAuth)
@@ -147,6 +150,24 @@ export default defineEventHandler(async (event) => {
 ```
 
 ## Nuxt patterns
+
+### Layouts
+
+Pages can specify a layout via `definePageMeta`. Admin pages use the shared admin layout:
+
+```typescript
+definePageMeta({
+  middleware: 'sidebase-auth',
+  layout: 'admin'  // Uses app/layouts/admin.vue
+})
+```
+
+The admin layout includes:
+- Header with back link to QG, ADMIN title, theme toggle, avatar
+- Navigation tabs (Développeuses, Programmes, Podcasts, Stats, Newsletter)
+- Consistent container (max-w-[1600px])
+
+Pages without a layout use `default.vue` (pass-through).
 
 ### Data fetching
 
