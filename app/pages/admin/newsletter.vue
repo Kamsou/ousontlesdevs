@@ -25,7 +25,7 @@ async function copyEmails() {
   const emails = subscribers.value
     .map(s => s.email)
     .filter(Boolean)
-    .join(', ')
+    .join('\n')
   await navigator.clipboard.writeText(emails)
   copied.value = true
   setTimeout(() => { copied.value = false }, 2000)
