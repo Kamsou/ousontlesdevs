@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'Non authentifié' })
   }
 
-  const githubId = (session.user as any).id
+  const githubId = session.user.id
   if (!githubId) {
     throw createError({ statusCode: 401, message: 'Non authentifié' })
   }

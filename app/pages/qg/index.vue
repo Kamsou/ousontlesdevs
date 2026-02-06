@@ -291,27 +291,12 @@ onMounted(() => {
 
     <div class="max-w-3xl mx-auto px-6 py-4 md:py-8 pb-24 md:pb-8">
       <div v-if="activeTab === 'entraide'" class="space-y-10 md:space-y-14">
-        <div v-if="!isLoadingActivity && activity?.profileComplete === false" class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl">
-          <div class="flex items-start gap-3">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-amber-400 shrink-0 mt-0.5">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
-            </svg>
-            <div>
-              <p class="text-sm text-foreground font-medium mb-1">Profil incomplet</p>
-              <p class="text-xs text-foreground-muted mb-3">
-                Pour accéder à l'entraide, il te manque : <span class="text-amber-400">{{ activity?.missingFields?.join(', ') }}</span>
-              </p>
-              <button
-                @click="activeTab = 'profil'"
-                class="text-xs text-amber-400 hover:text-amber-300 underline transition-colors"
-              >
-                Compléter mon profil
-              </button>
-            </div>
-          </div>
-        </div>
+        <QgIncompleteProfileBanner
+          v-if="!isLoadingActivity && activity?.profileComplete === false"
+          :missing-fields="activity?.missingFields || []"
+          context="à l'entraide"
+          @go-to-profile="activeTab = 'profil'"
+        />
 
         <section>
           <NuxtLink
@@ -369,7 +354,14 @@ onMounted(() => {
       </div>
 
       <div v-else-if="activeTab === 'challenges'">
-        <QgChallenges />
+        <QgIncompleteProfileBanner
+          v-if="!isLoadingActivity && activity?.profileComplete === false"
+          :missing-fields="activity?.missingFields || []"
+          context="aux challenges"
+          class="mb-8"
+          @go-to-profile="activeTab = 'profil'"
+        />
+        <QgChallenges v-else />
       </div>
 
       <div v-else-if="activeTab === 'offres'">
@@ -407,9 +399,13 @@ onMounted(() => {
             </div>
           </NuxtLink>
         </div>
-        <div v-else class="mb-8 md:mb-12 p-5 border border-border/20 rounded-2xl cursor-not-allowed">
-          <p class="text-sm text-foreground-muted">Complète ton profil pour poster des offres ou des projets</p>
-        </div>
+        <QgIncompleteProfileBanner
+          v-else
+          :missing-fields="activity?.missingFields || []"
+          context="aux offres et projets"
+          class="mb-8 md:mb-12"
+          @go-to-profile="activeTab = 'profil'"
+        />
 
         <QgOffersList
           :offers="offers || []"

@@ -22,6 +22,8 @@ interface Podcast {
   publishedAt: string | null
 }
 
+const toast = useToast()
+
 const { data: podcasts, status, error, refresh } = await useFetch<Podcast[]>('/api/admin/podcasts')
 
 const showModal = ref(false)
@@ -96,7 +98,7 @@ async function save() {
     showModal.value = false
     await refresh()
   } catch (e: any) {
-    alert(e.data?.message || 'Erreur lors de la sauvegarde')
+    toast.error(e.data?.message || 'Erreur lors de la sauvegarde')
   } finally {
     saving.value = false
   }
@@ -110,7 +112,7 @@ async function deletePodcast(id: number, title: string) {
     await $fetch(`/api/admin/podcasts/${id}`, { method: 'DELETE' })
     await refresh()
   } catch (e) {
-    alert('Erreur lors de la suppression')
+    toast.error('Erreur lors de la suppression')
   } finally {
     deleting.value = null
   }

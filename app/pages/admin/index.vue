@@ -11,6 +11,8 @@ useSeoMeta({
   robots: 'noindex'
 })
 
+const toast = useToast()
+
 const { data: developers, status, error, refresh } = await useFetch('/api/admin/developers')
 const { data: pendingOffers, refresh: refreshOffers } = useLazyFetch<any[]>('/api/offers')
 
@@ -43,7 +45,7 @@ async function deleteDeveloper(id: number, name: string) {
     await $fetch(`/api/admin/developers/${id}`, { method: 'DELETE' } as any)
     await refresh()
   } catch (e) {
-    alert('Erreur lors de la suppression')
+    toast.error('Erreur lors de la suppression')
   } finally {
     deleting.value = null
   }
@@ -55,7 +57,7 @@ async function toggleVerified(offerId: number) {
     await $fetch(`/api/admin/offers/${offerId}`, { method: 'PATCH' })
     await refreshOffers()
   } catch {
-    alert('Erreur lors de la vérification')
+    toast.error('Erreur lors de la vérification')
   } finally {
     verifying.value = null
   }

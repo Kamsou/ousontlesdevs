@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Type et phrase requis' })
   }
 
-  const githubId = (session.user as any).id?.toString()
+  const githubId = session.user.id?.toString()
 
   if (!githubId) {
     throw createError({ statusCode: 400, message: 'GitHub ID manquant' })

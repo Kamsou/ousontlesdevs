@@ -53,7 +53,7 @@ watch(() => status.value, (newStatus, oldStatus) => {
     refreshAdmin()
     refreshProfile()
     const user = data.value?.user
-    $clientPosthog?.identify((user as any)?.id, { name: user?.name, email: user?.email })
+    $clientPosthog?.identify(user?.id, { name: user?.name, email: user?.email })
 
     if (oldStatus === 'unauthenticated') {
       $clientPosthog?.capture('signup_completed')

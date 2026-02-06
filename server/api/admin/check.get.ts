@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
     return false
   }
 
-  const githubId = (session.user as any).id
+  const githubId = session.user.id
   if (!githubId) return false
 
   const db = useDrizzle()

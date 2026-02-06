@@ -45,6 +45,7 @@ const error = ref('')
 const deleting = ref(false)
 const stickysentinel = ref<HTMLElement>()
 const isSticky = ref(false)
+const submitted = ref(false)
 const isNewProfile = computed(() => !props.profile)
 
 const hasValidExperienceProfile = computed(() => {
@@ -52,6 +53,13 @@ const hasValidExperienceProfile = computed(() => {
     props.profile?.profilePhrase &&
     validProfileTypes.includes(props.profile.profileType)
 })
+
+const fieldErrors = computed(() => ({
+  lastName: submitted.value && !form.lastName.trim() ? 'Le nom est requis' : '',
+  firstName: submitted.value && !form.firstName.trim() ? 'Le prénom est requis' : '',
+  linkedinUrl: submitted.value && !form.linkedinUrl.trim() ? 'Le lien LinkedIn est requis' : '',
+  cocAccepted: submitted.value && isNewProfile.value && !form.cocAccepted ? 'Tu dois accepter le code de conduite' : ''
+}))
 function toggleSkill(skill: string) {
   const index = form.skills.indexOf(skill)
   if (index > -1) {
@@ -93,6 +101,11 @@ function toggleOpenTo(value: string) {
 }
 
 async function save() {
+  submitted.value = true
+
+  const hasErrors = Object.values(fieldErrors.value).some(Boolean)
+  if (hasErrors) return
+
   saving.value = true
   error.value = ''
 
@@ -214,7 +227,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
         </div>
       </section>
 
-      <form @submit.prevent="save">
+      <form @submit.prevent="save" novalidate>
         <div v-if="error" class="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-500 mb-8">{{ error }}</div>
 
         <section class="py-5 border-b border-border/10">
@@ -224,11 +237,13 @@ useIntersectionObserver(stickysentinel, (entries) => {
             <div class="grid grid-cols-2 gap-4">
               <div class="flex flex-col gap-2">
                 <label for="lastName" class="text-xs uppercase tracking-wide text-foreground-muted">Nom *</label>
-                <input id="lastName" v-model="form.lastName" type="text" required class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted" />
+                <input id="lastName" v-model="form.lastName" type="text" :class="['px-4 py-3 bg-background-card border rounded-lg text-foreground text-sm transition-colors focus:outline-none', fieldErrors.lastName ? 'border-red-500/50 focus:border-red-500' : 'border-border/10 focus:border-foreground-muted']" />
+                <p v-if="fieldErrors.lastName" class="text-xs text-red-400">{{ fieldErrors.lastName }}</p>
               </div>
               <div class="flex flex-col gap-2">
                 <label for="firstName" class="text-xs uppercase tracking-wide text-foreground-muted">Prénom *</label>
-                <input id="firstName" v-model="form.firstName" type="text" required class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted" />
+                <input id="firstName" v-model="form.firstName" type="text" :class="['px-4 py-3 bg-background-card border rounded-lg text-foreground text-sm transition-colors focus:outline-none', fieldErrors.firstName ? 'border-red-500/50 focus:border-red-500' : 'border-border/10 focus:border-foreground-muted']" />
+                <p v-if="fieldErrors.firstName" class="text-xs text-red-400">{{ fieldErrors.firstName }}</p>
               </div>
             </div>
 
@@ -379,7 +394,8 @@ useIntersectionObserver(stickysentinel, (entries) => {
           <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-2">
               <label for="linkedin" class="text-xs uppercase tracking-wide text-foreground-muted">LinkedIn *</label>
-              <input id="linkedin" v-model="form.linkedinUrl" type="url" placeholder="https://linkedin.com/in/..." required class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
+              <input id="linkedin" v-model="form.linkedinUrl" type="url" placeholder="https://linkedin.com/in/..." :class="['px-4 py-3 bg-background-card border rounded-lg text-foreground text-sm transition-colors focus:outline-none placeholder:text-foreground-muted', fieldErrors.linkedinUrl ? 'border-red-500/50 focus:border-red-500' : 'border-border/10 focus:border-foreground-muted']" />
+              <p v-if="fieldErrors.linkedinUrl" class="text-xs text-red-400">{{ fieldErrors.linkedinUrl }}</p>
             </div>
 
             <div class="flex flex-col gap-2">
@@ -414,7 +430,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
           </label>
         </section>
 
-        <section v-if="isNewProfile" class="p-6 border border-primary/30 rounded-2xl bg-primary/5">
+        <section v-if="isNewProfile" :class="['p-6 rounded-2xl', fieldErrors.cocAccepted ? 'border border-red-500/50 bg-red-500/5' : 'border border-primary/30 bg-primary/5']">
           <label class="flex items-start gap-3 cursor-pointer group">
             <input
               v-model="form.cocAccepted"
@@ -430,6 +446,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
                 <NuxtLink to="/coc" target="_blank" class="text-primary underline hover:text-foreground transition-colors">code de conduite</NuxtLink>
                 de la communaute OSLD.
               </span>
+              <span v-if="fieldErrors.cocAccepted" class="text-xs text-red-400">{{ fieldErrors.cocAccepted }}</span>
             </div>
           </label>
         </section>

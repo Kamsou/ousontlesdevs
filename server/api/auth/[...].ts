@@ -13,14 +13,14 @@ export default NuxtAuthHandler({
     jwt({ token, account, profile }) {
       if (account) {
         token.id = account.providerAccountId
-        token.login = (profile as any)?.login
+        token.login = (profile as { login?: string })?.login ?? ''
       }
       return token
     },
     session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.id
-        ;(session.user as any).login = token.login
+        session.user.id = token.id
+        session.user.login = token.login
       }
       return session
     },

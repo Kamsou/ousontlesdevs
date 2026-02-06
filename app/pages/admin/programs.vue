@@ -19,6 +19,8 @@ interface Program {
   active: boolean
 }
 
+const toast = useToast()
+
 const { data: programs, status, error, refresh } = await useFetch<Program[]>('/api/admin/programs')
 
 const categoryLabels: Record<string, string> = {
@@ -85,7 +87,7 @@ async function save() {
     showModal.value = false
     await refresh()
   } catch (e: any) {
-    alert(e.data?.message || 'Erreur lors de la sauvegarde')
+    toast.error(e.data?.message || 'Erreur lors de la sauvegarde')
   } finally {
     saving.value = false
   }
@@ -99,7 +101,7 @@ async function deleteProgram(id: number, name: string) {
     await $fetch(`/api/admin/programs/${id}`, { method: 'DELETE' })
     await refresh()
   } catch (e) {
-    alert('Erreur lors de la suppression')
+    toast.error('Erreur lors de la suppression')
   } finally {
     deleting.value = null
   }
