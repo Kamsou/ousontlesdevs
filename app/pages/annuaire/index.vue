@@ -62,7 +62,7 @@ const initialQuery = computed(() => {
   return params
 })
 
-const { data, status } = await useFetch<ApiResponse>('/api/developers', {
+const { data, status } = useLazyFetch<ApiResponse>('/api/developers', {
   query: initialQuery
 })
 
@@ -254,19 +254,20 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
           </template>
 
           <template v-else>
-            <div class="flex items-center gap-4">
+            <div class="flex items-start gap-4">
               <img
                 :src="dev.avatarUrl || '/default-avatar.png'"
                 :alt="`Photo de profil de ${dev.name}, développeuse${dev.location ? ` basée à ${dev.location}` : ''}`"
-                class="w-12 h-12 rounded-full object-cover"
+                class="w-12 h-12 rounded-full object-cover shrink-0"
               />
-              <div class="flex-1">
-                <h3 class="font-display text-lg font-medium">{{ dev.name }}</h3>
-                <p v-if="dev.title" class="text-sm text-foreground-muted">{{ dev.title }}<span v-if="dev.location"> · {{ dev.location }}</span></p>
+              <div class="min-w-0">
+                <h3 class="font-display text-lg font-medium truncate">{{ dev.name }}</h3>
+                <p v-if="dev.title" class="text-sm text-foreground-muted truncate">{{ dev.title }}<span v-if="dev.location"> · {{ dev.location }}</span></p>
                 <p v-else-if="dev.location" class="text-sm text-foreground-muted">{{ dev.location }}</p>
               </div>
-              <span v-if="dev.isSpeaker" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-[0.7rem] uppercase tracking-widest text-foreground-muted">Speakeuse</span>
             </div>
+
+            <span v-if="dev.isSpeaker" class="self-start px-3 py-1 bg-background-card border border-border/10 rounded-full text-[0.7rem] uppercase tracking-widest text-foreground-muted">Speakeuse</span>
 
             <p v-if="dev.bio" class="text-sm text-foreground-muted leading-relaxed line-clamp-2 whitespace-pre-line">{{ dev.bio }}</p>
 
@@ -279,7 +280,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
               </span>
             </div>
 
-            <div v-if="dev.openTo?.length" class="flex flex-wrap gap-2 pt-2 border-t border-border/10">
+            <div v-if="dev.openTo?.length" class="flex flex-wrap gap-2 pt-2 border-t border-border/10 mt-auto">
               <span v-for="(tag, index) in dev.openTo" :key="tag" class="text-[0.7rem] text-foreground-muted">
                 {{ openToOptions.find(o => o.value === tag)?.label || tag }}{{ index < dev.openTo.length - 1 ? ' ·' : '' }}
               </span>
