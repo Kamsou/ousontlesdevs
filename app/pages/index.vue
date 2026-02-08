@@ -106,13 +106,11 @@ const features = [
     <section class="min-h-[calc(100vh-80px)] flex flex-col justify-center px-4 md:px-16 py-16 md:py-8 relative">
       <div class="max-w-4xl">
         <div class="overflow-hidden">
-          <NuxtLink to="/experience" class="hidden md:inline-flex items-center gap-2 text-foreground-muted text-xs uppercase tracking-widest mb-8 no-underline hover:text-foreground transition-colors animate-slide-up">
+          <NuxtLink to="/experience" class="hidden md:inline-flex items-center gap-2 text-foreground-muted text-sm mb-8 no-underline hover:text-foreground transition-colors animate-slide-up">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-              <path d="M12 17h.01"/>
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
             </svg>
-            Découvre quel profil dev tu es →
+            T'es plutôt quel profil dev ? Fais le quiz →
           </NuxtLink>
         </div>
         <h1 class="font-display text-5xl md:text-[clamp(3.5rem,10vw,8rem)] font-medium leading-[0.95] tracking-tight mb-8">
@@ -128,7 +126,8 @@ const features = [
 
         <div class="overflow-hidden">
           <p class="text-sm md:text-lg text-foreground-muted max-w-xl leading-relaxed mb-12 animate-slide-up animation-delay-300">
-            Parce qu'on a besoin de voir des développeuses pour en devenir une.
+            Le QG des développeuses en France.<br/>
+            Se retrouver, se rendre visibles, et montrer aux prochaines que c'est possible.
           </p>
         </div>
 
@@ -167,7 +166,7 @@ const features = [
     </div>
 
     <section class="py-24 px-4 md:px-16">
-      <p class="text-foreground-muted text-sm uppercase tracking-widest mb-12">Elles sont déjà là. Rejoins-les.</p>
+      <p class="text-foreground-muted text-sm uppercase tracking-widest mb-12">Elles sont là. Et elles bougent.</p>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
         <div v-for="(stat, index) in stats" :key="index" class="flex flex-col gap-6 py-8 border-t border-border/10">
           <span class="text-[0.7rem] text-foreground-muted tracking-widest">0{{ index + 1 }}</span>
@@ -203,7 +202,7 @@ const features = [
             Le QG des développeuses
           </h2>
           <p class="text-foreground-muted text-base leading-relaxed mb-8 max-w-md">
-            Tu n'es plus seule. Entraide, challenges, opportunités - un espace entre devs, loin du bruit.
+            Derrière la vitrine, un espace entre nous. Entraide, challenges, opportunités. Juste entre devs.
           </p>
           <ClientOnly>
             <button
@@ -357,7 +356,7 @@ const features = [
           Deviens visible
         </h2>
         <p class="text-foreground-muted text-base leading-relaxed mb-10">
-          Ton profil pourrait être celui qui donne envie à une future dev de se lancer.
+          Ton profil pourrait inspirer une future dev à se lancer. Et derrière, une communauté t'attend.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button @click="handleCreateProfile" class="group inline-flex items-center gap-4 px-8 py-5 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full text-base font-medium cursor-pointer transition-all hover:gap-6 hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none">
