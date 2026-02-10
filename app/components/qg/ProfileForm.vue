@@ -248,6 +248,12 @@ useIntersectionObserver(stickysentinel, (entries) => {
             </div>
 
             <div class="flex flex-col gap-2">
+              <label for="email" class="text-xs uppercase tracking-wide text-foreground-muted">Email</label>
+              <input id="email" :value="profile?.email || 'Non renseigné'" type="email" disabled class="px-4 py-3 bg-border/5 border border-border/20 rounded-lg text-foreground text-sm cursor-not-allowed opacity-60" />
+              <p class="text-xs text-foreground-muted">Synchronisé automatiquement depuis GitHub</p>
+            </div>
+
+            <div class="flex flex-col gap-2">
               <label for="title" class="text-xs uppercase tracking-wide text-foreground-muted">En quelques mots</label>
               <div class="relative">
                 <input id="title" v-model="form.title" type="text" maxlength="120" placeholder="Dev fullstack Vue/Node, freelance..." class="w-full px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />

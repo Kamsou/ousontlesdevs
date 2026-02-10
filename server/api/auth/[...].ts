@@ -1,5 +1,6 @@
 import { NuxtAuthHandler } from '#auth'
 import GithubProvider from 'next-auth/providers/github'
+import { eq } from 'drizzle-orm'
 
 // @ts-ignore - CommonJS interop
 const GitHub = GithubProvider.default || GithubProvider
@@ -10,10 +11,23 @@ export default NuxtAuthHandler({
     signIn: '/',
   },
   callbacks: {
-    jwt({ token, account, profile }) {
+    async jwt({ token, account, profile }) {
       if (account) {
         token.id = account.providerAccountId
         token.login = (profile as { login?: string })?.login ?? ''
+
+        // Auto-sync email from GitHub on login
+        const githubEmail = (profile as { email?: string })?.email
+        if (githubEmail) {
+          try {
+            const db = useDrizzle()
+            await db.update(tables.developers)
+              .set({ email: githubEmail })
+              .where(eq(tables.developers.githubId, token.id))
+          } catch (err) {
+            console.error('[auth] Failed to sync GitHub email:', err)
+          }
+        }
       }
       return token
     },
@@ -24,7 +38,7 @@ export default NuxtAuthHandler({
       }
       return session
     },
-    redirect({ url, baseUrl }) {
+    redirect({ baseUrl }) {
       return `${baseUrl}/profil`
     }
   },
