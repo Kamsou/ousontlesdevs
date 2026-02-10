@@ -11,55 +11,67 @@ Nuxt 4 + TypeScript, deployed on Netlify with Turso (libSQL).
 
 ```
 app/
-├── pages/               → Pages (file-based routing)
-│   ├── index.vue       → Homepage
-│   ├── annuaire/       → Developer directory (public)
-│   ├── speakers/       → Speakers list (public)
-│   ├── entreprises/    → Companies + reviews (public)
-│   ├── programmes.vue  → Programs & communities (public)
-│   ├── podcasts.vue    → Podcasts (public)
-│   ├── experience/     → Quiz "Quel dev es-tu?" (public)
-│   ├── qg/             → Private dashboard (auth required)
-│   │   ├── index.vue   → QG hub (tabs: entraide, offres, profil)
-│   │   ├── ask.vue     → Create help request
+├── pages/                → Pages (file-based routing)
+│   ├── index.vue         → Homepage
+│   ├── annuaire/         → Developer directory (public)
+│   ├── speakers/         → Speakers list (public)
+│   ├── entreprises/      → Companies + reviews (public)
+│   ├── programmes.vue    → Programs & communities (public)
+│   ├── podcasts.vue      → Podcasts (public)
+│   ├── experience/       → Quiz "Quel dev es-tu?" (public)
+│   ├── qg/               → Private dashboard (auth required)
+│   │   ├── index.vue     → QG hub (tabs: entraide, offres, profil)
+│   │   ├── ask.vue       → Create help request
 │   │   ├── new-offer.vue → Create offer
 │   │   ├── new-project.vue → Create side project
-│   │   ├── requests/   → Help request detail + edit
-│   │   └── projects/   → Side project detail + edit
-│   ├── profil/         → Auth redirect (animated loading → QG)
-│   ├── feedback/       → Contact feedback (token-based)
-│   ├── admin/          → Admin dashboard (layout: admin)
-│   ├── legal.vue       → Legal notices
-│   └── coc.vue         → Code of conduct
+│   │   ├── requests/     → Help request detail + edit
+│   │   └── projects/     → Side project detail + edit
+│   ├── profil/           → Auth redirect (animated loading → QG)
+│   ├── feedback/         → Contact feedback (token-based)
+│   ├── admin/            → Admin dashboard (layout: admin)
+│   │   ├── index.vue     → Admin developers list
+│   │   ├── programs.vue  → Programs management
+│   │   ├── podcasts.vue  → Podcasts management
+│   │   ├── stats.vue     → Stats dashboard
+│   │   └── newsletter.vue → Newsletter subscribers export
+│   ├── legal.vue         → Legal notices
+│   └── coc.vue           → Code of conduct
 ├── layouts/
-│   ├── default.vue     → Empty layout (pass-through)
-│   └── admin.vue       → Admin layout (header, nav tabs)
+│   ├── default.vue       → Empty layout (pass-through)
+│   └── admin.vue         → Admin layout (header, nav tabs)
 ├── components/
-│   └── qg/             → QG components (Feed, Comments, ProfileForm,
-│                          RequestsList, OffersList, SideProjectsList, etc.)
-├── app.vue             → Root layout (public header/footer, theme handling)
+│   └── qg/               → QG components (Feed, Comments, ProfileForm,
+│                            RequestsList, OffersList, SideProjectsList, etc.)
+├── composables/
+│   └── useToast.ts       → Toast notification composable
+├── app.vue               → Root layout (public header/footer, theme handling)
 server/
-├── api/                → API routes (Nitro)
-│   ├── auth/[...].ts   → Auth.js (GitHub OAuth)
-│   ├── developers/     → CRUD developers
-│   ├── companies/      → CRUD companies + reviews
-│   ├── speakers/       → Speakers list
-│   ├── help-requests/  → Help requests + matches + comments
-│   ├── side-projects/  → Side projects CRUD
-│   ├── offers/         → Job offers CRUD
-│   ├── comments/       → Comments + mark-read
-│   ├── qg/             → QG activity feed
-│   ├── contact/        → Contact requests + email (Resend)
-│   ├── experience/     → AI quiz (Anthropic)
-│   ├── programs/       → Programs list
-│   ├── podcasts/       → Podcasts list
-│   ├── admin/          → Admin endpoints
-│   └── stats.get.ts    → Homepage stats
+├── api/                  → API routes (Nitro)
+│   ├── auth/[...].ts     → Auth.js (GitHub OAuth)
+│   ├── developers/       → CRUD developers
+│   ├── companies/        → CRUD companies + reviews
+│   ├── speakers/         → Speakers list
+│   ├── help-requests/    → Help requests + matches + comments
+│   ├── side-projects/    → Side projects CRUD
+│   ├── offers/           → Job offers CRUD
+│   ├── comments/         → Comments + mark-read
+│   ├── qg/               → QG activity feed
+│   ├── contact/          → Contact requests + email (Resend)
+│   ├── experience/       → AI quiz (Anthropic)
+│   ├── programs/         → Programs CRUD
+│   ├── podcasts/         → Podcasts CRUD
+│   ├── admin/            → Admin endpoints
+│   ├── webhooks/         → Webhooks (Brevo unsubscribe)
+│   └── stats.get.ts      → Homepage stats
 ├── db/
-│   ├── schema.ts       → Drizzle schema
-│   └── migrations/     → SQL migrations
+│   ├── schema.ts         → Drizzle schema
+│   └── migrations/       → SQL migrations
 └── utils/
-    └── drizzle.ts      → DB helper
+    ├── drizzle.ts        → DB helper
+    └── brevo.ts          → Brevo newsletter sync
+shared/
+└── types/
+    └── next-auth.d.ts    → Auth.js type augmentation (Session + JWT)
 ```
 
 ## Commands
