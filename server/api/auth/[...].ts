@@ -16,7 +16,6 @@ export default NuxtAuthHandler({
         token.id = account.providerAccountId
         token.login = (profile as { login?: string })?.login ?? ''
 
-        // Auto-sync email from GitHub on login
         const githubEmail = (profile as { email?: string })?.email
         if (githubEmail) {
           try {

@@ -19,6 +19,7 @@ const { data: pendingOffers, refresh: refreshOffers } = useLazyFetch<any[]>('/ap
 const searchQuery = ref('')
 const deleting = ref<number | null>(null)
 const verifying = ref<number | null>(null)
+const editingDeveloperId = ref<number | null>(null)
 
 const filteredDevelopers = computed(() => {
   if (!developers.value) return []
@@ -217,13 +218,21 @@ function formatDate(date: string | Date | null) {
               <span class="text-sm text-foreground-muted">{{ formatDate(dev.createdAt) }}</span>
             </td>
             <td class="py-4">
-              <button
-                @click="deleteDeveloper(dev.id, dev.name)"
-                :disabled="deleting === dev.id"
-                class="px-3 py-1.5 text-xs border border-red-500/30 text-red-400 rounded-lg bg-transparent cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {{ deleting === dev.id ? '...' : 'Supprimer' }}
-              </button>
+              <div class="flex items-center gap-2">
+                <button
+                  @click="editingDeveloperId = dev.id"
+                  class="px-3 py-1.5 text-xs border border-border/30 text-foreground rounded-lg bg-transparent cursor-pointer transition-all hover:bg-border/10"
+                >
+                  Modifier
+                </button>
+                <button
+                  @click="deleteDeveloper(dev.id, dev.name)"
+                  :disabled="deleting === dev.id"
+                  class="px-3 py-1.5 text-xs border border-red-500/30 text-red-400 rounded-lg bg-transparent cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {{ deleting === dev.id ? '...' : 'Supprimer' }}
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -233,5 +242,11 @@ function formatDate(date: string | Date | null) {
         Aucune développeuse trouvée
       </div>
     </div>
+
+    <AdminEditUserModal
+      :developer-id="editingDeveloperId"
+      @close="editingDeveloperId = null"
+      @saved="refresh"
+    />
   </div>
 </template>
