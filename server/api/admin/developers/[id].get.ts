@@ -3,7 +3,9 @@ import { getServerSession } from '#auth'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
-  if (!session || session.user.id !== '16612054') {
+  const config = useRuntimeConfig()
+
+  if (!session || session.user.id !== config.adminGithubId) {
     throw createError({ statusCode: 403, message: 'Forbidden' })
   }
 
