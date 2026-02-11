@@ -31,13 +31,31 @@ const { data: profile, refresh: refreshProfile } = await useFetch<QgProfile | nu
 const { data: isAdmin } = useLazyFetch('/api/admin/check', {
   default: () => false
 })
-type TabType = 'entraide' | 'challenges' | 'offres' | 'profil'
 
-const activeTab = ref<TabType>(
-  route.query.tab === 'profil' ? 'profil' :
-  route.query.tab === 'challenges' ? 'challenges' :
-  (route.query.tab === 'offres' || route.query.tab === 'projects') ? 'offres' : 'entraide'
-)
+const TABS = {
+  ENTRAIDE: 'entraide',
+  CHALLENGES: 'challenges',
+  OPPORTUNITES: 'opportunites',
+  PROFIL: 'profil',
+} as const
+
+const TAB_ALIASES = {
+  offres: TABS.OPPORTUNITES,
+  projects: TABS.OPPORTUNITES,
+} as const
+
+type TabType = typeof TABS[keyof typeof TABS]
+
+function getTabFromQuery(tab: any): TabType {
+  if (tab === TABS.PROFIL) return TABS.PROFIL
+  if (tab === TABS.CHALLENGES) return TABS.CHALLENGES
+  if (tab === TABS.OPPORTUNITES || tab in TAB_ALIASES) {
+    return TAB_ALIASES[tab as keyof typeof TAB_ALIASES] || TABS.OPPORTUNITES
+  }
+  return TABS.ENTRAIDE
+}
+
+const activeTab = ref<TabType>(getTabFromQuery(route.query.tab))
 const showOptInModal = ref(false)
 const isLoadingRequests = computed(() => requestsStatus.value === 'pending')
 const isLoadingActivity = computed(() => activityStatus.value === 'pending')
@@ -87,7 +105,7 @@ async function handleProfileSaved() {
   const wasNew = isNewProfile.value
   await Promise.all([refreshProfile(), refreshActivity()])
   if (wasNew) {
-    activeTab.value = 'entraide'
+    activeTab.value = TABS.ENTRAIDE
     showOptInModal.value = true
   }
 }
@@ -104,11 +122,11 @@ async function handleMarkProjectCompleted(projectId: number) {
   }
 }
 watch(() => route.query.tab, (tab) => {
-  activeTab.value = tab === 'profil' ? 'profil' : tab === 'challenges' ? 'challenges' : (tab === 'offres' || tab === 'projects') ? 'offres' : 'entraide'
+  activeTab.value = getTabFromQuery(tab)
 })
 
 watch(activeTab, (tab) => {
-  router.replace({ query: tab === 'entraide' ? {} : { tab } })
+  router.replace({ query: tab === TABS.ENTRAIDE ? {} : { tab } })
   $clientPosthog?.capture('qg_tab_clicked', { tab })
 })
 onMounted(() => {
@@ -169,7 +187,7 @@ onMounted(() => {
           v-else-if="activity && !activity.isNew"
           :activity="activity"
           class="mb-4 md:mb-6"
-          @go-to-profile="activeTab = 'profil'"
+          @go-to-profile="activeTab = TABS.PROFIL"
         />
         <template #fallback>
           <div class="mb-4 md:mb-6">
@@ -186,52 +204,52 @@ onMounted(() => {
     <nav class="hidden md:block sticky top-[49px] z-40 bg-background border-b border-border/10">
       <div class="max-w-3xl mx-auto px-6 flex gap-6">
         <button
-          @click="activeTab = 'entraide'"
+          @click="activeTab = TABS.ENTRAIDE"
           :class="[
             'pt-3 pb-3 text-sm font-medium transition-colors relative',
-            activeTab === 'entraide'
+            activeTab === TABS.ENTRAIDE
               ? 'text-foreground'
               : 'text-foreground-muted hover:text-foreground'
           ]"
         >
           Entraide
-          <span v-if="activeTab === 'entraide'" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
+          <span v-if="activeTab === TABS.ENTRAIDE" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
         </button>
         <button
-          @click="activeTab = 'challenges'"
+          @click="activeTab = TABS.CHALLENGES"
           :class="[
             'pt-3 pb-3 text-sm font-medium transition-colors relative',
-            activeTab === 'challenges'
+            activeTab === TABS.CHALLENGES
               ? 'text-foreground'
               : 'text-foreground-muted hover:text-foreground'
           ]"
         >
           Challenges <span class="text-[10px] text-foreground-muted font-normal">(beta)</span>
-          <span v-if="activeTab === 'challenges'" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
+          <span v-if="activeTab === TABS.CHALLENGES" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
         </button>
         <button
-          @click="activeTab = 'offres'"
+          @click="activeTab = TABS.OPPORTUNITES"
           :class="[
             'pt-3 pb-3 text-sm font-medium transition-colors relative',
-            activeTab === 'offres'
+            activeTab === TABS.OPPORTUNITES
               ? 'text-foreground'
               : 'text-foreground-muted hover:text-foreground'
           ]"
         >
-          Offres
-          <span v-if="activeTab === 'offres'" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
+          Opportunités
+          <span v-if="activeTab === TABS.OPPORTUNITES" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
         </button>
         <button
-          @click="activeTab = 'profil'"
+          @click="activeTab = TABS.PROFIL"
           :class="[
             'pt-3 pb-3 text-sm font-medium transition-colors relative',
-            activeTab === 'profil'
+            activeTab === TABS.PROFIL
               ? 'text-foreground'
               : 'text-foreground-muted hover:text-foreground'
           ]"
         >
           Profil
-          <span v-if="activeTab === 'profil'" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
+          <span v-if="activeTab === TABS.PROFIL" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
         </button>
       </div>
     </nav>
@@ -239,22 +257,22 @@ onMounted(() => {
     <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/20 pb-[env(safe-area-inset-bottom)]">
       <div class="flex justify-around">
         <button
-          @click="activeTab = 'entraide'"
+          @click="activeTab = TABS.ENTRAIDE"
           :class="[
             'flex flex-col items-center gap-1 pt-2.5 pb-2 px-4 text-[11px] font-medium transition-colors',
-            activeTab === 'entraide' ? 'text-primary' : 'text-foreground-muted'
+            activeTab === TABS.ENTRAIDE ? 'text-primary' : 'text-foreground-muted'
           ]"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" :stroke="activeTab === 'entraide' ? 'currentColor' : 'currentColor'" stroke-width="1.5">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" :stroke="activeTab === TABS.ENTRAIDE ? 'currentColor' : 'currentColor'" stroke-width="1.5">
             <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
           Entraide
         </button>
         <button
-          @click="activeTab = 'challenges'"
+          @click="activeTab = TABS.CHALLENGES"
           :class="[
             'flex flex-col items-center gap-1 pt-2.5 pb-2 px-4 text-[11px] font-medium transition-colors',
-            activeTab === 'challenges' ? 'text-primary' : 'text-foreground-muted'
+            activeTab === TABS.CHALLENGES ? 'text-primary' : 'text-foreground-muted'
           ]"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -263,22 +281,22 @@ onMounted(() => {
           Challenges <span class="text-[8px] text-foreground-muted">(beta)</span>
         </button>
         <button
-          @click="activeTab = 'offres'"
+          @click="activeTab = TABS.OPPORTUNITES"
           :class="[
             'flex flex-col items-center gap-1 pt-2.5 pb-2 px-4 text-[11px] font-medium transition-colors',
-            activeTab === 'offres' ? 'text-primary' : 'text-foreground-muted'
+            activeTab === TABS.OPPORTUNITES ? 'text-primary' : 'text-foreground-muted'
           ]"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
           </svg>
-          Offres
+          Opportunités
         </button>
         <button
-          @click="activeTab = 'profil'"
+          @click="activeTab = TABS.PROFIL"
           :class="[
             'flex flex-col items-center gap-1 pt-2.5 pb-2 px-4 text-[11px] font-medium transition-colors',
-            activeTab === 'profil' ? 'text-primary' : 'text-foreground-muted'
+            activeTab === TABS.PROFIL ? 'text-primary' : 'text-foreground-muted'
           ]"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -290,12 +308,12 @@ onMounted(() => {
     </nav>
 
     <div class="max-w-3xl mx-auto px-6 py-4 md:py-8 pb-24 md:pb-8">
-      <div v-if="activeTab === 'entraide'" class="space-y-10 md:space-y-14">
+      <div v-if="activeTab === TABS.ENTRAIDE" class="space-y-10 md:space-y-14">
         <QgIncompleteProfileBanner
           v-if="!isLoadingActivity && activity?.profileComplete === false"
           :missing-fields="activity?.missingFields || []"
           context="à l'entraide"
-          @go-to-profile="activeTab = 'profil'"
+          @go-to-profile="activeTab = TABS.PROFIL"
         />
 
         <section>
@@ -353,18 +371,18 @@ onMounted(() => {
         />
       </div>
 
-      <div v-else-if="activeTab === 'challenges'">
+      <div v-else-if="activeTab === TABS.CHALLENGES">
         <QgIncompleteProfileBanner
           v-if="!isLoadingActivity && activity?.profileComplete === false"
           :missing-fields="activity?.missingFields || []"
           context="aux challenges"
           class="mb-8"
-          @go-to-profile="activeTab = 'profil'"
+          @go-to-profile="activeTab = TABS.PROFIL"
         />
         <QgChallenges v-else />
       </div>
 
-      <div v-else-if="activeTab === 'offres'">
+      <div v-else-if="activeTab === TABS.OPPORTUNITES">
         <div v-if="activity?.profileComplete !== false" class="flex flex-col sm:flex-row gap-3 mb-8 md:mb-12">
           <NuxtLink
             to="/qg/new-offer"
@@ -402,9 +420,9 @@ onMounted(() => {
         <QgIncompleteProfileBanner
           v-else
           :missing-fields="activity?.missingFields || []"
-          context="aux offres et projets"
+          context="aux opportunités"
           class="mb-8 md:mb-12"
-          @go-to-profile="activeTab = 'profil'"
+          @go-to-profile="activeTab = TABS.PROFIL"
         />
 
         <QgOffersList
