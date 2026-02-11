@@ -29,7 +29,7 @@ const projectId = route.params.id
 const toast = useToast()
 
 const projectUrl = `/api/side-projects/${projectId}`
-const { data: project, status: projectStatus, refresh } = await useFetch<SideProject>(projectUrl)
+const { data: project, status: projectStatus, refresh } = useLazyFetch<SideProject>(projectUrl)
 const { data: currentUser } = useLazyFetch<{ id: number } | null>('/api/developers/me', {
   default: () => null
 })
