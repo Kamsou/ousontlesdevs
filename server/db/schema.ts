@@ -21,6 +21,7 @@ export const developers = sqliteTable('developers', {
   isAdmin: integer('is_admin', { mode: 'boolean' }).default(false),
   emailOptIn: integer('email_opt_in', { mode: 'boolean' }).default(false),
   emailOptInDate: integer('email_opt_in_date', { mode: 'timestamp' }),
+  commentsNotificationsEnabled: integer('comments_notifications_enabled', { mode: 'boolean' }).default(true),
   cocAcceptedAt: integer('coc_accepted_at', { mode: 'timestamp' }),
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
@@ -104,11 +105,12 @@ export const offers = sqliteTable('offers', {
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 })
 
-export const offersRelations = relations(offers, ({ one }) => ({
+export const offersRelations = relations(offers, ({ one, many }) => ({
   developer: one(developers, {
     fields: [offers.developerId],
     references: [developers.id]
-  })
+  }),
+  comments: many(comments)
 }))
 
 export const developersRelations = relations(developers, ({ many, one }) => ({
@@ -290,6 +292,7 @@ export const comments = sqliteTable('comments', {
   developerId: integer('developer_id').notNull().references(() => developers.id, { onDelete: 'cascade' }),
   helpRequestId: integer('help_request_id').references(() => helpRequests.id, { onDelete: 'cascade' }),
   sideProjectId: integer('side_project_id').references(() => sideProjects.id, { onDelete: 'cascade' }),
+  offerId: integer('offer_id').references(() => offers.id, { onDelete: 'cascade' }),
   content: text('content').notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
@@ -325,6 +328,10 @@ export const commentsRelations = relations(comments, ({ one }) => ({
   sideProject: one(sideProjects, {
     fields: [comments.sideProjectId],
     references: [sideProjects.id]
+  }),
+  offer: one(offers, {
+    fields: [comments.offerId],
+    references: [offers.id]
   })
 }))
 

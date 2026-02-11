@@ -15,10 +15,10 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event)
-  const { helpRequestId, sideProjectId } = body || {}
+  const { helpRequestId, sideProjectId, offerId } = body || {}
 
-  if (!helpRequestId && !sideProjectId) {
-    throw createError({ statusCode: 400, message: 'helpRequestId ou sideProjectId requis' })
+  if (!helpRequestId && !sideProjectId && !offerId) {
+    throw createError({ statusCode: 400, message: 'helpRequestId, sideProjectId ou offerId requis' })
   }
 
   const db = useDrizzle()
@@ -31,11 +31,12 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: 'Profil non trouvé' })
   }
 
-  // Get all comments on this content that are not by the current user
   const comments = await db.query.comments.findMany({
     where: helpRequestId
       ? eq(tables.comments.helpRequestId, helpRequestId)
-      : eq(tables.comments.sideProjectId, sideProjectId),
+      : sideProjectId
+      ? eq(tables.comments.sideProjectId, sideProjectId)
+      : eq(tables.comments.offerId, offerId),
     columns: { id: true, developerId: true }
   })
 
@@ -47,7 +48,6 @@ export default defineEventHandler(async (event) => {
     return { marked: 0 }
   }
 
-  // Find which ones are already marked as read
   const alreadyRead = await db.query.commentReads.findMany({
     where: and(
       eq(tables.commentReads.developerId, developer.id),
@@ -63,7 +63,6 @@ export default defineEventHandler(async (event) => {
     return { marked: 0 }
   }
 
-  // Insert read entries
   await db.insert(tables.commentReads).values(
     toMark.map(commentId => ({
       developerId: developer.id,

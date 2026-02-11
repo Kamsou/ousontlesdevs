@@ -14,6 +14,7 @@ interface Comment {
 const props = defineProps<{
   helpRequestId?: number
   sideProjectId?: number
+  offerId?: number
   currentUserId?: number | null
   isOwner?: boolean
 }>()
@@ -27,6 +28,7 @@ const queryParams = computed(() => {
   const params: Record<string, string> = {}
   if (props.helpRequestId) params.helpRequestId = String(props.helpRequestId)
   if (props.sideProjectId) params.sideProjectId = String(props.sideProjectId)
+  if (props.offerId) params.offerId = String(props.offerId)
   return params
 })
 
@@ -35,7 +37,6 @@ const { data: comments, status } = useLazyFetch<Comment[]>('/api/comments', {
 })
 const isLoading = computed(() => status.value === 'pending')
 
-// Mark comments as read when owner or participant views them
 watch(() => comments.value, (newComments) => {
   if (!newComments?.length) return
   const isParticipant = props.isOwner || newComments.some(c => c.developer.id === props.currentUserId)
@@ -44,7 +45,8 @@ watch(() => comments.value, (newComments) => {
       method: 'POST',
       body: {
         helpRequestId: props.helpRequestId || null,
-        sideProjectId: props.sideProjectId || null
+        sideProjectId: props.sideProjectId || null,
+        offerId: props.offerId || null
       }
     }).catch(() => {})
   }
@@ -63,7 +65,8 @@ async function submitComment() {
       body: {
         content: newComment.value.trim(),
         helpRequestId: props.helpRequestId || null,
-        sideProjectId: props.sideProjectId || null
+        sideProjectId: props.sideProjectId || null,
+        offerId: props.offerId || null
       }
     })
     if (comments.value) {

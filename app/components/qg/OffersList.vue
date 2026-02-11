@@ -27,6 +27,12 @@ const communityOffers = computed(() =>
   props.offers.filter(o => o.developer.id !== props.currentUserId)
 )
 
+const expandedOfferId = ref<number | null>(null)
+
+function toggleComments(offerId: number) {
+  expandedOfferId.value = expandedOfferId.value === offerId ? null : offerId
+}
+
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('fr-FR', {
     day: 'numeric',
@@ -49,54 +55,71 @@ function formatDate(date: string) {
     <div v-else class="space-y-3">
       <div
         v-for="offer in communityOffers"
+        :id="`offer-${offer.id}`"
         :key="offer.id"
-        class="p-4 border border-border/20 rounded-xl transition-colors hover:border-primary/20"
+        class="border border-border/20 rounded-xl transition-colors hover:border-primary/20"
       >
-        <div class="flex items-start justify-between gap-3">
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-2 flex-wrap mb-1">
-              <span
-                class="px-2 py-0.5 text-[11px] font-medium border rounded-full"
-                :class="typeColors[offer.type] || typeColors.other"
+        <div class="p-4">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 flex-wrap mb-1">
+                <span
+                  class="px-2 py-0.5 text-[11px] font-medium border rounded-full"
+                  :class="typeColors[offer.type] || typeColors.other"
+                >
+                  {{ typeLabels[offer.type] || offer.type }}
+                </span>
+                <span
+                  v-if="offer.verified"
+                  class="px-2 py-0.5 text-[11px] font-medium border border-green-500/30 text-green-400 rounded-full"
+                >
+                  Vérifié
+                </span>
+              </div>
+              <h3 class="font-medium text-sm text-foreground">
+                <a
+                  v-if="offer.url"
+                  :href="offer.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="underline underline-offset-2 decoration-border hover:decoration-foreground-muted transition-colors"
+                >
+                  {{ offer.title }}
+                </a>
+                <span v-else>{{ offer.title }}</span>
+              </h3>
+              <p v-if="offer.description" class="text-xs text-foreground-muted mt-1 line-clamp-2">
+                {{ offer.description }}
+              </p>
+              <div class="flex items-center gap-3 mt-2 text-xs text-foreground-muted">
+                <span class="flex items-center gap-1.5">
+                  <img
+                    v-if="offer.developer.avatarUrl"
+                    :src="offer.developer.avatarUrl"
+                    :alt="offer.developer.name"
+                    class="w-4 h-4 rounded-full"
+                  />
+                  {{ offer.developer.name }}
+                </span>
+                <span v-if="offer.location">{{ offer.location }}</span>
+                <span>{{ formatDate(offer.createdAt) }}</span>
+              </div>
+              <button
+                @click="toggleComments(offer.id)"
+                class="text-xs text-foreground-muted hover:text-foreground mt-3 transition-colors"
               >
-                {{ typeLabels[offer.type] || offer.type }}
-              </span>
-              <span
-                v-if="offer.verified"
-                class="px-2 py-0.5 text-[11px] font-medium border border-green-500/30 text-green-400 rounded-full"
-              >
-                Vérifié
-              </span>
-            </div>
-            <h3 class="font-medium text-sm text-foreground">
-              <a
-                v-if="offer.url"
-                :href="offer.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="underline underline-offset-2 decoration-border hover:decoration-foreground-muted transition-colors"
-              >
-                {{ offer.title }}
-              </a>
-              <span v-else>{{ offer.title }}</span>
-            </h3>
-            <p v-if="offer.description" class="text-xs text-foreground-muted mt-1 line-clamp-2">
-              {{ offer.description }}
-            </p>
-            <div class="flex items-center gap-3 mt-2 text-xs text-foreground-muted">
-              <span class="flex items-center gap-1.5">
-                <img
-                  v-if="offer.developer.avatarUrl"
-                  :src="offer.developer.avatarUrl"
-                  :alt="offer.developer.name"
-                  class="w-4 h-4 rounded-full"
-                />
-                {{ offer.developer.name }}
-              </span>
-              <span v-if="offer.location">{{ offer.location }}</span>
-              <span>{{ formatDate(offer.createdAt) }}</span>
+                {{ expandedOfferId === offer.id ? 'Masquer' : 'Voir' }} les commentaires
+              </button>
             </div>
           </div>
+        </div>
+
+        <div v-if="expandedOfferId === offer.id" class="border-t border-border/20 p-4">
+          <QgComments
+            :offer-id="offer.id"
+            :current-user-id="currentUserId"
+            :is-owner="offer.developer.id === currentUserId"
+          />
         </div>
       </div>
     </div>

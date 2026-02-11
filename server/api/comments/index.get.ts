@@ -4,9 +4,10 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const helpRequestId = query.helpRequestId ? Number(query.helpRequestId) : null
   const sideProjectId = query.sideProjectId ? Number(query.sideProjectId) : null
+  const offerId = query.offerId ? Number(query.offerId) : null
 
-  if (!helpRequestId && !sideProjectId) {
-    throw createError({ statusCode: 400, message: 'helpRequestId ou sideProjectId requis' })
+  if (!helpRequestId && !sideProjectId && !offerId) {
+    throw createError({ statusCode: 400, message: 'helpRequestId, sideProjectId ou offerId requis' })
   }
 
   const db = useDrizzle()
@@ -14,7 +15,9 @@ export default defineEventHandler(async (event) => {
   const comments = await db.query.comments.findMany({
     where: helpRequestId
       ? eq(tables.comments.helpRequestId, helpRequestId)
-      : eq(tables.comments.sideProjectId, sideProjectId!),
+      : sideProjectId
+      ? eq(tables.comments.sideProjectId, sideProjectId)
+      : eq(tables.comments.offerId, offerId!),
     with: {
       developer: {
         columns: {

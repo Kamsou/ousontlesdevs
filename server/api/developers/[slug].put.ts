@@ -57,6 +57,9 @@ export default defineEventHandler(async (event) => {
     linkedinUrl: body.linkedinUrl ?? developer.linkedinUrl,
     twitterUrl: body.twitterUrl ?? developer.twitterUrl,
     ...emailOptInUpdate,
+    commentsNotificationsEnabled: typeof body.commentsNotificationsEnabled === 'boolean'
+      ? body.commentsNotificationsEnabled
+      : developer.commentsNotificationsEnabled,
     updatedAt: new Date()
   }).where(eq(tables.developers.id, id))
 

@@ -35,6 +35,7 @@ const form = reactive({
   remoteOk: true,
   travelWilling: false,
   emailOptIn: false,
+  commentsNotificationsEnabled: true,
   cocAccepted: false
 })
 
@@ -173,6 +174,7 @@ watch(() => props.profile, (p) => {
     form.remoteOk = p.speakerProfile?.remoteOk ?? true
     form.travelWilling = p.speakerProfile?.travelWilling ?? false
     form.emailOptIn = p.emailOptIn ?? false
+    form.commentsNotificationsEnabled = p.commentsNotificationsEnabled ?? true
   } else if (props.sessionUserName) {
     const nameParts = props.sessionUserName.split(' ')
     form.firstName = nameParts[0] || ''
@@ -419,21 +421,39 @@ useIntersectionObserver(stickysentinel, (entries) => {
         <section class="py-5 border-b border-border/10">
           <h2 class="font-display text-xl font-medium mb-4">Préférences</h2>
 
-          <label class="flex items-start gap-3 cursor-pointer group">
-            <input
-              v-model="form.emailOptIn"
-              type="checkbox"
-              class="w-[18px] h-[18px] accent-primary mt-0.5 shrink-0"
-            />
-            <div class="flex flex-col gap-1">
-              <span class="text-foreground group-hover:text-primary transition-colors">
-                Recevoir les actualités OSLD
-              </span>
-              <span class="text-xs text-foreground-muted">
-                News sur l'avancée du projet, sondages pour améliorer l'app. Zéro spam.
-              </span>
-            </div>
-          </label>
+          <div class="space-y-4">
+            <label class="flex items-start gap-3 cursor-pointer group">
+              <input
+                v-model="form.emailOptIn"
+                type="checkbox"
+                class="w-[18px] h-[18px] accent-primary mt-0.5 shrink-0"
+              />
+              <div class="flex flex-col gap-1">
+                <span class="text-foreground group-hover:text-primary transition-colors">
+                  Recevoir les actualités OSLD
+                </span>
+                <span class="text-xs text-foreground-muted">
+                  News sur l'avancée du projet, sondages pour améliorer l'app. Zéro spam.
+                </span>
+              </div>
+            </label>
+
+            <label class="flex items-start gap-3 cursor-pointer group">
+              <input
+                v-model="form.commentsNotificationsEnabled"
+                type="checkbox"
+                class="w-[18px] h-[18px] accent-primary mt-0.5 shrink-0"
+              />
+              <div class="flex flex-col gap-1">
+                <span class="text-foreground group-hover:text-primary transition-colors">
+                  Notifications de commentaires
+                </span>
+                <span class="text-xs text-foreground-muted">
+                  Recevoir un email quand quelqu'un commente tes opportunités ou répond à tes commentaires
+                </span>
+              </div>
+            </label>
+          </div>
         </section>
 
         <section v-if="isNewProfile" :class="['p-6 rounded-2xl', fieldErrors.cocAccepted ? 'border border-red-500/50 bg-red-500/5' : 'border border-primary/30 bg-primary/5']">

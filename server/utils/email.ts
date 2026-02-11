@@ -242,3 +242,69 @@ export async function sendContactEmail({
     `
   })
 }
+
+interface CommentNotificationParams {
+  recipientEmail: string
+  recipientName: string
+  commenterName: string
+  opportunityTitle: string
+  commentSnippet: string
+  opportunityType: 'help_request' | 'side_project' | 'offer'
+  opportunityUrl: string
+}
+
+export async function sendCommentNotificationEmail({
+  recipientEmail,
+  recipientName,
+  commenterName,
+  opportunityTitle,
+  commentSnippet,
+  opportunityType,
+  opportunityUrl
+}: CommentNotificationParams) {
+  const resend = getResend()
+
+  const typeLabels = {
+    help_request: 'demande d\'aide',
+    side_project: 'side project',
+    offer: 'offre'
+  }
+
+  const typeLabel = typeLabels[opportunityType]
+  const subject = `${commenterName} a commenté ton ${typeLabel}`
+
+  return resend.emails.send({
+    from: FROM_EMAIL,
+    to: recipientEmail,
+    subject,
+    html: `
+      <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #ffffff; color: #1a1a1a;">
+
+        <h1 style="font-size: 24px; font-weight: 600; margin-bottom: 8px; color: #1a1a1a;">
+          Hey ${escapeHtml(recipientName)}
+        </h1>
+
+        <p style="font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 16px;">
+          <strong>${escapeHtml(commenterName)}</strong> a commenté ton ${typeLabel} :
+        </p>
+
+        <p style="font-size: 18px; font-weight: 500; color: #1a1a1a; margin-bottom: 16px;">
+          "${escapeHtml(opportunityTitle)}"
+        </p>
+
+        <div style="padding: 20px; background: #fafafa; border-left: 3px solid #1a1a1a; margin-bottom: 28px;">
+          <p style="font-size: 15px; line-height: 1.6; color: #374151; margin: 0;">${escapeHtml(commentSnippet)}${commentSnippet.length >= 150 ? '...' : ''}</p>
+        </div>
+
+        <a href="${opportunityUrl}"
+           style="display: inline-block; padding: 14px 24px; background: #1a1a1a; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 15px;">
+          Voir le commentaire
+        </a>
+
+        <p style="font-size: 14px; line-height: 1.6; color: #6b7280; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+          Tu peux gérer tes notifications dans <a href="https://ousontlesdeveloppeuses.fr/qg?tab=profil" style="color: #6b7280;">tes préférences</a>.
+        </p>
+      </div>
+    `
+  })
+}

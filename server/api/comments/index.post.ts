@@ -34,11 +34,13 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, message: 'Commentaire trop long (2000 caractères max)' })
   }
 
-  if (!body.helpRequestId && !body.sideProjectId) {
-    throw createError({ statusCode: 400, message: 'helpRequestId ou sideProjectId requis' })
+  const targetCount = [body.helpRequestId, body.sideProjectId, body.offerId].filter(Boolean).length
+
+  if (targetCount === 0) {
+    throw createError({ statusCode: 400, message: 'helpRequestId, sideProjectId ou offerId requis' })
   }
 
-  if (body.helpRequestId && body.sideProjectId) {
+  if (targetCount > 1) {
     throw createError({ statusCode: 400, message: 'Un seul type de cible autorisé' })
   }
 
@@ -46,8 +48,18 @@ export default defineEventHandler(async (event) => {
     developerId: developer.id,
     helpRequestId: body.helpRequestId || null,
     sideProjectId: body.sideProjectId || null,
+    offerId: body.offerId || null,
     content: body.content.trim()
   }).returning()
+
+  sendCommentNotifications({
+    commentAuthorId: developer.id,
+    commentAuthorName: developer.name,
+    commentContent: body.content.trim(),
+    helpRequestId: body.helpRequestId,
+    sideProjectId: body.sideProjectId,
+    offerId: body.offerId
+  }).catch(console.error)
 
   return {
     ...comment,

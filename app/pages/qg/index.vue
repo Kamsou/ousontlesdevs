@@ -439,6 +439,7 @@ onMounted(() => {
           <QgMyOffersList
             :offers="myOffers"
             :is-loading="isLoadingOffers"
+            :current-user-id="profile?.id"
             @deleted="refreshOffers()"
           />
 

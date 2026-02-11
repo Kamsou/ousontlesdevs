@@ -23,6 +23,7 @@ export interface QgProfile {
   } | null
   emailOptIn: boolean
   emailOptInAsked: boolean
+  commentsNotificationsEnabled: boolean
 }
 
 export interface HelpRequest {
