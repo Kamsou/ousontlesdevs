@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: 'Demande non trouvée' })
   }
 
-  if (request.developerId !== developer.id) {
+  if (request.developerId !== developer.id && !developer.isAdmin) {
     throw createError({ statusCode: 403, message: 'Non autorisé' })
   }
 
