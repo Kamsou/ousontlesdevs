@@ -60,8 +60,37 @@ export default defineEventHandler(async (event) => {
     offset
   })
 
+  const resolvedRequests = await db.query.helpRequests.findMany({
+    where: and(
+      eq(tables.helpRequests.status, 'closed'),
+      currentDev ? ne(tables.helpRequests.developerId, currentDev.id) : undefined
+    ),
+    with: {
+      techs: true,
+      comments: {
+        columns: { id: true }
+      },
+      developer: {
+        columns: {
+          id: true,
+          slug: true,
+          name: true,
+          avatarUrl: true,
+          linkedinUrl: true
+        }
+      }
+    },
+    orderBy: [desc(tables.helpRequests.createdAt)],
+    limit: 10
+  })
+
   return {
     requests: requests.map(r => ({
+      ...r,
+      commentCount: r.comments.length,
+      comments: undefined
+    })),
+    resolvedRequests: resolvedRequests.map(r => ({
       ...r,
       commentCount: r.comments.length,
       comments: undefined

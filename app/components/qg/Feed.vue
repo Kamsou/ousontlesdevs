@@ -15,6 +15,7 @@ interface FeedRequest {
 
 interface FeedData {
   requests: FeedRequest[]
+  resolvedRequests: FeedRequest[]
   pagination: { hasMore: boolean; total: number }
 }
 
@@ -22,6 +23,7 @@ const feedPage = ref(1)
 const feedData = ref<FeedData | null>(null)
 const isLoadingFeed = ref(false)
 const isLoadingMore = ref(false)
+const showResolvedRequests = ref(false)
 
 async function loadFeed(page = 1) {
   if (page === 1) {
@@ -73,11 +75,11 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-else-if="!feedData?.requests?.length" class="py-12 text-center border border-dashed border-border/20 rounded-xl">
-      <p class="text-foreground-muted text-sm">Aucune demande pour le moment</p>
-    </div>
-
     <div v-else class="space-y-4">
+      <div v-if="!feedData?.requests?.length" class="py-12 text-center border border-dashed border-border/20 rounded-xl">
+        <p class="text-foreground-muted text-sm">Aucune demande pour le moment</p>
+      </div>
+      <template v-else>
       <div
         v-for="request in feedData.requests"
         :key="request.id"
@@ -140,9 +142,77 @@ onMounted(() => {
           </span>
         </div>
       </div>
+      </template>
+
+      <div v-for="request in feedData?.resolvedRequests?.slice(0, showResolvedRequests ? undefined : 0)" :key="request.id" class="mt-3">
+        <div class="p-4 rounded-xl hover:bg-foreground/[0.02] transition-all">
+          <div class="flex items-center justify-between gap-3 mb-2">
+            <NuxtLink
+              :to="`/annuaire/${request.developer?.slug}`"
+              class="flex items-center gap-3 min-w-0 group/dev"
+            >
+              <img
+                v-if="request.developer?.avatarUrl"
+                :src="request.developer.avatarUrl"
+                :alt="request.developer.name"
+                class="w-8 h-8 rounded-full object-cover opacity-60"
+              />
+              <div v-else class="w-8 h-8 rounded-full bg-border/30 flex items-center justify-center opacity-60">
+                <span class="text-xs text-foreground-muted">{{ request.developer?.name?.charAt(0) || '?' }}</span>
+              </div>
+              <span class="text-sm text-foreground-muted/60 group-hover/dev:text-foreground-muted transition-colors truncate">{{ request.developer?.name }}</span>
+            </NuxtLink>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-500/50 shrink-0">
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+          </div>
+
+          <NuxtLink
+            :to="`/qg/requests/${request.id}`"
+            class="text-sm font-medium text-foreground-muted/60 hover:text-foreground-muted transition-colors block"
+          >{{ request.title }}</NuxtLink>
+
+          <div class="flex items-center gap-3 mt-2.5">
+            <div v-if="request.techs?.length" class="flex flex-wrap gap-1.5">
+              <span
+                v-for="tech in request.techs.slice(0, 4)"
+                :key="tech.id"
+                class="px-2 py-0.5 bg-subtle rounded text-xs text-foreground-muted/50"
+              >
+                {{ tech.techName }}
+              </span>
+            </div>
+            <span v-if="request.commentCount" class="flex items-center gap-1 px-2 py-0.5 bg-subtle rounded text-xs text-foreground-muted/50 ml-auto">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              {{ request.commentCount }}
+            </span>
+          </div>
+        </div>
+      </div>
 
       <button
-        v-if="feedData.pagination?.hasMore"
+        v-if="(feedData?.resolvedRequests?.length ?? 0) > 0"
+        @click="showResolvedRequests = !showResolvedRequests"
+        class="flex items-center gap-2 px-4 py-2 mt-4 text-foreground-muted hover:text-foreground transition-colors text-xs"
+      >
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          :class="['transition-transform', showResolvedRequests ? 'rotate-180' : '']"
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+        {{ showResolvedRequests ? 'Masquer' : `Voir ${feedData?.resolvedRequests?.length ?? 0} résolue${(feedData?.resolvedRequests?.length ?? 0) > 1 ? 's' : ''}` }}
+      </button>
+
+      <button
+        v-if="feedData?.pagination?.hasMore"
         @click="loadMoreFeed"
         :disabled="isLoadingMore"
         class="w-full py-3 text-sm text-foreground-muted hover:text-foreground border border-border/20 hover:border-border/40 rounded-xl transition-colors disabled:opacity-50"
