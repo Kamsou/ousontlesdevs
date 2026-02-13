@@ -157,46 +157,62 @@ const features = [
       </div>
     </section>
 
-    <div class="py-6 border-y border-border/10 overflow-hidden">
-      <div class="flex gap-4 w-max animate-scroll">
-        <span v-for="(tag, i) in [...openToTags, ...openToTags]" :key="i" class="flex-shrink-0 px-4 py-2 border border-border/10 rounded-full text-sm text-foreground-muted transition-all hover:border-foreground hover:text-foreground">
+    <div class="relative py-8 border-y border-border/5 overflow-hidden bg-gradient-to-r from-transparent via-foreground/[0.01] to-transparent">
+      <div class="flex gap-6 w-max animate-scroll">
+        <span v-for="(tag, i) in [...openToTags, ...openToTags]" :key="i" class="flex-shrink-0 px-5 py-2.5 bg-background/80 backdrop-blur-sm border border-border/20 rounded-full text-sm font-medium text-foreground/70 hover:text-foreground hover:border-foreground/40 transition-all cursor-default">
           {{ tag }}
         </span>
       </div>
     </div>
 
-    <section class="py-24 px-4 md:px-16">
-      <p class="text-foreground-muted text-sm uppercase tracking-widest mb-12">Elles sont là. Et elles bougent.</p>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div v-for="(stat, index) in stats" :key="index" class="flex flex-col gap-6 py-8 border-t border-border/10">
-          <span class="text-[0.7rem] text-foreground-muted tracking-widest">0{{ index + 1 }}</span>
-          <div class="flex flex-col gap-1">
-            <ClientOnly>
-              <template v-if="statsLoading">
-                <span class="font-display text-4xl md:text-6xl font-medium tracking-tight">
-                  <span class="inline-block w-16 h-10 md:h-14 bg-border/50 rounded animate-pulse"></span>
-                </span>
-                <span class="inline-block w-24 h-4 bg-border/50 rounded animate-pulse"></span>
-              </template>
-              <template v-else>
-                <span class="font-display text-4xl md:text-6xl font-medium tracking-tight">{{ stat.value }}</span>
-                <span class="text-foreground-muted text-sm">{{ stat.label }}</span>
-              </template>
-              <template #fallback>
-                <span class="font-display text-4xl md:text-6xl font-medium tracking-tight">
-                  <span class="inline-block w-16 h-10 md:h-14 bg-border/50 rounded animate-pulse"></span>
-                </span>
-                <span class="inline-block w-24 h-4 bg-border/50 rounded animate-pulse"></span>
-              </template>
-            </ClientOnly>
-          </div>
+    <section id="stats" class="py-20 md:py-32 px-4 md:px-16">
+      <div class="max-w-7xl mx-auto">
+        <div class="mb-12">
+          <a href="#stats" class="group inline-flex items-center gap-0 group-hover:gap-2 text-foreground-muted text-sm tracking-wide mb-2 no-underline hover:text-foreground transition-all">
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity">#</span>
+            <span>En temps réel</span>
+          </a>
+          <h2 class="font-display text-3xl md:text-5xl font-medium tracking-tight">
+            Elles sont là.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+          <ClientOnly>
+            <template v-if="statsLoading">
+              <div v-for="i in 4" :key="i" class="flex flex-col gap-4">
+                <span class="text-xs text-foreground-muted tracking-widest">0{{ i }}</span>
+                <div class="inline-block w-20 h-16 bg-border/50 rounded animate-pulse"></div>
+                <div class="inline-block w-28 h-5 bg-border/50 rounded animate-pulse"></div>
+              </div>
+            </template>
+            <template v-else>
+              <div v-for="(stat, index) in stats" :key="index" class="flex flex-col gap-4 py-4 border-t border-border/10">
+                <span class="text-xs text-foreground-muted tracking-widest">0{{ index + 1 }}</span>
+                <div class="font-display text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-none">
+                  {{ stat.value }}
+                </div>
+                <div class="text-foreground-muted text-sm">{{ stat.label }}</div>
+              </div>
+            </template>
+            <template #fallback>
+              <div v-for="i in 4" :key="i" class="flex flex-col gap-4">
+                <span class="text-xs text-foreground-muted tracking-widest">0{{ i }}</span>
+                <div class="inline-block w-20 h-16 bg-border/50 rounded animate-pulse"></div>
+                <div class="inline-block w-28 h-5 bg-border/50 rounded animate-pulse"></div>
+              </div>
+            </template>
+          </ClientOnly>
         </div>
       </div>
     </section>
 
-    <section class="py-24 px-4 md:px-16 border-t border-border/10">
+    <section id="mission" class="py-32 md:py-40 px-4 md:px-16 border-t border-border/10">
       <div class="max-w-4xl mx-auto">
-        <span class="block text-[0.7rem] uppercase tracking-[0.2em] text-foreground-muted mb-4">Mission</span>
+        <a href="#mission" class="group inline-flex items-center gap-0 group-hover:gap-2 text-[0.7rem] tracking-wide text-foreground-muted mb-4 no-underline hover:text-foreground transition-all">
+          <span class="opacity-0 group-hover:opacity-100 transition-opacity">#</span>
+          <span>Mission</span>
+        </a>
         <h2 class="font-display text-3xl md:text-5xl font-medium leading-tight tracking-tight mb-12">
           Pourquoi OSLD ?
         </h2>
@@ -243,10 +259,13 @@ const features = [
       </div>
     </section>
 
-    <section class="py-24 px-4 md:px-16 border-t border-border/10">
+    <section id="discover" class="py-32 md:py-40 px-4 md:px-16 border-t border-border/10">
       <div class="max-w-5xl mx-auto">
         <div class="mb-16">
-          <span class="block text-[0.7rem] uppercase tracking-[0.2em] text-foreground-muted mb-4">Découvre</span>
+          <a href="#discover" class="group inline-flex items-center gap-0 group-hover:gap-2 text-[0.7rem] tracking-wide text-foreground-muted mb-4 no-underline hover:text-foreground transition-all">
+            <span class="opacity-0 group-hover:opacity-100 transition-opacity">#</span>
+            <span>Découvre</span>
+          </a>
           <h2 class="font-display text-3xl md:text-5xl font-medium leading-tight tracking-tight">
             Ce que tu trouves sur OSLD
           </h2>
@@ -363,11 +382,14 @@ const features = [
       </div>
     </section>
 
-    <section class="py-24 px-4 md:px-16 border-t border-border/10">
+    <section id="qg" class="py-32 md:py-40 px-4 md:px-16 border-t border-border/10">
       <div class="max-w-5xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <span class="block text-[0.7rem] uppercase tracking-[0.2em] text-foreground-muted mb-4">Le QG</span>
+            <a href="#qg" class="group inline-flex items-center gap-0 group-hover:gap-2 text-[0.7rem] tracking-wide text-foreground-muted mb-4 no-underline hover:text-foreground transition-all">
+              <span class="opacity-0 group-hover:opacity-100 transition-opacity">#</span>
+              <span>Le QG</span>
+            </a>
             <h2 class="font-display text-3xl md:text-5xl font-medium leading-tight tracking-tight mb-6">
               L'espace privé des développeuses
             </h2>
@@ -460,7 +482,7 @@ const features = [
       </div>
     </section>
 
-    <section class="py-20 px-4 md:px-16 border-t border-border/10">
+    <section id="quiz" class="py-24 md:py-32 px-4 md:px-16 border-t border-border/10">
       <div class="max-w-2xl mx-auto text-center">
         <NuxtLink to="/experience" class="group block p-8 border border-border/10 rounded-2xl hover:border-foreground-muted transition-all no-underline">
           <div class="w-14 h-14 mx-auto mb-6 flex items-center justify-center border border-border/10 rounded-full">
@@ -472,7 +494,7 @@ const features = [
             Quel dev es-tu ?
           </h3>
           <p class="text-foreground-muted leading-relaxed mb-6">
-            Un quiz IA pour découvrir ton profil de développeuse. Fun, rapide, et étonnamment juste.
+            Un quiz IA pour découvrir ton profil de développeuse. Fun, rapide, et&nbsp;étonnamment&nbsp;juste.
           </p>
           <span class="inline-flex items-center gap-2 text-sm text-foreground-muted group-hover:text-foreground transition-colors">
             Faire le quiz
@@ -484,7 +506,7 @@ const features = [
       </div>
     </section>
 
-    <section class="py-20 md:py-32 px-4 md:px-16 border-t border-border/10">
+    <section id="story" class="py-32 md:py-48 px-4 md:px-16 border-t border-border/10">
       <div class="max-w-3xl mx-auto">
         <div class="relative">
           <span class="hidden md:block absolute -top-8 -left-12 text-[12rem] font-display font-bold text-foreground/[0.03] leading-none select-none">"</span>
@@ -514,9 +536,12 @@ const features = [
       </div>
     </section>
 
-    <section class="py-32 px-4 md:px-16 flex justify-center border-t border-border/10">
+    <section id="join" class="py-40 md:py-48 px-4 md:px-16 flex justify-center border-t border-border/10">
       <div class="max-w-xl text-center">
-        <span class="block text-[0.7rem] uppercase tracking-[0.2em] text-foreground-muted mb-6">Rejoindre</span>
+        <a href="#join" class="group inline-flex items-center gap-0 group-hover:gap-2 text-[0.7rem] tracking-wide text-foreground-muted mb-6 no-underline hover:text-foreground transition-all">
+          <span class="opacity-0 group-hover:opacity-100 transition-opacity">#</span>
+          <span>Rejoindre</span>
+        </a>
         <h2 class="font-display text-2xl md:text-5xl font-medium leading-tight tracking-tight mb-6">
           Deviens visible
         </h2>
