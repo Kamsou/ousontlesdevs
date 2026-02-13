@@ -30,6 +30,10 @@ export default defineEventHandler(async (event) => {
     return null
   }
 
+  await db.update(tables.developers)
+    .set({ lastLoginAt: new Date() })
+    .where(eq(tables.developers.id, developer.id))
+
   return {
     id: developer.id,
     slug: developer.slug,
@@ -55,6 +59,7 @@ export default defineEventHandler(async (event) => {
       travelWilling: developer.speakerProfile.travelWilling
     } : null,
     emailOptIn: developer.emailOptIn ?? false,
-    emailOptInAsked: developer.emailOptInDate !== null
+    emailOptInAsked: developer.emailOptInDate !== null,
+    commentsNotificationsEnabled: developer.commentsNotificationsEnabled ?? true
   }
 })

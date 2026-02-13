@@ -23,6 +23,7 @@ export const developers = sqliteTable('developers', {
   emailOptInDate: integer('email_opt_in_date', { mode: 'timestamp' }),
   commentsNotificationsEnabled: integer('comments_notifications_enabled', { mode: 'boolean' }).default(true),
   cocAcceptedAt: integer('coc_accepted_at', { mode: 'timestamp' }),
+  lastLoginAt: integer('last_login_at', { mode: 'timestamp' }),
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 })
