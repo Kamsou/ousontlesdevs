@@ -134,20 +134,6 @@
       "when": 1770114302139,
       "tag": "0018_cold_abomination",
       "breakpoints": true
-    },
-    {
-      "idx": 19,
-      "version": "6",
-      "when": 1770830052014,
-      "tag": "0019_round_old_lace",
-      "breakpoints": true
-    },
-    {
-      "idx": 20,
-      "version": "6",
-      "when": 1770983103320,
-      "tag": "0020_late_colleen_wing",
-      "breakpoints": true
     }
   ]
 }

@@ -1,1 +1,0 @@
-ALTER TABLE `developers` ADD `last_login_at` integer;
