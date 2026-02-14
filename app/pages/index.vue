@@ -10,7 +10,7 @@ useHead({
 
 useSeoMeta({
   title: 'Où Sont Les Développeuses (OSLD) - Annuaire des développeuses tech en France',
-  description: 'Annuaire des développeuses tech en France : profils, speakeuses pour vos conférences, entreprises inclusives et entraide communautaire. Rejoignez OSLD.',
+  description: 'Annuaire des développeuses tech en France : profils, speakeuses, entreprises inclusives, quiz IA et espace d\'entraide privé. Rejoignez la communauté OSLD.',
   ogTitle: 'Où sont les développeuses ? Ici.',
   ogDescription: 'Se retrouver, se rendre visibles. Annuaire de développeuses, speakeuses, ressources tech et entraide communautaire.',
   ogImage: 'https://ousontlesdeveloppeuses.fr/og-image.png',
@@ -25,13 +25,42 @@ useSchemaOrg([
   defineWebSite({
     name: 'Où Sont Les Développeuses',
     alternateName: 'OSLD',
-    description: 'Annuaire des développeuses tech en France',
+    description: 'Annuaire et communauté des développeuses tech en France',
     inLanguage: 'fr-FR',
   }),
   defineWebPage({
     name: 'Où Sont Les Développeuses - Annuaire des développeuses tech en France',
-    description: 'Annuaire des développeuses tech en France : profils, speakeuses pour vos conférences, entreprises inclusives et entraide communautaire.',
+    description: 'Annuaire des développeuses tech en France : profils, speakeuses, entreprises inclusives, programmes, podcasts, quiz IA et espace d\'entraide communautaire privé (Le QG).',
   }),
+  {
+    '@type': 'FAQPage',
+    'mainEntity': [
+      {
+        '@type': 'Question',
+        'name': 'Pourquoi OSLD ?',
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': 'Les développeuses représentent moins de 20% de la tech. OSLD rend visibles les développeuses en France, crée un réseau pour se retrouver, s\'entraider, créer ensemble, et montre aux prochaines générations que c\'est possible.'
+        }
+      },
+      {
+        '@type': 'Question',
+        'name': 'Qu\'est-ce que le QG ?',
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': 'Le QG est l\'espace privé d\'OSLD réservé aux développeuses inscrites. On y trouve de l\'entraide technique (bugs, reviews, conseils), des side projects collaboratifs et des offres d\'emploi communautaires.'
+        }
+      },
+      {
+        '@type': 'Question',
+        'name': 'Comment trouver une speakeuse tech ?',
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': 'L\'annuaire OSLD référence des speakeuses tech disponibles pour vos conférences et événements. Filtrez par sujet, disponibilité remote/présentiel et localisation sur ousontlesdeveloppeuses.fr/speakers.'
+        }
+      }
+    ]
+  }
 ])
 
 const { data: statsData, status: statsStatus } = useLazyFetch('/api/stats', {

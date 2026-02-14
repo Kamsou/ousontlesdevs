@@ -17,7 +17,11 @@ export default defineSitemapEventHandler(async () => {
     { loc: '/entreprises', priority: 0.8, changefreq: 'weekly' as const },
     { loc: '/programmes', priority: 0.7, changefreq: 'monthly' as const },
     { loc: '/podcasts', priority: 0.7, changefreq: 'monthly' as const },
+    { loc: '/mission', priority: 0.6, changefreq: 'monthly' as const },
+    { loc: '/decouvrir', priority: 0.6, changefreq: 'monthly' as const },
     { loc: '/experience', priority: 0.5, changefreq: 'monthly' as const },
+    { loc: '/qg-info', priority: 0.5, changefreq: 'monthly' as const },
+    { loc: '/stats', priority: 0.4, changefreq: 'daily' as const },
   ]
 
   const developerPages = developers.map((dev: { slug: string | null; updatedAt: Date | null }) =>

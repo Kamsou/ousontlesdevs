@@ -86,7 +86,7 @@ export default defineNuxtConfig({
   robots: {
     disallow: ['/profil', '/qg', '/api/', '/admin'],
     allow: ['/annuaire/*'],
-    blockNonSeoBots: true,
+    blockNonSeoBots: false,
   },
 
   ogImage: {
