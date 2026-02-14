@@ -157,7 +157,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
 <template>
   <div class="max-w-7xl mx-auto px-4 md:px-16">
     <header class="py-16 border-b border-border/10">
-      <span class="text-xs uppercase tracking-[0.2em] text-foreground-muted mb-6 block">Annuaire</span>
+      <span class="text-xs tracking-wide text-foreground-muted mb-6 block">Annuaire</span>
       <h1 class="font-display text-4xl md:text-7xl font-medium tracking-tight mb-2">Développeuses</h1>
       <p class="text-foreground-muted text-base">
         <span v-if="isLoading" class="inline-block w-20 h-5 bg-border rounded animate-pulse align-middle" />
@@ -168,7 +168,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
     <section class="py-8 border-b border-border/10">
       <div class="flex flex-col md:flex-row gap-6 items-stretch md:items-end mb-6">
         <div class="flex-1 max-w-none md:max-w-[250px]">
-          <label class="block text-xs uppercase tracking-widest text-foreground-muted mb-2">Ville</label>
+          <label class="block text-xs tracking-wide text-foreground-muted mb-2">Ville</label>
           <input
             v-model="filters.location"
             type="text"
@@ -178,7 +178,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
         </div>
 
         <div class="flex-1 max-w-none md:max-w-[250px]">
-          <label class="block text-xs uppercase tracking-widest text-foreground-muted mb-2">Technologie</label>
+          <label class="block text-xs tracking-wide text-foreground-muted mb-2">Technologie</label>
           <input
             v-model="filters.skill"
             type="text"
@@ -193,7 +193,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
       </div>
 
       <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-        <span class="text-xs uppercase tracking-widest text-foreground-muted">Disponible pour</span>
+        <span class="text-xs tracking-wide text-foreground-muted">Disponible pour</span>
         <div class="flex flex-wrap gap-2">
           <button
             v-for="option in openToOptions"
@@ -250,7 +250,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
                 +{{ dev.skills.length - 5 }}
               </span>
             </div>
-            <span class="mt-3 text-xs text-foreground-muted/40">Voir le profil →</span>
+            <span class="mt-3 text-xs text-foreground-muted/70">Voir le profil →</span>
           </template>
 
           <template v-else>

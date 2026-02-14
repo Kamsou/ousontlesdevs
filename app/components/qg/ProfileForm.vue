@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { openToOptions, skillGroups, suggestedSkills } from '~/utils/constants'
+import { openToOptions, skillGroups, suggestedSkills, experienceOptions } from '~/utils/constants'
 import type { QgProfile } from '~/types/qg'
 
 const props = defineProps<{
@@ -42,6 +42,28 @@ const form = reactive({
 const newSkill = ref('')
 const newTopic = ref('')
 const saving = ref(false)
+const experienceDropdownOpen = ref(false)
+const experienceDropdownRef = ref<HTMLElement>()
+
+const selectedExperienceLabel = computed(() => {
+  if (form.yearsExperience === null) return null
+  const option = experienceOptions.find(o => o.value === form.yearsExperience)
+  return option?.label ?? null
+})
+
+function selectExperience(value: number) {
+  form.yearsExperience = value
+  experienceDropdownOpen.value = false
+}
+
+function handleClickOutsideExperience(e: MouseEvent) {
+  if (experienceDropdownRef.value && !experienceDropdownRef.value.contains(e.target as Node)) {
+    experienceDropdownOpen.value = false
+  }
+}
+
+onMounted(() => document.addEventListener('click', handleClickOutsideExperience))
+onUnmounted(() => document.removeEventListener('click', handleClickOutsideExperience))
 const error = ref('')
 const deleting = ref(false)
 const stickysentinel = ref<HTMLElement>()
@@ -280,8 +302,41 @@ useIntersectionObserver(stickysentinel, (entries) => {
             </div>
 
             <div class="flex flex-col gap-2">
-              <label for="years-experience" class="text-xs uppercase tracking-wide text-foreground-muted">Années d'expérience</label>
-              <input id="years-experience" v-model.number="form.yearsExperience" type="number" min="0" max="50" class="px-4 py-3 bg-background-card border border-border/10 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted" />
+              <label class="text-xs uppercase tracking-wide text-foreground-muted">Expérience</label>
+              <div ref="experienceDropdownRef" class="relative z-30">
+                <button
+                  type="button"
+                  @click="experienceDropdownOpen = !experienceDropdownOpen"
+                  class="w-full flex items-center justify-between px-4 py-3 bg-background-card border border-border/10 rounded-lg text-sm transition-colors focus:outline-none focus:border-foreground-muted"
+                  :class="selectedExperienceLabel ? 'text-foreground' : 'text-foreground-muted'"
+                >
+                  <span>{{ selectedExperienceLabel || 'Sélectionner' }}</span>
+                  <svg class="w-4 h-4 text-foreground-muted transition-transform" :class="experienceDropdownOpen && 'rotate-180'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                  </svg>
+                </button>
+                <Transition
+                  enter-active-class="transition duration-150 ease-out"
+                  enter-from-class="opacity-0 -translate-y-1"
+                  enter-to-class="opacity-100 translate-y-0"
+                  leave-active-class="transition duration-100 ease-in"
+                  leave-from-class="opacity-100 translate-y-0"
+                  leave-to-class="opacity-0 -translate-y-1"
+                >
+                  <div v-if="experienceDropdownOpen" class="absolute z-50 top-full left-0 right-0 mt-1 bg-background border border-border/10 rounded-lg shadow-lg overflow-hidden">
+                    <button
+                      v-for="option in experienceOptions"
+                      :key="option.value"
+                      type="button"
+                      @click="selectExperience(option.value)"
+                      class="w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-foreground/5"
+                      :class="form.yearsExperience === option.value ? 'text-foreground font-medium' : 'text-foreground-muted'"
+                    >
+                      {{ option.label }}
+                    </button>
+                  </div>
+                </Transition>
+              </div>
             </div>
           </div>
         </section>

@@ -73,7 +73,7 @@ export default defineEventHandler(async (event) => {
   if (!developer.name) missingFields.push('nom')
   if (!developer.bio) missingFields.push('bio')
   if (!developer.location) missingFields.push('ville')
-  if (typeof developer.yearsExperience !== 'number') missingFields.push('années d\'expérience')
+  if (typeof developer.yearsExperience !== 'number') missingFields.push('expérience')
   if (!developer.linkedinUrl) missingFields.push('LinkedIn')
   if (skills.length === 0) missingFields.push('compétences')
 

@@ -34,7 +34,7 @@ async function markAsResolved(requestId: number, e: Event) {
       <h2 class="text-lg font-display font-medium">Tes demandes</h2>
       <span v-if="openRequests.length > 0" class="flex items-center gap-2 px-2.5 py-1 bg-amber-500/10 rounded-full">
         <span class="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
-        <span class="text-xs text-amber-400">{{ openRequests.length }} en cours</span>
+        <span class="text-xs text-amber-300">{{ openRequests.length }} en cours</span>
       </span>
     </div>
 

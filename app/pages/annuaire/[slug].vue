@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getExperienceLabel } from '~/utils/constants'
+
 interface Developer {
   id: number
   slug: string
@@ -136,8 +138,8 @@ onMounted(() => {
             <p v-if="developer.title" class="text-foreground-muted mb-2">{{ developer.title }}</p>
             <div class="flex flex-col md:flex-row gap-2 md:gap-6 text-foreground-muted">
               <span v-if="developer.location">{{ developer.location }}</span>
-              <span v-if="developer.yearsExperience">
-                {{ developer.yearsExperience }} ans d'expérience
+              <span v-if="developer.yearsExperience !== null && developer.yearsExperience !== undefined">
+                {{ getExperienceLabel(developer.yearsExperience) }}
               </span>
             </div>
           </div>
