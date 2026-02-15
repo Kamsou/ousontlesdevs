@@ -136,7 +136,7 @@ function formatDate(date: string) {
         </div>
 
         <NuxtLink
-          :to="`/annuaire/${project.developer.slug}`"
+          :to="`/directory/${project.developer.slug}`"
           class="flex items-center gap-3 mb-8 group"
         >
           <img

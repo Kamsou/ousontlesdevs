@@ -144,7 +144,7 @@ onMounted(() => {
   <div class="min-h-screen bg-background">
     <header class="sticky top-0 z-50 px-4 md:px-8 py-3 backdrop-blur-xl bg-background/80 border-b border-border/20">
       <div class="max-w-3xl mx-auto flex items-center justify-between">
-        <NuxtLink to="/annuaire" class="flex items-center gap-2 no-underline text-foreground-muted hover:text-foreground transition-colors text-sm">
+        <NuxtLink to="/directory" class="flex items-center gap-2 no-underline text-foreground-muted hover:text-foreground transition-colors text-sm">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>

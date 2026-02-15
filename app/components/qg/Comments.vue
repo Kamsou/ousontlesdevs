@@ -133,7 +133,7 @@ function formatDate(date: string) {
           :key="comment.id"
           class="flex gap-3 group"
         >
-          <NuxtLink :to="`/annuaire/${comment.developer.slug}`">
+          <NuxtLink :to="`/directory/${comment.developer.slug}`">
             <img
               v-if="comment.developer.avatarUrl"
               :src="comment.developer.avatarUrl"
@@ -148,7 +148,7 @@ function formatDate(date: string) {
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2 mb-1">
               <NuxtLink
-                :to="`/annuaire/${comment.developer.slug}`"
+                :to="`/directory/${comment.developer.slug}`"
                 class="text-sm font-medium hover:text-foreground-muted transition-colors"
               >
                 {{ comment.developer.name }}

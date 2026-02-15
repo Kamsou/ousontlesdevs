@@ -202,7 +202,7 @@ async function sendContact() {
         <div v-if="!isOwner && request.developer" class="flex items-center gap-3 mb-8 p-3 rounded-lg bg-foreground/[0.02]">
           <img v-if="request.developer.avatarUrl" :src="request.developer.avatarUrl" :alt="request.developer.name" class="w-8 h-8 rounded-full object-cover" />
           <div v-else class="w-8 h-8 rounded-full bg-border/20 flex items-center justify-center text-foreground-muted text-xs">{{ request.developer.name?.charAt(0) }}</div>
-          <NuxtLink :to="`/annuaire/${request.developer.slug}`" class="text-sm hover:text-foreground-muted transition-colors">{{ request.developer.name }}</NuxtLink>
+          <NuxtLink :to="`/directory/${request.developer.slug}`" class="text-sm hover:text-foreground-muted transition-colors">{{ request.developer.name }}</NuxtLink>
         </div>
 
         <template v-if="isOwner">
@@ -230,7 +230,7 @@ async function sendContact() {
                 <div v-else class="w-8 h-8 rounded-full bg-border/20 flex items-center justify-center text-foreground-muted text-xs">
                   {{ dev.name?.charAt(0) }}
                 </div>
-                <NuxtLink :to="`/annuaire/${dev.slug}`" target="_blank" class="text-sm hover:text-foreground-muted transition-colors flex-1 min-w-0 truncate">
+                <NuxtLink :to="`/directory/${dev.slug}`" target="_blank" class="text-sm hover:text-foreground-muted transition-colors flex-1 min-w-0 truncate">
                   {{ dev.name }}
                 </NuxtLink>
                 <span v-if="dev.matchedSkills?.length" class="text-xs text-foreground-muted hidden sm:block">

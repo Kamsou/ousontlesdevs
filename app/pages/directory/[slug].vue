@@ -37,7 +37,7 @@ if (error.value) {
 }
 
 if (developer.value && slug !== developer.value.slug) {
-  await navigateTo(`/annuaire/${developer.value.slug}`, { redirectCode: 301 })
+  await navigateTo(`/directory/${developer.value.slug}`, { redirectCode: 301 })
 }
 
 // SEO dynamique enrichi
@@ -120,7 +120,7 @@ onMounted(() => {
   <div class="max-w-3xl mx-auto px-4 md:px-8 pb-16">
     <div v-if="developer">
       <header class="pb-8 border-b border-border/10 mb-8">
-        <NuxtLink to="/annuaire" class="inline-flex items-center gap-2 text-foreground-muted no-underline text-sm mb-8 transition-colors hover:text-foreground">
+        <NuxtLink to="/directory" class="inline-flex items-center gap-2 text-foreground-muted no-underline text-sm mb-8 transition-colors hover:text-foreground">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>

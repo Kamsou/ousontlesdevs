@@ -12,13 +12,13 @@ export default defineSitemapEventHandler(async () => {
 
   const staticPages = [
     { loc: '/', priority: 1.0, changefreq: 'daily' as const },
-    { loc: '/annuaire', priority: 0.9, changefreq: 'daily' as const },
+    { loc: '/directory', priority: 0.9, changefreq: 'daily' as const },
     { loc: '/speakers', priority: 0.8, changefreq: 'weekly' as const },
-    { loc: '/entreprises', priority: 0.8, changefreq: 'weekly' as const },
-    { loc: '/programmes', priority: 0.7, changefreq: 'monthly' as const },
+    { loc: '/companies', priority: 0.8, changefreq: 'weekly' as const },
+    { loc: '/programs', priority: 0.7, changefreq: 'monthly' as const },
     { loc: '/podcasts', priority: 0.7, changefreq: 'monthly' as const },
     { loc: '/mission', priority: 0.6, changefreq: 'monthly' as const },
-    { loc: '/decouvrir', priority: 0.6, changefreq: 'monthly' as const },
+    { loc: '/discover', priority: 0.6, changefreq: 'monthly' as const },
     { loc: '/experience', priority: 0.5, changefreq: 'monthly' as const },
     { loc: '/qg-info', priority: 0.5, changefreq: 'monthly' as const },
     { loc: '/stats', priority: 0.4, changefreq: 'daily' as const },
@@ -26,7 +26,7 @@ export default defineSitemapEventHandler(async () => {
 
   const developerPages = developers.map((dev: { slug: string | null; updatedAt: Date | null }) =>
     asSitemapUrl({
-      loc: `/annuaire/${dev.slug}`,
+      loc: `/directory/${dev.slug}`,
       lastmod: dev.updatedAt ? new Date(dev.updatedAt) : new Date(),
       changefreq: 'weekly',
       priority: 0.7

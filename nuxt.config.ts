@@ -80,12 +80,12 @@ export default defineNuxtConfig({
 
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
-    exclude: ['/profil', '/profil/**', '/qg', '/qg/**', '/admin', '/admin/**'],
+    exclude: ['/profile', '/profile/**', '/qg', '/qg/**', '/admin', '/admin/**'],
   },
 
   robots: {
-    disallow: ['/profil', '/qg', '/api/', '/admin'],
-    allow: ['/annuaire/*'],
+    disallow: ['/profile', '/qg', '/api/', '/admin'],
+    allow: ['/directory/*'],
     blockNonSeoBots: false,
   },
 
@@ -125,13 +125,19 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/experience': { prerender: true },
     '/experience/**': { prerender: true },
-    '/programmes': { prerender: true },
+    '/programs': { prerender: true },
     '/podcasts': { prerender: true },
     '/speakers': { prerender: true },
     '/qg/**': { ssr: false },
     '/qg': { ssr: false },
     '/admin/**': { ssr: false },
     '/admin': { ssr: false },
+    // 301 redirects from old French URLs
+    '/annuaire': { redirect: { to: '/directory', statusCode: 301 } },
+    '/entreprises': { redirect: { to: '/companies', statusCode: 301 } },
+    '/programmes': { redirect: { to: '/programs', statusCode: 301 } },
+    '/profil': { redirect: { to: '/profile', statusCode: 301 } },
+    '/decouvrir': { redirect: { to: '/discover', statusCode: 301 } },
   },
   vite: {
     build: {

@@ -123,7 +123,7 @@ async function deleteProgram(id: number, name: string) {
       </button>
     </div>
 
-    <div v-if="error" class="p-6 border border-red-500/50 rounded-xl bg-red-500/10 text-red-400">
+    <div v-if="error" class="p-6 border border-red-500/50 rounded-xl bg-red-500/10 text-red-300">
       <p class="font-medium">Accès refusé</p>
     </div>
 
@@ -148,10 +148,10 @@ async function deleteProgram(id: number, name: string) {
           <div class="flex-1">
             <div class="flex items-center gap-3 mb-2">
               <h2 class="font-display text-lg font-medium">{{ program.name }}</h2>
-              <span v-if="program.highlight" class="px-2 py-0.5 text-xs bg-primary/20 text-primary rounded-full">
+              <span v-if="program.highlight" class="px-2 py-0.5 text-xs bg-primary/20 text-blue-300 rounded-full">
                 Highlight
               </span>
-              <span v-if="!program.active" class="px-2 py-0.5 text-xs bg-red-500/20 text-red-400 rounded-full">
+              <span v-if="!program.active" class="px-2 py-0.5 text-xs bg-red-500/20 text-red-300 rounded-full">
                 Inactif
               </span>
             </div>
@@ -175,7 +175,7 @@ async function deleteProgram(id: number, name: string) {
             <button
               @click="deleteProgram(program.id, program.name)"
               :disabled="deleting === program.id"
-              class="px-3 py-1.5 text-xs border border-red-500/30 text-red-400 rounded-lg hover:bg-red-500/10 transition-colors disabled:opacity-50"
+              class="px-3 py-1.5 text-xs border border-red-500/30 text-red-300 rounded-lg hover:bg-red-500/10 transition-colors disabled:opacity-50"
             >
               {{ deleting === program.id ? '...' : 'Supprimer' }}
             </button>

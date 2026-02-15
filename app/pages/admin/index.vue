@@ -123,7 +123,7 @@ function formatDate(date: string | Date | null) {
       </div>
     </div>
 
-    <div v-if="error" class="p-6 border border-red-500/50 rounded-xl bg-red-500/10 text-red-400">
+    <div v-if="error" class="p-6 border border-red-500/50 rounded-xl bg-red-500/10 text-red-300">
       <p class="font-medium">Accès refusé</p>
       <p class="text-sm mt-1">{{ error.data?.message || 'Vous n\'avez pas accès à cette page.' }}</p>
     </div>
@@ -152,7 +152,7 @@ function formatDate(date: string | Date | null) {
             class="border-b border-border/50 hover:bg-border/20 transition-colors"
           >
             <td class="py-4 pr-4">
-              <NuxtLink :to="`/profil/${dev.id}`" class="flex items-center gap-3 no-underline">
+              <NuxtLink :to="`/profile/${dev.id}`" class="flex items-center gap-3 no-underline">
                 <img
                   v-if="dev.avatarUrl"
                   :src="dev.avatarUrl"
@@ -228,7 +228,7 @@ function formatDate(date: string | Date | null) {
                 <button
                   @click="deleteDeveloper(dev.id, dev.name)"
                   :disabled="deleting === dev.id"
-                  class="px-3 py-1.5 text-xs border border-red-500/30 text-red-400 rounded-lg bg-transparent cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="px-3 py-1.5 text-xs border border-red-500/30 text-red-300 rounded-lg bg-transparent cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {{ deleting === dev.id ? '...' : 'Supprimer' }}
                 </button>

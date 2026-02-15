@@ -74,7 +74,7 @@ export default defineEventHandler(async (event) => {
       await db.insert(tables.developerSkills).values(
         body.skills.map((skill: string) => ({
           developerId: id,
-          skillName: skill
+          skillName: normalizeSkillName(skill)
         }))
       )
     }

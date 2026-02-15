@@ -196,7 +196,7 @@ async function generateProfile() {
 
 function handleSignUp() {
   if (status.value === 'authenticated') {
-    router.push('/profil')
+    router.push('/profile')
   } else {
     signIn('github')
   }

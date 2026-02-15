@@ -34,13 +34,12 @@ export default defineEventHandler(async (event) => {
       ORDER BY month DESC
     `),
 
-    // Top skills
+    // All skills (case-insensitive grouping)
     db.all(sql`
       SELECT skill_name as name, COUNT(*) as count
       FROM developer_skills
-      GROUP BY skill_name
+      GROUP BY LOWER(skill_name)
       ORDER BY count DESC
-      LIMIT 15
     `),
 
     // Répartition géographique
@@ -73,9 +72,20 @@ export default defineEventHandler(async (event) => {
     `)
   ])
 
+  const normalizedSkills = (skills as { name: string, count: number }[]).reduce((acc, { name, count }) => {
+    const normalized = normalizeSkillName(name)
+    const existing = acc.get(normalized)
+    acc.set(normalized, (existing || 0) + Number(count))
+    return acc
+  }, new Map<string, number>())
+
+  const topSkills = Array.from(normalizedSkills.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+
   return {
     signupsByMonth: developers as { month: string, count: number }[],
-    topSkills: skills as { name: string, count: number }[],
+    topSkills,
     topLocations: locations as { location: string, count: number }[],
     helpRequestsByStatus: helpRequests as { status: string, count: number }[],
     contactsByStatus: contacts as { status: string, count: number }[],

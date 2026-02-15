@@ -2,7 +2,7 @@
 const route = useRoute()
 const id = route.params.id
 
-await navigateTo(`/annuaire/${id}`, { redirectCode: 301 })
+await navigateTo(`/directory/${id}`, { redirectCode: 301 })
 </script>
 
 <template>

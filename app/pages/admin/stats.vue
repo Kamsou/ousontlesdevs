@@ -141,9 +141,10 @@ function formatMonth(month: string) {
         <div class="p-6 border border-border/10 rounded-2xl">
           <h2 class="font-display text-lg font-medium mb-4 flex items-center gap-2">
             <svg class="text-foreground-muted" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            Top skills
+            Skills
+            <span class="text-sm text-foreground-muted font-normal">({{ stats.topSkills.length }})</span>
           </h2>
-          <div class="space-y-2">
+          <div class="space-y-2 max-h-[400px] overflow-y-auto" tabindex="0" role="region" aria-label="Liste des skills">
             <div v-for="skill in stats.topSkills" :key="skill.name" class="flex items-center justify-between">
               <span class="text-sm text-foreground">{{ skill.name }}</span>
               <span class="text-sm text-foreground-muted">{{ skill.count }}</span>

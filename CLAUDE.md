@@ -13,20 +13,24 @@ Nuxt 4 + TypeScript, deployed on Netlify with Turso (libSQL).
 app/
 ├── pages/                → Pages (file-based routing)
 │   ├── index.vue         → Homepage
-│   ├── annuaire/         → Developer directory (public)
+│   ├── directory/        → Developer directory (public)
 │   ├── speakers/         → Speakers list (public)
-│   ├── entreprises/      → Companies + reviews (public)
-│   ├── programmes.vue    → Programs & communities (public)
+│   ├── companies/        → Companies + reviews (public)
+│   ├── programs.vue      → Programs & communities (public)
 │   ├── podcasts.vue      → Podcasts (public)
 │   ├── experience/       → Quiz "Quel dev es-tu?" (public)
+│   ├── mission.vue       → Anchor redirect → /#mission
+│   ├── discover.vue      → Anchor redirect → /#discover
+│   ├── stats.vue         → Anchor redirect → /#stats
+│   ├── qg-info.vue       → Anchor redirect → /#qg
 │   ├── qg/               → Private dashboard (auth required)
-│   │   ├── index.vue     → QG hub (tabs: entraide, offres, profil)
+│   │   ├── index.vue     → QG hub (tabs: help, offers, profile)
 │   │   ├── ask.vue       → Create help request
 │   │   ├── new-offer.vue → Create offer
 │   │   ├── new-project.vue → Create side project
 │   │   ├── requests/     → Help request detail + edit
 │   │   └── projects/     → Side project detail + edit
-│   ├── profil/           → Auth redirect (animated loading → QG)
+│   ├── profile/          → Auth redirect (animated loading → QG)
 │   ├── feedback/         → Contact feedback (token-based)
 │   ├── admin/            → Admin dashboard (layout: admin)
 │   │   ├── index.vue     → Admin developers list
@@ -66,9 +70,13 @@ server/
 ├── db/
 │   ├── schema.ts         → Drizzle schema
 │   └── migrations/       → SQL migrations
+├── middleware/
+│   └── redirects.ts      → 301 redirects for old French URLs
 └── utils/
     ├── drizzle.ts        → DB helper
     └── brevo.ts          → Brevo newsletter sync
+public/
+└── llms.txt              → Structured guide for LLM crawlers (English)
 shared/
 └── types/
     └── next-auth.d.ts    → Auth.js type augmentation (Session + JWT)
@@ -84,33 +92,33 @@ npx drizzle-kit generate # Generate migrations
 
 ### Database migrations (production)
 
-La base de prod est sur **Turso** (SQLite managé). Utiliser le CLI Turso :
+Production database is on **Turso** (managed SQLite). Use the Turso CLI:
 
 ```bash
-# Installer Turso CLI (macOS)
+# Install Turso CLI (macOS)
 brew install tursodatabase/tap/turso
 
-# Se connecter
+# Login
 turso auth login
 
-# Lister les bases
+# List databases
 turso db list
 
-# Ouvrir un shell SQL sur la base
-turso db shell NOM_DE_LA_BASE
+# Open a SQL shell
+turso db shell DB_NAME
 
-# Ou exécuter directement une requête
-turso db shell NOM_DE_LA_BASE "ALTER TABLE developers ADD column_name TYPE;"
+# Or run a query directly
+turso db shell DB_NAME "ALTER TABLE developers ADD column_name TYPE;"
 ```
 
 ## Tech stack
 
 - **Nuxt 4** - Vue 3 + Nitro, compatibilityVersion 4
 - **TypeScript** - Strict mode
-- **Drizzle ORM** - SQLite local, Turso (libSQL) en prod
+- **Drizzle ORM** - SQLite local, Turso (libSQL) in production
 - **Auth.js** - GitHub OAuth via @sidebase/nuxt-auth
 - **TailwindCSS** - Styling
-- **@nuxtjs/seo** - SEO, schemaOrg, robots, sitemap, ogImage
+- **@nuxtjs/seo** - SEO, schemaOrg (FAQPage on homepage), robots, sitemap, ogImage
 - **PostHog** - Analytics (nuxt-posthog)
 - **Resend** - Transactional emails (contact requests, feedback)
 - **Anthropic SDK** - AI quiz
@@ -120,9 +128,11 @@ turso db shell NOM_DE_LA_BASE "ALTER TABLE developers ADD column_name TYPE;"
 ### Main tables
 
 ```typescript
-developers        // Developer profiles (slug, bio, location, skills, profileType)
+developers        // Developer profiles (slug, bio, location, skills, profileType, yearsExperience)
 developerSkills   // Skills (many-to-many)
 developerOpenTo   // Availability (conference, mentoring, freelance, cdi, etc.)
+                  // yearsExperience: 0=In training, 1=<1y, 2=1-3y, 3=3-5y, 5=5-10y, 10=10+y
+                  // Use getExperienceLabel() from utils/constants.ts to display
 speakerProfiles   // Speaker info (topics, travel, remote)
 companies         // Companies
 companyReviews    // Company reviews
@@ -218,6 +228,16 @@ useSeoMeta({
 })
 ```
 
+### LLM SEO
+
+- `robots.blockNonSeoBots: false` — allows LLM crawlers (Claude, ChatGPT, Perplexity)
+- `public/llms.txt` — structured English guide for LLM crawlers (mission, features, URLs, tone)
+- Homepage includes `FAQPage` schema.org for rich results
+
+### Anchor redirect pages
+
+Pages like `mission.vue`, `decouvrir.vue`, `stats.vue`, `qg-info.vue` exist for SEO. They have their own OG metadata and redirect to the corresponding homepage anchor (`/#mission`, `/#discover`, etc.) on mount.
+
 ## Code conventions
 
 ### Vue `<script setup>` order
@@ -294,7 +314,7 @@ Static pages configured in `nuxt.config.ts`:
 routeRules: {
   '/': { prerender: true },
   '/experience': { prerender: true },
-  '/programmes': { prerender: true },
+  '/programs': { prerender: true },
   '/podcasts': { prerender: true },
   '/speakers': { prerender: true },
 }

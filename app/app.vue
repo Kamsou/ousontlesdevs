@@ -92,12 +92,12 @@ onUnmounted(() => {
         </NuxtLink>
 
         <nav aria-label="Navigation principale" class="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
-          <NuxtLink to="/annuaire" :class="['no-underline text-sm font-medium transition-colors whitespace-nowrap', route.path.startsWith('/annuaire') || route.path.startsWith('/profil/') ? 'text-foreground' : 'text-foreground-muted hover:text-foreground']">Annuaire</NuxtLink>
+          <NuxtLink to="/directory" :class="['no-underline text-sm font-medium transition-colors whitespace-nowrap', route.path.startsWith('/directory') || route.path.startsWith('/profile/') ? 'text-foreground' : 'text-foreground-muted hover:text-foreground']">Annuaire</NuxtLink>
           <NuxtLink to="/speakers" :class="['no-underline text-sm font-medium transition-colors whitespace-nowrap', route.path === '/speakers' ? 'text-foreground' : 'text-foreground-muted hover:text-foreground']">Speakeuses</NuxtLink>
           <div class="relative resources-menu">
             <button
               @click.stop="resourcesMenuOpen = !resourcesMenuOpen"
-              :class="['flex items-center gap-1 text-sm font-medium transition-colors whitespace-nowrap cursor-pointer bg-transparent border-none', ['/entreprises', '/programmes', '/podcasts'].includes(route.path) ? 'text-foreground' : 'text-foreground-muted hover:text-foreground']"
+              :class="['flex items-center gap-1 text-sm font-medium transition-colors whitespace-nowrap cursor-pointer bg-transparent border-none', ['/companies', '/programs', '/podcasts'].includes(route.path) ? 'text-foreground' : 'text-foreground-muted hover:text-foreground']"
             >
               Ressources
               <svg :class="['w-3.5 h-3.5 transition-transform', resourcesMenuOpen ? 'rotate-180' : '']" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -105,13 +105,13 @@ onUnmounted(() => {
               </svg>
             </button>
             <div v-if="resourcesMenuOpen" class="absolute left-0 top-full mt-2 w-44 py-2 bg-background border border-border/10 rounded-lg shadow-xl">
-              <NuxtLink to="/entreprises" :class="['flex items-center gap-2 px-4 py-2 text-sm no-underline transition-colors', route.path === '/entreprises' ? 'text-foreground bg-border/30' : 'text-foreground-muted hover:bg-border/30 hover:text-foreground']">
+              <NuxtLink to="/companies" :class="['flex items-center gap-2 px-4 py-2 text-sm no-underline transition-colors', route.path === '/companies' ? 'text-foreground bg-border/30' : 'text-foreground-muted hover:bg-border/30 hover:text-foreground']">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
                 </svg>
                 Entreprises
               </NuxtLink>
-              <NuxtLink to="/programmes" :class="['flex items-center gap-2 px-4 py-2 text-sm no-underline transition-colors', route.path === '/programmes' ? 'text-foreground bg-border/30' : 'text-foreground-muted hover:bg-border/30 hover:text-foreground']">
+              <NuxtLink to="/programs" :class="['flex items-center gap-2 px-4 py-2 text-sm no-underline transition-colors', route.path === '/programs' ? 'text-foreground bg-border/30' : 'text-foreground-muted hover:bg-border/30 hover:text-foreground']">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                 </svg>
@@ -188,7 +188,7 @@ onUnmounted(() => {
                   </button>
                 </div>
               </div>
-              <NuxtLink to="/profil" class="lg:hidden">
+              <NuxtLink to="/profile" class="lg:hidden">
                 <img :src="optimizedAvatar(data?.user?.image, 72)" :alt="data?.user?.name || ''" class="w-9 h-9 rounded-full border-2 border-foreground/30" />
               </NuxtLink>
             </template>
@@ -208,13 +208,13 @@ onUnmounted(() => {
 
     <div v-if="menuOpen && !isPrivateArea" class="fixed inset-0 z-40 bg-background pt-20 px-6 lg:hidden overflow-y-auto flex flex-col">
       <nav aria-label="Navigation mobile" class="flex flex-col gap-1 py-6 flex-1">
-        <NuxtLink to="/annuaire" :class="['no-underline text-lg font-medium px-3 py-2.5 rounded-xl transition-colors', route.path.startsWith('/annuaire') || route.path.startsWith('/profil/') ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Annuaire</NuxtLink>
+        <NuxtLink to="/directory" :class="['no-underline text-lg font-medium px-3 py-2.5 rounded-xl transition-colors', route.path.startsWith('/directory') || route.path.startsWith('/profile/') ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Annuaire</NuxtLink>
         <NuxtLink to="/speakers" :class="['no-underline text-lg font-medium px-3 py-2.5 rounded-xl transition-colors', route.path === '/speakers' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Speakeuses</NuxtLink>
         <div class="flex flex-col gap-0.5 mt-1">
-          <span :class="['text-lg font-medium px-3 py-2.5', ['/entreprises', '/programmes', '/podcasts'].includes(route.path) ? 'text-foreground' : 'text-foreground-muted']">Ressources</span>
+          <span :class="['text-lg font-medium px-3 py-2.5', ['/companies', '/programs', '/podcasts'].includes(route.path) ? 'text-foreground' : 'text-foreground-muted']">Ressources</span>
           <div class="flex flex-col gap-0.5 ml-3 pl-3 border-l border-border/30">
-            <NuxtLink to="/entreprises" :class="['no-underline text-base px-3 py-2 rounded-xl transition-colors', route.path === '/entreprises' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Entreprises</NuxtLink>
-            <NuxtLink to="/programmes" :class="['no-underline text-base px-3 py-2 rounded-xl transition-colors', route.path === '/programmes' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Programmes</NuxtLink>
+            <NuxtLink to="/companies" :class="['no-underline text-base px-3 py-2 rounded-xl transition-colors', route.path === '/companies' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Entreprises</NuxtLink>
+            <NuxtLink to="/programs" :class="['no-underline text-base px-3 py-2 rounded-xl transition-colors', route.path === '/programs' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Programmes</NuxtLink>
             <NuxtLink to="/podcasts" :class="['no-underline text-base px-3 py-2 rounded-xl transition-colors', route.path === '/podcasts' ? 'text-foreground bg-white/5' : 'text-foreground-muted']">Podcasts</NuxtLink>
           </div>
         </div>

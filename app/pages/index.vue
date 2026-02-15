@@ -76,7 +76,7 @@ function pluralize(count: number, singular: string, plural: string) {
 function handleCreateProfile() {
   $clientPosthog?.capture('cta_clicked', { cta: 'create_profile' })
   if (status.value === 'authenticated') {
-    navigateTo('/profil')
+    navigateTo('/profile')
   } else {
     signIn('github')
   }
@@ -110,7 +110,7 @@ const features = [
     number: '02',
     title: 'Disponible pour...',
     description: 'Chaque profil indique ses disponibilités : conférence, mentoring, freelance, CDI, coffee chat, pair programming, relecture CV.',
-    link: '/annuaire',
+    link: '/directory',
     external: false
   },
   {
@@ -162,7 +162,7 @@ const features = [
 
         <div>
           <div class="flex gap-4 items-center flex-wrap animate-slide-up animation-delay-400">
-          <NuxtLink to="/annuaire" class="group flex items-center gap-4 px-6 py-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full text-sm font-medium cursor-pointer transition-all hover:gap-6 hover:pr-5 hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none no-underline">
+          <NuxtLink to="/directory" class="group flex items-center gap-4 px-6 py-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full text-sm font-medium cursor-pointer transition-all hover:gap-6 hover:pr-5 hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none no-underline">
             <span>Découvrir les profils</span>
             <span class="flex transition-transform group-hover:translate-x-1">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -301,7 +301,7 @@ const features = [
         </div>
 
         <div class="grid md:grid-cols-2 gap-6">
-          <NuxtLink to="/annuaire" class="group p-6 border border-border/10 rounded-2xl hover:border-foreground-muted transition-all no-underline">
+          <NuxtLink to="/directory" class="group p-6 border border-border/10 rounded-2xl hover:border-foreground-muted transition-all no-underline">
             <div class="flex items-start gap-4 mb-4">
               <div class="w-12 h-12 flex items-center justify-center border border-border/10 rounded-full shrink-0">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -343,7 +343,7 @@ const features = [
             </div>
           </NuxtLink>
 
-          <NuxtLink to="/entreprises" class="group p-6 border border-border/10 rounded-2xl hover:border-foreground-muted transition-all no-underline">
+          <NuxtLink to="/companies" class="group p-6 border border-border/10 rounded-2xl hover:border-foreground-muted transition-all no-underline">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 flex items-center justify-center border border-border/10 rounded-full shrink-0">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -359,7 +359,7 @@ const features = [
             </div>
           </NuxtLink>
 
-          <NuxtLink to="/programmes" class="group p-6 border border-border/10 rounded-2xl hover:border-foreground-muted transition-all no-underline">
+          <NuxtLink to="/programs" class="group p-6 border border-border/10 rounded-2xl hover:border-foreground-muted transition-all no-underline">
             <div class="flex items-start gap-4">
               <div class="w-12 h-12 flex items-center justify-center border border-border/10 rounded-full shrink-0">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

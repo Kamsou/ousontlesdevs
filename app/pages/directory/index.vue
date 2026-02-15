@@ -227,7 +227,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
         <NuxtLink
           v-for="dev in allDevelopers"
           :key="dev.id"
-          :to="`/annuaire/${dev.slug}`"
+          :to="`/directory/${dev.slug}`"
           :class="[
             'flex flex-col p-6 bg-background-card border border-border/10 rounded-2xl no-underline text-foreground transition-all hover:bg-background-card-hover hover:border-foreground-muted hover:-translate-y-0.5',
             !dev.bio && !dev.openTo?.length ? 'items-center text-center justify-center' : 'gap-4'

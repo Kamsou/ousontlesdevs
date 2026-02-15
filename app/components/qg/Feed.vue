@@ -87,7 +87,7 @@ onMounted(() => {
       >
         <div class="flex items-center justify-between gap-3 mb-2">
           <NuxtLink
-            :to="`/annuaire/${request.developer?.slug}`"
+            :to="`/directory/${request.developer?.slug}`"
             class="flex items-center gap-3 min-w-0 group/dev"
           >
             <img
@@ -148,7 +148,7 @@ onMounted(() => {
         <div class="p-4 rounded-xl hover:bg-foreground/[0.02] transition-all">
           <div class="flex items-center justify-between gap-3 mb-2">
             <NuxtLink
-              :to="`/annuaire/${request.developer?.slug}`"
+              :to="`/directory/${request.developer?.slug}`"
               class="flex items-center gap-3 min-w-0 group/dev"
             >
               <img

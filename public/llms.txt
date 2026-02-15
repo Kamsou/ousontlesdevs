@@ -10,7 +10,7 @@ OSLD makes women developers visible in France. Women represent less than 20% of 
 
 ### Developer Directory (public)
 Profiles of women developers in France. Filterable by city, technology, and availability (freelance, permanent contract, mentoring, conference speaking, coffee chat, pair programming, CV review).
-URL: https://ousontlesdeveloppeuses.fr/annuaire
+URL: https://ousontlesdeveloppeuses.fr/directory
 
 ### Speakers (public)
 Find women tech speakers for your conferences and events. Filterable by topic, remote/on-site availability.
@@ -18,11 +18,11 @@ URL: https://ousontlesdeveloppeuses.fr/speakers
 
 ### Companies (public)
 Reviews and feedback on tech companies by the community. "Certified Inclusive" badge for companies with 5+ positive reviews.
-URL: https://ousontlesdeveloppeuses.fr/entreprises
+URL: https://ousontlesdeveloppeuses.fr/companies
 
 ### Programs & Resources (public)
 Communities, training, and mentorship for women developers: Duchess France, Rails Girls, and more.
-URL: https://ousontlesdeveloppeuses.fr/programmes
+URL: https://ousontlesdeveloppeuses.fr/programs
 
 ### Podcasts (public)
 Tech podcast episodes featuring women developers. Career paths, experiences, and tech discussions.
