@@ -262,12 +262,12 @@ useIntersectionObserver(stickysentinel, (entries) => {
               <div class="flex flex-col gap-2">
                 <label for="lastName" class="text-xs uppercase tracking-wide text-foreground-muted">Nom *</label>
                 <input id="lastName" v-model="form.lastName" type="text" :class="['px-4 py-3 bg-background-card border rounded-lg text-foreground text-sm transition-colors focus:outline-none', fieldErrors.lastName ? 'border-red-500/50 focus:border-red-500' : 'border-border/10 focus:border-foreground-muted']" />
-                <p v-if="fieldErrors.lastName" class="text-xs text-red-400">{{ fieldErrors.lastName }}</p>
+                <p v-if="fieldErrors.lastName" class="text-xs text-red-700 dark:text-red-400">{{ fieldErrors.lastName }}</p>
               </div>
               <div class="flex flex-col gap-2">
                 <label for="firstName" class="text-xs uppercase tracking-wide text-foreground-muted">Prénom *</label>
                 <input id="firstName" v-model="form.firstName" type="text" :class="['px-4 py-3 bg-background-card border rounded-lg text-foreground text-sm transition-colors focus:outline-none', fieldErrors.firstName ? 'border-red-500/50 focus:border-red-500' : 'border-border/10 focus:border-foreground-muted']" />
-                <p v-if="fieldErrors.firstName" class="text-xs text-red-400">{{ fieldErrors.firstName }}</p>
+                <p v-if="fieldErrors.firstName" class="text-xs text-red-700 dark:text-red-400">{{ fieldErrors.firstName }}</p>
               </div>
             </div>
 
@@ -458,7 +458,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
             <div class="flex flex-col gap-2">
               <label for="linkedin" class="text-xs uppercase tracking-wide text-foreground-muted">LinkedIn *</label>
               <input id="linkedin" v-model="form.linkedinUrl" type="url" placeholder="https://linkedin.com/in/..." :class="['px-4 py-3 bg-background-card border rounded-lg text-foreground text-sm transition-colors focus:outline-none placeholder:text-foreground-muted', fieldErrors.linkedinUrl ? 'border-red-500/50 focus:border-red-500' : 'border-border/10 focus:border-foreground-muted']" />
-              <p v-if="fieldErrors.linkedinUrl" class="text-xs text-red-400">{{ fieldErrors.linkedinUrl }}</p>
+              <p v-if="fieldErrors.linkedinUrl" class="text-xs text-red-700 dark:text-red-400">{{ fieldErrors.linkedinUrl }}</p>
             </div>
 
             <div class="flex flex-col gap-2">
@@ -527,7 +527,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
                 <NuxtLink to="/coc" target="_blank" class="text-primary underline hover:text-foreground transition-colors">code de conduite</NuxtLink>
                 de la communaute OSLD.
               </span>
-              <span v-if="fieldErrors.cocAccepted" class="text-xs text-red-400">{{ fieldErrors.cocAccepted }}</span>
+              <span v-if="fieldErrors.cocAccepted" class="text-xs text-red-700 dark:text-red-400">{{ fieldErrors.cocAccepted }}</span>
             </div>
           </label>
         </section>
@@ -543,7 +543,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
       </form>
 
       <section v-if="!isNewProfile" class="mt-10 pt-8 border-t border-red-500/20">
-        <h2 class="text-sm font-medium text-red-400 mb-4">Zone de danger</h2>
+        <h2 class="text-sm font-medium text-red-700 dark:text-red-400 mb-4">Zone de danger</h2>
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 border border-red-500/20 rounded-xl">
           <div>
             <p class="text-sm text-foreground">Supprimer mon profil</p>
@@ -553,7 +553,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
             type="button"
             @click="deleteProfile"
             :disabled="deleting"
-            class="px-6 py-3 bg-transparent border border-red-500/30 text-red-400 rounded-full text-sm cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-6 py-3 bg-transparent border border-red-500/30 text-red-700 dark:text-red-400 rounded-full text-sm cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {{ deleting ? 'Suppression...' : 'Supprimer' }}
           </button>

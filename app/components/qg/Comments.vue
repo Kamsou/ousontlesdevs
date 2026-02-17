@@ -157,7 +157,7 @@ function formatDate(date: string) {
               <button
                 v-if="props.currentUserId === comment.developer.id"
                 @click="deleteComment(comment.id)"
-                class="text-xs text-foreground-muted/30 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
+                class="text-xs text-foreground-muted/30 hover:text-red-700 dark:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
               >
                 Supprimer
               </button>

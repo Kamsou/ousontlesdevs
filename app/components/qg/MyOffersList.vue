@@ -85,9 +85,9 @@ async function deleteOffer(id: number, e: Event) {
               <span v-if="offer.location">{{ offer.location }}</span>
               <span
                 v-if="offer.verified"
-                class="text-green-400"
+                class="text-green-700 dark:text-green-400"
               >Vérifié</span>
-              <span v-else class="text-amber-400">Non vérifié</span>
+              <span v-else class="text-amber-700 dark:text-amber-400">Non vérifié</span>
               <button
                 @click="toggleComments(offer.id)"
                 class="hover:text-foreground transition-colors"
@@ -99,7 +99,7 @@ async function deleteOffer(id: number, e: Event) {
           <button
             @click="deleteOffer(offer.id, $event)"
             :disabled="deleting === offer.id"
-            class="p-2 text-foreground-muted/30 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50"
+            class="p-2 text-foreground-muted/30 hover:text-red-700 dark:hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50"
             title="Supprimer"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

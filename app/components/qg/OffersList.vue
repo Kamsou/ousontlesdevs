@@ -23,10 +23,6 @@ const props = defineProps<{
   currentUserId?: number
 }>()
 
-const communityOffers = computed(() =>
-  props.offers.filter(o => o.developer.id !== props.currentUserId)
-)
-
 const expandedOfferId = ref<number | null>(null)
 
 function toggleComments(offerId: number) {
@@ -42,7 +38,7 @@ function formatDate(date: string) {
 </script>
 
 <template>
-  <section v-if="isLoading || communityOffers.length > 0" class="mb-16">
+  <section v-if="isLoading || offers.length > 0">
     <h2 class="text-lg font-display font-medium mb-6">Offres de la communauté</h2>
 
     <div v-if="isLoading" class="space-y-3">
@@ -54,7 +50,7 @@ function formatDate(date: string) {
 
     <div v-else class="space-y-3">
       <div
-        v-for="offer in communityOffers"
+        v-for="offer in offers"
         :id="`offer-${offer.id}`"
         :key="offer.id"
         class="border border-border/20 rounded-xl transition-colors hover:border-primary/20"
@@ -71,7 +67,7 @@ function formatDate(date: string) {
                 </span>
                 <span
                   v-if="offer.verified"
-                  class="px-2 py-0.5 text-[11px] font-medium border border-green-500/30 text-green-400 rounded-full"
+                  class="px-2 py-0.5 text-[11px] font-medium border border-green-500/30 text-green-700 dark:text-green-400 rounded-full"
                 >
                   Vérifié
                 </span>

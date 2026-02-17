@@ -181,13 +181,13 @@ function formatDate(date: string) {
           <button
             v-if="project.status !== 'completed'"
             @click="markAsCompleted"
-            class="text-sm text-foreground-muted hover:text-green-400 transition-colors"
+            class="text-sm text-foreground-muted hover:text-green-700 dark:hover:text-green-400 transition-colors"
           >
             Marquer terminé
           </button>
           <button
             @click="showDeleteDialog = true"
-            class="text-sm text-foreground-muted hover:text-red-400 transition-colors ml-auto"
+            class="text-sm text-foreground-muted hover:text-red-700 dark:text-red-400 transition-colors ml-auto"
           >
             Supprimer
           </button>

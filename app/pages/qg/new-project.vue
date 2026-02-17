@@ -83,7 +83,7 @@ async function submit() {
       </p>
 
       <form @submit.prevent="submit" class="space-y-8">
-        <div v-if="error" class="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400">
+        <div v-if="error" class="p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-700 dark:text-red-400">
           {{ error }}
         </div>
 

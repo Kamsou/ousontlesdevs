@@ -92,7 +92,7 @@ async function markAsCompleted(projectId: number, e: Event) {
         <button
           @click="markAsCompleted(project.id, $event)"
           :disabled="updatingId === project.id"
-          class="p-2 text-foreground-muted/30 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-all disabled:opacity-50 mt-0.5"
+          class="p-2 text-foreground-muted/30 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-all disabled:opacity-50 mt-0.5"
           title="Marquer terminé"
         >
           <span v-if="updatingId === project.id" class="block w-4 h-4 border-2 border-foreground-muted/40 border-t-transparent rounded-full animate-spin"></span>

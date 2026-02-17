@@ -8,8 +8,8 @@ export const statusLabels: Record<SideProjectStatus, string> = {
 }
 
 export const statusColors: Record<SideProjectStatus, string> = {
-  idea: 'bg-amber-500/10 text-amber-400',
-  open_to_contributors: 'bg-green-500/10 text-green-400',
+  idea: 'bg-amber-500/10 text-amber-700 dark:text-amber-400',
+  open_to_contributors: 'bg-green-500/10 text-green-700 dark:text-green-400',
   looking_for_cofounder: 'bg-primary/10 text-primary',
   completed: 'bg-foreground-muted/10 text-foreground-muted'
 }

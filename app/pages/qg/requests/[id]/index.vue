@@ -188,7 +188,7 @@ async function sendContact() {
           <span
             :class="[
               'px-2.5 py-1 rounded-full text-xs shrink-0',
-              request.status === 'open' ? 'bg-amber-500/10 text-amber-400' : 'bg-green-500/10 text-green-400'
+              request.status === 'open' ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-green-500/10 text-green-700 dark:text-green-400'
             ]"
           >
             {{ request.status === 'open' ? 'En cours' : 'Résolu' }}
@@ -266,7 +266,7 @@ async function sendContact() {
             <button
               v-if="request.status === 'open'"
               @click="showCloseDialog = true"
-              class="text-sm text-foreground-muted hover:text-green-400 transition-colors"
+              class="text-sm text-foreground-muted hover:text-green-700 dark:hover:text-green-400 transition-colors"
             >
               Résolu
             </button>
@@ -279,7 +279,7 @@ async function sendContact() {
             </button>
             <button
               @click="showDeleteDialog = true"
-              class="text-sm text-foreground-muted hover:text-red-400 transition-colors ml-auto"
+              class="text-sm text-foreground-muted hover:text-red-700 dark:text-red-400 transition-colors ml-auto"
             >
               Supprimer
             </button>
@@ -319,7 +319,7 @@ async function sendContact() {
 
           <div v-if="contactSuccess" class="text-center py-8">
             <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-green-500/10 flex items-center justify-center">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700 dark:text-green-400">
                 <path d="M20 6L9 17l-5-5" />
               </svg>
             </div>
@@ -358,7 +358,7 @@ async function sendContact() {
                 </p>
               </div>
 
-              <p v-if="contactError" class="text-sm text-red-400">
+              <p v-if="contactError" class="text-sm text-red-700 dark:text-red-400">
                 {{ contactError }}
               </p>
 

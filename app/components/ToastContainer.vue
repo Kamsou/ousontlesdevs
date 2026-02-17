@@ -2,8 +2,8 @@
 const { toasts, remove } = useToast()
 
 const typeClasses: Record<string, string> = {
-  success: 'bg-green-500/10 border-green-500/30 text-green-400',
-  error: 'bg-red-500/10 border-red-500/30 text-red-400',
+  success: 'bg-green-500/10 border-green-500/30 text-green-700 dark:text-green-400',
+  error: 'bg-red-500/10 border-red-500/30 text-red-700 dark:text-red-400',
   info: 'bg-white/10 border-border/10 text-foreground'
 }
 

@@ -134,7 +134,7 @@ async function deletePodcast(id: number, title: string) {
       </button>
     </div>
 
-    <div v-if="error" class="p-6 border border-red-500/50 rounded-xl bg-red-500/10 text-red-300">
+    <div v-if="error" class="p-6 border border-red-500/50 rounded-xl bg-red-500/10 text-red-700 dark:text-red-300">
       <p class="font-medium">Accès refusé</p>
     </div>
 
@@ -159,10 +159,10 @@ async function deletePodcast(id: number, title: string) {
           <div class="flex-1 min-w-0">
             <div class="flex items-center gap-3 mb-2 flex-wrap">
               <h2 class="font-display text-lg font-medium truncate">{{ podcast.title }}</h2>
-              <span v-if="podcast.highlight" class="px-2 py-0.5 text-xs bg-primary/20 text-blue-300 rounded-full">
+              <span v-if="podcast.highlight" class="px-2 py-0.5 text-xs bg-primary/20 text-blue-700 dark:text-blue-300 rounded-full">
                 Highlight
               </span>
-              <span v-if="!podcast.active" class="px-2 py-0.5 text-xs bg-red-500/20 text-red-300 rounded-full">
+              <span v-if="!podcast.active" class="px-2 py-0.5 text-xs bg-red-500/20 text-red-700 dark:text-red-300 rounded-full">
                 Inactif
               </span>
             </div>
@@ -186,7 +186,7 @@ async function deletePodcast(id: number, title: string) {
             <button
               @click="deletePodcast(podcast.id, podcast.title)"
               :disabled="deleting === podcast.id"
-              class="px-3 py-1.5 text-xs border border-red-500/30 text-red-300 rounded-lg hover:bg-red-500/10 transition-colors disabled:opacity-50"
+              class="px-3 py-1.5 text-xs border border-red-500/30 text-red-700 dark:text-red-300 rounded-lg hover:bg-red-500/10 transition-colors disabled:opacity-50"
             >
               {{ deleting === podcast.id ? '...' : 'Supprimer' }}
             </button>

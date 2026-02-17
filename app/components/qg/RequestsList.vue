@@ -29,12 +29,11 @@ async function markAsResolved(requestId: number, e: Event) {
 </script>
 
 <template>
-  <section class="mb-16">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-lg font-display font-medium">Tes demandes</h2>
-      <span v-if="openRequests.length > 0" class="flex items-center gap-2 px-2.5 py-1 bg-amber-500/10 rounded-full">
-        <span class="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
-        <span class="text-xs text-amber-300">{{ openRequests.length }} en cours</span>
+  <section>
+    <div v-if="openRequests.length > 0" class="flex items-center justify-end mb-4">
+      <span class="flex items-center gap-2 px-2.5 py-1 bg-amber-500/10 rounded-full">
+        <span class="w-1.5 h-1.5 bg-amber-500 dark:bg-amber-400 rounded-full animate-pulse"></span>
+        <span class="text-xs text-amber-700 dark:text-amber-300">{{ openRequests.length }} en cours</span>
       </span>
     </div>
 
@@ -43,11 +42,6 @@ async function markAsResolved(requestId: number, e: Event) {
         <div class="h-4 bg-border/20 rounded w-1/2 mb-2"></div>
         <div class="h-3 bg-border/20 rounded w-1/4"></div>
       </div>
-    </div>
-
-    <div v-else-if="openRequests.length === 0 && closedRequests.length === 0" class="py-10 text-center border border-dashed border-border/30 rounded-xl">
-      <p class="text-foreground-muted text-sm mb-1">Tu n'as pas encore de demande</p>
-      <p class="text-foreground-muted text-xs">Crée-en une pour recevoir de l'aide</p>
     </div>
 
     <div v-else class="space-y-2">
@@ -78,7 +72,7 @@ async function markAsResolved(requestId: number, e: Event) {
         <button
           @click="markAsResolved(request.id, $event)"
           :disabled="closingRequestId === request.id"
-          class="p-2 text-foreground-muted/30 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-all disabled:opacity-50"
+          class="p-2 text-foreground-muted/30 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-all disabled:opacity-50"
           title="Marquer résolu"
         >
           <span v-if="closingRequestId === request.id" class="block w-4 h-4 border-2 border-foreground-muted/40 border-t-transparent rounded-full animate-spin"></span>

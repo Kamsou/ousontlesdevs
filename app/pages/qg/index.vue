@@ -338,15 +338,37 @@ onMounted(() => {
           </div>
         </section>
 
-        <QgFeed />
+        <section class="rounded-2xl border border-primary/10 bg-primary/[0.02] p-5 md:p-6">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </span>
+            <h2 class="text-base font-display font-semibold text-foreground">Tes demandes</h2>
+          </div>
 
-        <QgRequestsList
-          v-if="isLoadingRequests || openRequests.length > 0 || closedRequests.length > 0"
-          :open-requests="openRequests"
-          :closed-requests="closedRequests"
-          :is-loading="isLoadingRequests"
-          @mark-resolved="handleMarkResolved"
-        />
+          <div v-if="isLoadingRequests || openRequests.length > 0 || closedRequests.length > 0">
+            <QgRequestsList
+              :open-requests="openRequests"
+              :closed-requests="closedRequests"
+              :is-loading="isLoadingRequests"
+              @mark-resolved="handleMarkResolved"
+            />
+          </div>
+          <div v-else class="py-8 text-center">
+            <p class="text-foreground-muted text-sm">Tu n'as pas encore de demande d'aide</p>
+            <p class="text-foreground-muted/60 text-xs mt-1">Décris ton blocage et la communauté t'aidera</p>
+          </div>
+        </section>
+
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-border"></div>
+          <span class="text-xs font-medium text-foreground-muted/40 uppercase tracking-widest">Communauté</span>
+          <div class="flex-1 h-px bg-border"></div>
+        </div>
+
+        <QgFeed />
       </div>
 
       <div v-else-if="activeTab === TABS.CHALLENGES">
@@ -360,8 +382,8 @@ onMounted(() => {
         <QgChallenges v-else />
       </div>
 
-      <div v-else-if="activeTab === TABS.OPPORTUNITES">
-        <div v-if="activity?.profileComplete !== false" class="flex flex-col sm:flex-row gap-3 mb-8 md:mb-12">
+      <div v-else-if="activeTab === TABS.OPPORTUNITES" class="space-y-10 md:space-y-14">
+        <div v-if="activity?.profileComplete !== false" class="flex flex-col sm:flex-row gap-3">
           <NuxtLink
             to="/qg/new-offer"
             class="group flex-1 block p-5 border border-b-[3px] border-primary/20 border-b-primary/60 rounded-2xl transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none no-underline"
@@ -399,9 +421,43 @@ onMounted(() => {
           v-else
           :missing-fields="activity?.missingFields || []"
           context="aux opportunités"
-          class="mb-8 md:mb-12"
           @go-to-profile="activeTab = TABS.PROFIL"
         />
+
+        <section class="rounded-2xl border border-primary/10 bg-primary/[0.02] p-5 md:p-6">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </span>
+            <h2 class="text-base font-display font-semibold text-foreground">Tes publications</h2>
+          </div>
+
+          <div v-if="myOffers.length > 0 || (myProjects || []).length > 0">
+            <QgMyOffersList
+              :offers="myOffers"
+              :is-loading="isLoadingOffers"
+              :current-user-id="profile?.id"
+              @deleted="refreshOffers()"
+            />
+            <QgMyProjectsList
+              :projects="myProjects || []"
+              :is-loading="isLoadingProjects"
+              @mark-completed="handleMarkProjectCompleted"
+            />
+          </div>
+          <div v-else class="py-8 text-center">
+            <p class="text-foreground-muted text-sm">Tu n'as pas encore de publication</p>
+            <p class="text-foreground-muted/60 text-xs mt-1">Poste une offre ou un side project pour commencer</p>
+          </div>
+        </section>
+
+        <div class="flex items-center gap-4">
+          <div class="flex-1 h-px bg-border"></div>
+          <span class="text-xs font-medium text-foreground-muted/40 uppercase tracking-widest">Communauté</span>
+          <div class="flex-1 h-px bg-border"></div>
+        </div>
 
         <QgOffersList
           :offers="offers || []"
@@ -410,23 +466,6 @@ onMounted(() => {
         />
 
         <QgSideProjectsList />
-
-        <div v-if="myOffers.length > 0 || (myProjects || []).length > 0" class="mt-10">
-          <h2 class="text-xs font-medium text-foreground-muted/50 uppercase tracking-widest mb-6">Tes publications</h2>
-
-          <QgMyOffersList
-            :offers="myOffers"
-            :is-loading="isLoadingOffers"
-            :current-user-id="profile?.id"
-            @deleted="refreshOffers()"
-          />
-
-          <QgMyProjectsList
-            :projects="myProjects || []"
-            :is-loading="isLoadingProjects"
-            @mark-completed="handleMarkProjectCompleted"
-          />
-        </div>
       </div>
 
       <div v-else>

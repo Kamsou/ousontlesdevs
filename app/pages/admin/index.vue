@@ -79,7 +79,7 @@ function formatDate(date: string | Date | null) {
     <div v-if="unverifiedOffers.length > 0" class="mb-8 p-6 border border-amber-500/30 bg-amber-500/5 rounded-xl">
       <h2 class="font-display text-lg font-medium mb-4">
         Offres à vérifier
-        <span class="ml-2 px-2 py-0.5 text-xs font-medium bg-amber-500/20 text-amber-400 rounded-full">{{ unverifiedOffers.length }}</span>
+        <span class="ml-2 px-2 py-0.5 text-xs font-medium bg-amber-500/20 text-amber-700 dark:text-amber-400 rounded-full">{{ unverifiedOffers.length }}</span>
       </h2>
       <div class="space-y-3">
         <div
@@ -96,7 +96,7 @@ function formatDate(date: string | Date | null) {
           <button
             @click="toggleVerified(offer.id)"
             :disabled="verifying === offer.id"
-            class="px-3 py-1.5 text-xs border border-green-500/30 text-green-400 rounded-lg bg-transparent cursor-pointer transition-all hover:bg-green-500/10 disabled:opacity-50 shrink-0"
+            class="px-3 py-1.5 text-xs border border-green-500/30 text-green-700 dark:text-green-400 rounded-lg bg-transparent cursor-pointer transition-all hover:bg-green-500/10 disabled:opacity-50 shrink-0"
           >
             {{ verifying === offer.id ? '...' : 'Vérifier' }}
           </button>
@@ -123,7 +123,7 @@ function formatDate(date: string | Date | null) {
       </div>
     </div>
 
-    <div v-if="error" class="p-6 border border-red-500/50 rounded-xl bg-red-500/10 text-red-300">
+    <div v-if="error" class="p-6 border border-red-500/50 rounded-xl bg-red-500/10 text-red-700 dark:text-red-300">
       <p class="font-medium">Accès refusé</p>
       <p class="text-sm mt-1">{{ error.data?.message || 'Vous n\'avez pas accès à cette page.' }}</p>
     </div>
@@ -228,7 +228,7 @@ function formatDate(date: string | Date | null) {
                 <button
                   @click="deleteDeveloper(dev.id, dev.name)"
                   :disabled="deleting === dev.id"
-                  class="px-3 py-1.5 text-xs border border-red-500/30 text-red-300 rounded-lg bg-transparent cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="px-3 py-1.5 text-xs border border-red-500/30 text-red-700 dark:text-red-300 rounded-lg bg-transparent cursor-pointer transition-all hover:bg-red-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {{ deleting === dev.id ? '...' : 'Supprimer' }}
                 </button>

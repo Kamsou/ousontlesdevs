@@ -188,7 +188,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div v-if="error" class="text-sm text-red-400/80 mb-6">{{ error }}</div>
+    <div v-if="error" class="text-sm text-red-700 dark:text-red-400 mb-6">{{ error }}</div>
 
     <div v-if="!isLoading && activeChallenge" class="mb-12 flex flex-col md:flex-row md:items-stretch gap-4">
       <div class="flex items-center gap-4 px-6 py-5 rounded-2xl bg-white/[0.02] shrink-0">

@@ -20,59 +20,59 @@ useSeoMeta({
 
     <div class="prose prose-invert max-w-none">
       <section class="mb-12 p-6 border border-green-500/20 bg-green-500/5 rounded-2xl">
-        <h2 class="font-display text-xl font-medium mb-4 text-green-400">
+        <h2 class="font-display text-xl font-medium mb-4 text-green-700 dark:text-green-400">
           Ce que nous encourageons
         </h2>
         <ul class="space-y-3 text-foreground-muted">
           <li class="flex items-start gap-3">
-            <span class="text-green-400 mt-1">•</span>
+            <span class="text-green-700 dark:text-green-400 mt-1">•</span>
             <span>Le respect des limites, des émotions et des besoins d'autrui</span>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-green-400 mt-1">•</span>
+            <span class="text-green-700 dark:text-green-400 mt-1">•</span>
             <span>La valorisation des savoirs et des expériences de chacune</span>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-green-400 mt-1">•</span>
+            <span class="text-green-700 dark:text-green-400 mt-1">•</span>
             <span>La bienveillance, l'humilité et le droit à l'erreur</span>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-green-400 mt-1">•</span>
+            <span class="text-green-700 dark:text-green-400 mt-1">•</span>
             <span>Oser poser des questions, exposer son point de vue, reconnaître ses erreurs et apprendre ensemble</span>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-green-400 mt-1">•</span>
+            <span class="text-green-700 dark:text-green-400 mt-1">•</span>
             <span>Utiliser un langage inclusif et soutenir les personnes qui vivent des discriminations</span>
           </li>
         </ul>
       </section>
 
       <section class="mb-12 p-6 border border-red-500/20 bg-red-500/5 rounded-2xl">
-        <h2 class="font-display text-xl font-medium mb-4 text-red-400">
+        <h2 class="font-display text-xl font-medium mb-4 text-red-700 dark:text-red-400">
           Ce qui n'est pas toléré
         </h2>
         <ul class="space-y-3 text-foreground-muted">
           <li class="flex items-start gap-3">
-            <span class="text-red-400 mt-1">•</span>
+            <span class="text-red-700 dark:text-red-400 mt-1">•</span>
             <span>Propos ou comportements discriminatoires</span>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-red-400 mt-1">•</span>
+            <span class="text-red-700 dark:text-red-400 mt-1">•</span>
             <span>Harcèlement, mépris, moqueries ou attitudes infantilisantes</span>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-red-400 mt-1">•</span>
+            <span class="text-red-700 dark:text-red-400 mt-1">•</span>
             <span>Blagues, stéréotypes ou commentaires déplacés</span>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-red-400 mt-1">•</span>
+            <span class="text-red-700 dark:text-red-400 mt-1">•</span>
             <span>Comportements intrusifs ou insistants (commentaires sur l'apparence, contact non consenti, etc.)</span>
           </li>
         </ul>
       </section>
 
       <section class="mb-12 p-6 border border-amber-500/20 bg-amber-500/5 rounded-2xl">
-        <h2 class="font-display text-xl font-medium mb-4 text-amber-400">
+        <h2 class="font-display text-xl font-medium mb-4 text-amber-700 dark:text-amber-400">
           En cas de problème
         </h2>
         <p class="text-foreground-muted mb-4">
@@ -80,15 +80,15 @@ useSeoMeta({
         </p>
         <ul class="space-y-3 text-foreground-muted mb-6">
           <li class="flex items-start gap-3">
-            <span class="text-amber-400 mt-1">1.</span>
+            <span class="text-amber-700 dark:text-amber-400 mt-1">1.</span>
             <span>Vous êtes légitime à le signaler, à votre manière et à votre rythme</span>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-amber-400 mt-1">2.</span>
-            <span>Vous pouvez nous écrire à <a href="mailto:contact@ousontlesdeveloppeuses.fr" class="text-amber-400 underline hover:text-amber-300">contact@ousontlesdeveloppeuses.fr</a></span>
+            <span class="text-amber-700 dark:text-amber-400 mt-1">2.</span>
+            <span>Vous pouvez nous écrire à <a href="mailto:contact@ousontlesdeveloppeuses.fr" class="text-amber-700 dark:text-amber-400 underline hover:text-amber-300">contact@ousontlesdeveloppeuses.fr</a></span>
           </li>
           <li class="flex items-start gap-3">
-            <span class="text-amber-400 mt-1">3.</span>
+            <span class="text-amber-700 dark:text-amber-400 mt-1">3.</span>
             <span>Vous pouvez aussi demander à une personne de confiance de le faire pour vous</span>
           </li>
         </ul>

@@ -43,8 +43,16 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const updates: Record<string, any> = {}
 
-  if (body.title !== undefined) updates.title = body.title.trim()
-  if (body.description !== undefined) updates.description = body.description.trim()
+  if (body.title !== undefined) {
+    const trimmed = body.title.trim()
+    if (!trimmed) throw createError({ statusCode: 400, message: 'Le titre ne peut pas être vide' })
+    updates.title = trimmed
+  }
+  if (body.description !== undefined) {
+    const trimmed = body.description.trim()
+    if (!trimmed) throw createError({ statusCode: 400, message: 'La description ne peut pas être vide' })
+    updates.description = trimmed
+  }
   if (body.repoUrl !== undefined) updates.repoUrl = body.repoUrl?.trim() || null
   if (body.websiteUrl !== undefined) updates.websiteUrl = body.websiteUrl?.trim() || null
   if (body.status !== undefined) {

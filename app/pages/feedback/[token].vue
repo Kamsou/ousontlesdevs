@@ -59,7 +59,7 @@ async function submit() {
 
       <div v-else-if="data?.alreadySubmitted || submitted" class="text-center">
         <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-green-500/10 flex items-center justify-center">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700 dark:text-green-400">
             <path d="M20 6L9 17l-5-5" />
           </svg>
         </div>
@@ -85,7 +85,7 @@ async function submit() {
                 :class="[
                   'flex-1 py-3 rounded-xl border transition-all',
                   form.exchangeHappened === true
-                    ? 'border-green-500 bg-green-500/10 text-green-400'
+                    ? 'border-green-500 bg-green-500/10 text-green-700 dark:text-green-400'
                     : 'border-border/10 hover:border-foreground-muted'
                 ]"
               >
@@ -97,7 +97,7 @@ async function submit() {
                 :class="[
                   'flex-1 py-3 rounded-xl border transition-all',
                   form.exchangeHappened === false
-                    ? 'border-red-500 bg-red-500/10 text-red-400'
+                    ? 'border-red-500 bg-red-500/10 text-red-700 dark:text-red-400'
                     : 'border-border/10 hover:border-foreground-muted'
                 ]"
               >
@@ -141,7 +141,7 @@ async function submit() {
             ></textarea>
           </div>
 
-          <p v-if="submitError" class="text-sm text-red-400">{{ submitError }}</p>
+          <p v-if="submitError" class="text-sm text-red-700 dark:text-red-400">{{ submitError }}</p>
 
           <button
             type="submit"
