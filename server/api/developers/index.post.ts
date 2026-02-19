@@ -91,7 +91,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (session.user.email) {
-    sendWelcomeEmail(session.user.email, developer.name).catch(console.error)
+    await sendWelcomeEmail(session.user.email, developer.name).catch(console.error)
   }
 
   return { id: developer.id, message: 'Profil créé' }

@@ -62,7 +62,7 @@ export default defineEventHandler(async (event) => {
     )
   }
 
-  sendAdminNewHelpRequest(developer.name, body.title.trim(), techs).catch(console.error)
+  await sendAdminNewHelpRequest(developer.name, body.title.trim(), techs).catch(console.error)
 
   return { id: helpRequest.id, message: 'Demande créée' }
 })

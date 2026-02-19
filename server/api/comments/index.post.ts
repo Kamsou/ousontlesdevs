@@ -52,7 +52,7 @@ export default defineEventHandler(async (event) => {
     content: body.content.trim()
   }).returning()
 
-  sendCommentNotifications({
+  await sendCommentNotifications({
     commentAuthorId: developer.id,
     commentAuthorName: developer.name,
     commentContent: body.content.trim(),
