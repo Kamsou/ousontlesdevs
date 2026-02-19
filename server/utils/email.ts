@@ -251,6 +251,7 @@ interface CommentNotificationParams {
   commentSnippet: string
   opportunityType: 'help_request' | 'side_project' | 'offer'
   opportunityUrl: string
+  isCreator: boolean
 }
 
 export async function sendCommentNotificationEmail({
@@ -260,7 +261,8 @@ export async function sendCommentNotificationEmail({
   opportunityTitle,
   commentSnippet,
   opportunityType,
-  opportunityUrl
+  opportunityUrl,
+  isCreator
 }: CommentNotificationParams) {
   const resend = getResend()
 
@@ -271,7 +273,11 @@ export async function sendCommentNotificationEmail({
   }
 
   const typeLabel = typeLabels[opportunityType]
-  const subject = `${commenterName} a commenté ton ${typeLabel}`
+  const possessive = isCreator ? 'ton' : 'le'
+  const subject = `${commenterName} a commenté ${possessive} ${typeLabel}`
+  const bodyText = isCreator
+    ? `<strong>${escapeHtml(commenterName)}</strong> a commenté ton ${typeLabel} :`
+    : `<strong>${escapeHtml(commenterName)}</strong> a commenté le ${typeLabel} que tu suis :`
 
   return resend.emails.send({
     from: FROM_EMAIL,
@@ -285,14 +291,14 @@ export async function sendCommentNotificationEmail({
         </h1>
 
         <p style="font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 16px;">
-          <strong>${escapeHtml(commenterName)}</strong> a commenté ton ${typeLabel} :
+          ${bodyText}
         </p>
 
         <p style="font-size: 18px; font-weight: 500; color: #1a1a1a; margin-bottom: 16px;">
           "${escapeHtml(opportunityTitle)}"
         </p>
 
-        <div style="padding: 20px; background: #fafafa; border-left: 3px solid #1a1a1a; margin-bottom: 28px;">
+        <div style="padding: 16px 20px; background: #f3f4f6; border-radius: 8px; margin-bottom: 28px;">
           <p style="font-size: 15px; line-height: 1.6; color: #374151; margin: 0;">${escapeHtml(commentSnippet)}${commentSnippet.length >= 150 ? '...' : ''}</p>
         </div>
 

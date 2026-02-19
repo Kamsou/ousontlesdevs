@@ -23,7 +23,6 @@ export async function sendCommentNotifications({
   let opportunityTitle: string
   let opportunityCreatorId: number
   let opportunityUrl: string
-  let opportunityId: number
 
   if (helpRequestId) {
     const helpRequest = await db.query.helpRequests.findFirst({
@@ -36,7 +35,6 @@ export async function sendCommentNotifications({
     opportunityTitle = helpRequest.title
     opportunityCreatorId = helpRequest.developerId
     opportunityUrl = `https://ousontlesdeveloppeuses.fr/qg/requests/${helpRequestId}`
-    opportunityId = helpRequestId
   } else if (sideProjectId) {
     const sideProject = await db.query.sideProjects.findFirst({
       where: eq(tables.sideProjects.id, sideProjectId),
@@ -48,7 +46,6 @@ export async function sendCommentNotifications({
     opportunityTitle = sideProject.title
     opportunityCreatorId = sideProject.developerId
     opportunityUrl = `https://ousontlesdeveloppeuses.fr/qg/projects/${sideProjectId}`
-    opportunityId = sideProjectId
   } else if (offerId) {
     const offer = await db.query.offers.findFirst({
       where: eq(tables.offers.id, offerId),
@@ -60,7 +57,6 @@ export async function sendCommentNotifications({
     opportunityTitle = offer.title
     opportunityCreatorId = offer.developerId
     opportunityUrl = `https://ousontlesdeveloppeuses.fr/qg?tab=opportunites#offer-${offerId}`
-    opportunityId = offerId
   } else {
     return
   }
@@ -104,6 +100,8 @@ export async function sendCommentNotifications({
 
     if (!recipient.email) continue
 
+    const isCreator = recipient.id === opportunityCreatorId
+
     try {
       await sendCommentNotificationEmail({
         recipientEmail: recipient.email,
@@ -112,7 +110,8 @@ export async function sendCommentNotifications({
         opportunityTitle,
         commentSnippet,
         opportunityType,
-        opportunityUrl
+        opportunityUrl,
+        isCreator
       })
     } catch (error) {
       console.error(`Failed to send comment notification to ${recipient.email}:`, error)
