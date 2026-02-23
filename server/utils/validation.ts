@@ -47,3 +47,11 @@ const VALID_OPEN_TO: OpenToType[] = ['conference', 'mentoring', 'freelance', 'cd
 export function validateOpenTo(openTo: string[]): OpenToType[] {
   return openTo.filter((type): type is OpenToType => VALID_OPEN_TO.includes(type as OpenToType))
 }
+
+type LookingForType = 'freelance' | 'cdi' | 'stage' | 'alternance'
+
+const VALID_LOOKING_FOR: LookingForType[] = ['freelance', 'cdi', 'stage', 'alternance']
+
+export function validateLookingFor(lookingFor: string[]): LookingForType[] {
+  return lookingFor.filter((type): type is LookingForType => VALID_LOOKING_FOR.includes(type as LookingForType))
+}

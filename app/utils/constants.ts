@@ -24,6 +24,19 @@ export const openToLabels: Record<string, string> = Object.fromEntries(
   openToOptions.map(o => [o.value, o.label])
 )
 
+export const lookingForOptions = [
+  { value: 'freelance', label: 'Mission freelance' },
+  { value: 'cdi', label: 'CDI' },
+  { value: 'stage', label: 'Stage' },
+  { value: 'alternance', label: 'Alternance' },
+] as const
+
+export type LookingForValue = typeof lookingForOptions[number]['value']
+
+export const lookingForLabels: Record<string, string> = Object.fromEntries(
+  lookingForOptions.map(o => [o.value, o.label])
+)
+
 export const experienceOptions = [
   { value: 0, label: 'En formation' },
   { value: 1, label: '< 1 an' },

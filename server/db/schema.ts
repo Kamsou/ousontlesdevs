@@ -23,6 +23,9 @@ export const developers = sqliteTable('developers', {
   emailOptInDate: integer('email_opt_in_date', { mode: 'timestamp' }),
   commentsNotificationsEnabled: integer('comments_notifications_enabled', { mode: 'boolean' }).default(true),
   cocAcceptedAt: integer('coc_accepted_at', { mode: 'timestamp' }),
+  lookingForSince: integer('looking_for_since', { mode: 'timestamp' }),
+  lookingForReminderSentAt: integer('looking_for_reminder_sent_at', { mode: 'timestamp' }),
+  lookingForToken: text('looking_for_token'),
   lastLoginAt: integer('last_login_at', { mode: 'timestamp' }),
   createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
@@ -39,6 +42,14 @@ export const developerOpenTo = sqliteTable('developer_open_to', {
   developerId: integer('developer_id').notNull().references(() => developers.id, { onDelete: 'cascade' }),
   type: text('type', {
     enum: ['conference', 'mentoring', 'freelance', 'cdi', 'coffee_chat', 'pair_programming', 'cv_review']
+  }).notNull()
+})
+
+export const developerLookingFor = sqliteTable('developer_looking_for', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  developerId: integer('developer_id').notNull().references(() => developers.id, { onDelete: 'cascade' }),
+  type: text('type', {
+    enum: ['freelance', 'cdi', 'stage', 'alternance']
   }).notNull()
 })
 
@@ -117,6 +128,7 @@ export const offersRelations = relations(offers, ({ one, many }) => ({
 export const developersRelations = relations(developers, ({ many, one }) => ({
   skills: many(developerSkills),
   openTo: many(developerOpenTo),
+  lookingFor: many(developerLookingFor),
   speakerProfile: one(speakerProfiles),
   reviews: many(companyReviews),
   helpRequests: many(helpRequests),
@@ -135,6 +147,13 @@ export const developerSkillsRelations = relations(developerSkills, ({ one }) => 
 export const developerOpenToRelations = relations(developerOpenTo, ({ one }) => ({
   developer: one(developers, {
     fields: [developerOpenTo.developerId],
+    references: [developers.id]
+  })
+}))
+
+export const developerLookingForRelations = relations(developerLookingFor, ({ one }) => ({
+  developer: one(developers, {
+    fields: [developerLookingFor.developerId],
     references: [developers.id]
   })
 }))

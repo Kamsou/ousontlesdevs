@@ -15,6 +15,8 @@ export interface QgProfile {
   profilePhrase: string | null
   skills: string[]
   openTo: string[]
+  lookingFor: string[]
+  lookingForSince: string | null
   speakerProfile: {
     topics: string[]
     available: boolean | null

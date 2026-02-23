@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getExperienceLabel } from '~/utils/constants'
+import { getExperienceLabel, lookingForLabels } from '~/utils/constants'
 
 interface Developer {
   id: number
@@ -16,6 +16,7 @@ interface Developer {
   twitterUrl: string | null
   skills: string[]
   openTo: string[]
+  lookingFor: string[]
   speakerProfile: {
     topics: string[]
     available: boolean | null
@@ -61,6 +62,11 @@ const seoDescription = computed(() => {
 
   if (developer.value.skills?.length) {
     parts.push(`Compétences : ${developer.value.skills.slice(0, 5).join(', ')}`)
+  }
+
+  if (developer.value.lookingFor?.length) {
+    const labels = developer.value.lookingFor.map(l => lookingForLabels[l] || l)
+    parts.push(`En recherche active : ${labels.join(', ')}`)
   }
 
   if (developer.value.openTo?.length) {
@@ -178,6 +184,15 @@ onMounted(() => {
         <div class="flex flex-wrap gap-3">
           <span v-for="skill in developer.skills" :key="skill" class="px-5 py-2 bg-background-card border border-border/10 rounded-full text-sm">
             {{ skill }}
+          </span>
+        </div>
+      </section>
+
+      <section v-if="developer.lookingFor?.length" class="py-8 border-b border-border/10">
+        <h2 class="font-display text-sm font-medium uppercase tracking-widest text-foreground-muted mb-4">En recherche active</h2>
+        <div class="flex flex-wrap gap-3">
+          <span v-for="tag in developer.lookingFor" :key="tag" class="px-5 py-2.5 bg-foreground text-background rounded-full text-sm font-medium">
+            {{ lookingForLabels[tag] || tag }}
           </span>
         </div>
       </section>

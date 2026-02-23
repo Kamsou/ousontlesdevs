@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
     with: {
       skills: true,
       openTo: true,
+      lookingFor: true,
       speakerProfile: true
     }
   })
@@ -41,6 +42,9 @@ export default defineEventHandler(async (event) => {
     twitterUrl: developer.twitterUrl,
     skills: developer.skills.map(s => s.skillName),
     openTo: developer.openTo.map(o => o.type),
+    lookingFor: developer.lookingForSince && developer.lookingForSince > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      ? developer.lookingFor.map(l => l.type)
+      : [],
     speakerProfile: developer.speakerProfile ? {
       topics: parseTopics(developer.speakerProfile.topics),
       available: developer.speakerProfile.available,

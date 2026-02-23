@@ -72,6 +72,31 @@ const myOffers = computed(() =>
   offers.value?.filter(o => o.developer?.id === profile.value?.id) || []
 )
 const isNewProfile = computed(() => !profile.value)
+
+const lookingForDaysLeft = computed(() => {
+  if (!profile.value?.lookingForSince || !profile.value?.lookingFor?.length) return null
+  const since = new Date(profile.value.lookingForSince).getTime()
+  const expiresAt = since + 30 * 24 * 60 * 60 * 1000
+  return Math.ceil((expiresAt - Date.now()) / (24 * 60 * 60 * 1000))
+})
+
+const showLookingForBanner = computed(() => {
+  if (lookingForDaysLeft.value === null) return false
+  return lookingForDaysLeft.value <= 7
+})
+
+async function renewLookingFor() {
+  if (!profile.value) return
+  try {
+    await $fetch(`/api/developers/${profile.value.id}`, {
+      method: 'PUT',
+      body: { lookingFor: profile.value.lookingFor }
+    })
+    await refreshProfile()
+  } catch {
+  }
+}
+
 async function handleOptInChoice(choice: boolean) {
   showOptInModal.value = false
   $clientPosthog?.capture('email_optin_response', { accepted: choice })
@@ -129,9 +154,19 @@ watch(activeTab, (tab) => {
   router.replace({ query: tab === TABS.ENTRAIDE ? {} : { tab } })
   $clientPosthog?.capture('qg_tab_clicked', { tab })
 })
+const toast = useToast()
+
 onMounted(() => {
   if (profile.value && !profile.value.emailOptInAsked) {
     showOptInModal.value = true
+  }
+  if (route.query.renewed === '1') {
+    toast.success('Recherche renouvelée pour 30 jours')
+    router.replace({ query: { tab: route.query.tab } })
+  }
+  if (route.query.deactivated === '1') {
+    toast.success('Recherche désactivée')
+    router.replace({ query: { tab: route.query.tab } })
   }
 })
 </script>
@@ -286,6 +321,17 @@ onMounted(() => {
     </nav>
 
     <div class="max-w-3xl mx-auto px-6 py-4 md:py-8 pb-24 md:pb-8">
+      <div v-if="showLookingForBanner" class="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <p v-if="lookingForDaysLeft! <= 0" class="text-sm text-amber-700 dark:text-amber-400 font-medium">Ta recherche active a expiré</p>
+          <p v-else class="text-sm text-amber-700 dark:text-amber-400 font-medium">Ta recherche active expire dans {{ lookingForDaysLeft }} jour{{ lookingForDaysLeft! > 1 ? 's' : '' }}</p>
+          <p class="text-xs text-foreground-muted mt-1">Renouvelle-la pour rester visible dans l'annuaire.</p>
+        </div>
+        <button @click="renewLookingFor" class="px-5 py-2.5 bg-foreground text-background rounded-full text-sm font-medium cursor-pointer transition-all hover:-translate-y-0.5 shrink-0">
+          Renouveler
+        </button>
+      </div>
+
       <div v-if="activeTab === TABS.ENTRAIDE" class="space-y-10 md:space-y-14">
         <QgIncompleteProfileBanner
           v-if="!isLoadingActivity && activity?.profileComplete === false"

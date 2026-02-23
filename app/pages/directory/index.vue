@@ -8,7 +8,7 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
-import { openToOptions } from '~/utils/constants'
+import { openToOptions, lookingForOptions, lookingForLabels, getExperienceLabel } from '~/utils/constants'
 
 interface Developer {
   id: number
@@ -23,6 +23,7 @@ interface Developer {
   githubUrl: string | null
   skills: string[]
   openTo: string[]
+  lookingFor: string[]
   isSpeaker: boolean
 }
 
@@ -43,7 +44,8 @@ const router = useRouter()
 const filters = reactive({
   location: String(route.query.location || ''),
   skill: String(route.query.skill || ''),
-  openTo: route.query.openTo ? String(route.query.openTo).split(',').filter(Boolean) : []
+  openTo: route.query.openTo ? String(route.query.openTo).split(',').filter(Boolean) : [],
+  lookingFor: route.query.lookingFor ? String(route.query.lookingFor).split(',').filter(Boolean) : []
 })
 
 const allDevelopers = ref<Developer[]>([])
@@ -58,6 +60,7 @@ const initialQuery = computed(() => {
   if (filters.location) params.location = filters.location
   if (filters.skill) params.skill = filters.skill
   if (filters.openTo.length) params.openTo = filters.openTo.join(',')
+  if (filters.lookingFor.length) params.lookingFor = filters.lookingFor.join(',')
   params.page = '1'
   return params
 })
@@ -77,7 +80,7 @@ watch(data, (d) => {
   }
 }, { immediate: true })
 
-watch([() => filters.location, () => filters.skill, () => filters.openTo], () => {
+watch([() => filters.location, () => filters.skill, () => filters.openTo, () => filters.lookingFor], () => {
   hasMore.value = false
   page.value = 1
 })
@@ -91,6 +94,7 @@ async function loadMore() {
     if (filters.location) params.location = filters.location
     if (filters.skill) params.skill = filters.skill
     if (filters.openTo.length) params.openTo = filters.openTo.join(',')
+    if (filters.lookingFor.length) params.lookingFor = filters.lookingFor.join(',')
     params.page = page.value.toString()
     const result = await $fetch<ApiResponse>('/api/developers', { query: params })
     allDevelopers.value = [...allDevelopers.value, ...result.developers]
@@ -117,11 +121,23 @@ function toggleOpenTo(value: string) {
   trackSearch()
 }
 
+function toggleLookingFor(value: string) {
+  const index = filters.lookingFor.indexOf(value)
+  if (index > -1) {
+    filters.lookingFor.splice(index, 1)
+  } else {
+    filters.lookingFor.push(value)
+  }
+  updateUrl()
+  trackSearch()
+}
+
 function updateUrl() {
   const urlParams: Record<string, string> = {}
   if (filters.location) urlParams.location = filters.location
   if (filters.skill) urlParams.skill = filters.skill
   if (filters.openTo.length) urlParams.openTo = filters.openTo.join(',')
+  if (filters.lookingFor.length) urlParams.lookingFor = filters.lookingFor.join(',')
   router.push({ query: urlParams })
 }
 
@@ -129,6 +145,7 @@ function clearFilters() {
   filters.location = ''
   filters.skill = ''
   filters.openTo = []
+  filters.lookingFor = []
   page.value = 1
   router.push({ query: {} })
 }
@@ -138,13 +155,14 @@ let searchTimeout: ReturnType<typeof setTimeout> | null = null
 function trackSearch() {
   if (searchTimeout) clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
-    const hasFilters = filters.location || filters.skill || filters.openTo.length
+    const hasFilters = filters.location || filters.skill || filters.openTo.length || filters.lookingFor.length
     if (!hasFilters) return
     $clientPosthog?.capture('search_performed', {
       page: 'annuaire',
       location: filters.location || null,
       skill: filters.skill || null,
       openTo: filters.openTo.length ? filters.openTo : null,
+      lookingFor: filters.lookingFor.length ? filters.lookingFor : null,
       results_count: totalCount.value
     })
   }, 1000)
@@ -187,12 +205,31 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
           />
         </div>
 
-        <button v-if="filters.location || filters.skill || filters.openTo.length" @click="clearFilters" class="px-6 py-3 bg-transparent border border-border/10 rounded-lg text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground">
+        <button v-if="filters.location || filters.skill || filters.openTo.length || filters.lookingFor.length" @click="clearFilters" class="px-6 py-3 bg-transparent border border-border/10 rounded-lg text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground">
           Effacer
         </button>
       </div>
 
       <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+        <span class="text-xs tracking-wide text-foreground-muted">En recherche</span>
+        <div class="flex flex-wrap gap-2">
+          <button
+            v-for="option in lookingForOptions"
+            :key="option.value"
+            :class="[
+              'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all',
+              filters.lookingFor.includes(option.value)
+                ? 'bg-foreground/10 border-foreground/30 text-foreground'
+                : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
+            ]"
+            @click="toggleLookingFor(option.value)"
+          >
+            {{ option.label }}
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row items-start md:items-center gap-6 mt-6">
         <span class="text-xs tracking-wide text-foreground-muted">Disponible pour</span>
         <div class="flex flex-wrap gap-2">
           <button
@@ -240,7 +277,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
               class="w-16 h-16 rounded-full object-cover mb-2"
             />
             <h3 class="font-display text-lg font-medium">{{ dev.name }}</h3>
-            <p v-if="dev.location" class="text-sm text-foreground-muted">{{ dev.location }}</p>
+            <p v-if="dev.location || getExperienceLabel(dev.yearsExperience)" class="text-sm text-foreground-muted">{{ [dev.location, getExperienceLabel(dev.yearsExperience)].filter(Boolean).join(' · ') }}</p>
             <span v-if="dev.isSpeaker" class="mt-1 px-3 py-1 bg-background-card border border-border/10 rounded-full text-[0.7rem] uppercase tracking-widest text-foreground-muted">Speakeuse</span>
             <div v-if="dev.skills?.length" class="flex flex-wrap justify-center gap-2 mt-2">
               <span v-for="skill in dev.skills.slice(0, 5)" :key="skill" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-xs text-foreground-muted">
@@ -262,10 +299,20 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
               />
               <div class="flex-1">
                 <h3 class="font-display text-lg font-medium">{{ dev.name }}</h3>
-                <p v-if="dev.title" class="text-sm text-foreground-muted">{{ dev.title }}<span v-if="dev.location"> · {{ dev.location }}</span></p>
-                <p v-else-if="dev.location" class="text-sm text-foreground-muted">{{ dev.location }}</p>
+                <p v-if="dev.title" class="text-sm text-foreground-muted">{{ dev.title }}<span v-if="dev.location"> · {{ dev.location }}</span><span v-if="getExperienceLabel(dev.yearsExperience)"> · {{ getExperienceLabel(dev.yearsExperience) }}</span></p>
+                <p v-else-if="dev.location || getExperienceLabel(dev.yearsExperience)" class="text-sm text-foreground-muted">{{ [dev.location, getExperienceLabel(dev.yearsExperience)].filter(Boolean).join(' · ') }}</p>
               </div>
               <span v-if="dev.isSpeaker" class="px-3 py-1 bg-background-card border border-border/10 rounded-full text-[0.7rem] uppercase tracking-widest text-foreground-muted">Speakeuse</span>
+            </div>
+
+            <div v-if="dev.lookingFor?.length" class="flex flex-wrap gap-1.5">
+              <span
+                v-for="tag in dev.lookingFor"
+                :key="tag"
+                class="px-3 py-1 bg-foreground text-background rounded-full text-xs font-medium"
+              >
+                Recherche {{ lookingForLabels[tag] || tag }}
+              </span>
             </div>
 
             <p v-if="dev.bio" class="text-sm text-foreground-muted leading-relaxed line-clamp-2 whitespace-pre-line">{{ dev.bio }}</p>

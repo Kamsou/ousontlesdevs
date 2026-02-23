@@ -314,3 +314,76 @@ export async function sendCommentNotificationEmail({
     `
   })
 }
+
+interface LookingForReminderParams {
+  recipientEmail: string
+  recipientName: string
+  lookingForTypes: string[]
+  renewToken: string
+  deactivateToken: string
+}
+
+export async function sendLookingForReminderEmail({
+  recipientEmail,
+  recipientName,
+  lookingForTypes,
+  renewToken,
+  deactivateToken
+}: LookingForReminderParams) {
+  const resend = getResend()
+
+  const typeLabels: Record<string, string> = {
+    freelance: 'Mission freelance',
+    cdi: 'CDI',
+    stage: 'Stage',
+    alternance: 'Alternance'
+  }
+
+  const labels = lookingForTypes.map(t => typeLabels[t] || t).join(', ')
+  const renewUrl = `https://ousontlesdeveloppeuses.fr/api/looking-for/renew?token=${renewToken}`
+  const deactivateUrl = `https://ousontlesdeveloppeuses.fr/api/looking-for/deactivate?token=${deactivateToken}`
+
+  return resend.emails.send({
+    from: FROM_EMAIL,
+    to: recipientEmail,
+    subject: 'Tu es toujours en recherche ?',
+    html: `
+      <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #ffffff; color: #1a1a1a;">
+
+        <h1 style="font-size: 24px; font-weight: 600; margin-bottom: 8px; color: #1a1a1a;">
+          Hey ${escapeHtml(recipientName)}
+        </h1>
+
+        <p style="font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 16px;">
+          Tu as indiqué être en recherche active sur OSLD :
+        </p>
+
+        <p style="font-size: 18px; font-weight: 500; color: #1a1a1a; margin-bottom: 24px;">
+          ${escapeHtml(labels)}
+        </p>
+
+        <p style="font-size: 16px; line-height: 1.7; color: #374151; margin-bottom: 28px;">
+          Ta recherche expire dans quelques jours. Tu es toujours en recherche ?
+        </p>
+
+        <div style="margin-bottom: 16px;">
+          <a href="${renewUrl}"
+             style="display: inline-block; padding: 14px 24px; background: #1a1a1a; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 15px;">
+            Oui, je cherche toujours
+          </a>
+        </div>
+
+        <div>
+          <a href="${deactivateUrl}"
+             style="display: inline-block; padding: 14px 24px; background: #ffffff; color: #374151; text-decoration: none; border-radius: 8px; font-weight: 500; font-size: 15px; border: 1px solid #e5e7eb;">
+            Non, j'ai trouvé !
+          </a>
+        </div>
+
+        <p style="font-size: 14px; line-height: 1.6; color: #6b7280; margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+          Sans action de ta part, ta recherche sera désactivée automatiquement.
+        </p>
+      </div>
+    `
+  })
+}

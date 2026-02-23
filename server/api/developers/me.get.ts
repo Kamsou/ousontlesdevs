@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
     with: {
       skills: true,
       openTo: true,
+      lookingFor: true,
       speakerProfile: true
     }
   })
@@ -52,6 +53,8 @@ export default defineEventHandler(async (event) => {
     profilePhrase: developer.profilePhrase,
     skills: developer.skills.map(s => s.skillName),
     openTo: developer.openTo.map(o => o.type),
+    lookingFor: developer.lookingFor.map(l => l.type),
+    lookingForSince: developer.lookingForSince?.toISOString() || null,
     speakerProfile: developer.speakerProfile ? {
       topics: parseTopics(developer.speakerProfile.topics),
       available: developer.speakerProfile.available,

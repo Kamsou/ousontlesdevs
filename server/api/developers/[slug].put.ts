@@ -1,6 +1,6 @@
 import { getServerSession, getToken } from '#auth'
 import { eq } from 'drizzle-orm'
-import { validateProfileUrls, validateOpenTo } from '../../utils/validation'
+import { validateProfileUrls, validateOpenTo, validateLookingFor } from '../../utils/validation'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
@@ -115,6 +115,32 @@ export default defineEventHandler(async (event) => {
       }
     } else if (existingSpeaker) {
       await db.delete(tables.speakerProfiles).where(eq(tables.speakerProfiles.developerId, id))
+    }
+  }
+
+  if (body.lookingFor !== undefined) {
+    const validLookingFor = validateLookingFor(body.lookingFor)
+    await db.delete(tables.developerLookingFor).where(eq(tables.developerLookingFor.developerId, id))
+    if (validLookingFor.length) {
+      await db.insert(tables.developerLookingFor).values(
+        validLookingFor.map(type => ({
+          developerId: id,
+          type
+        }))
+      )
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      const isExpired = !developer.lookingForSince || developer.lookingForSince < thirtyDaysAgo
+      if (isExpired) {
+        await db.update(tables.developers).set({
+          lookingForSince: new Date(),
+          lookingForReminderSentAt: null
+        }).where(eq(tables.developers.id, id))
+      }
+    } else {
+      await db.update(tables.developers).set({
+        lookingForSince: null,
+        lookingForReminderSentAt: null
+      }).where(eq(tables.developers.id, id))
     }
   }
 

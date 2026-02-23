@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { openToOptions, skillGroups, suggestedSkills, experienceOptions } from '~/utils/constants'
+import { openToOptions, lookingForOptions, skillGroups, suggestedSkills, experienceOptions } from '~/utils/constants'
 import type { QgProfile } from '~/types/qg'
 
 const props = defineProps<{
@@ -30,6 +30,7 @@ const form = reactive({
   linkedinUrl: '',
   twitterUrl: '',
   skills: [] as string[],
+  lookingFor: [] as string[],
   openTo: [] as string[],
   speakerTopics: [] as string[],
   remoteOk: true,
@@ -70,6 +71,19 @@ const stickysentinel = ref<HTMLElement>()
 const isSticky = ref(false)
 const submitted = ref(false)
 const isNewProfile = computed(() => !props.profile)
+
+const lookingForDaysLeft = computed(() => {
+  if (!props.profile?.lookingForSince || !props.profile?.lookingFor?.length) return null
+  const since = new Date(props.profile.lookingForSince).getTime()
+  const expiresAt = since + 30 * 24 * 60 * 60 * 1000
+  const daysLeft = Math.ceil((expiresAt - Date.now()) / (24 * 60 * 60 * 1000))
+  return daysLeft
+})
+
+const lookingForExpired = computed(() => {
+  if (lookingForDaysLeft.value === null) return false
+  return lookingForDaysLeft.value <= 0
+})
 
 const hasValidExperienceProfile = computed(() => {
   return props.profile?.profileType &&
@@ -120,6 +134,15 @@ function toggleOpenTo(value: string) {
     form.openTo.splice(index, 1)
   } else {
     form.openTo.push(value)
+  }
+}
+
+function toggleLookingFor(value: string) {
+  const index = form.lookingFor.indexOf(value)
+  if (index > -1) {
+    form.lookingFor.splice(index, 1)
+  } else {
+    form.lookingFor.push(value)
   }
 }
 
@@ -191,6 +214,7 @@ watch(() => props.profile, (p) => {
     form.linkedinUrl = p.linkedinUrl || ''
     form.twitterUrl = p.twitterUrl || ''
     form.skills = p.skills || []
+    form.lookingFor = p.lookingFor || []
     form.openTo = p.openTo || []
     form.speakerTopics = p.speakerProfile?.topics || []
     form.remoteOk = p.speakerProfile?.remoteOk ?? true
@@ -387,6 +411,35 @@ useIntersectionObserver(stickysentinel, (entries) => {
                 <button type="button" @click="removeSkill(skill)" class="bg-transparent border-none text-foreground-muted cursor-pointer text-lg leading-none p-0 hover:text-foreground">&times;</button>
               </span>
             </template>
+          </div>
+        </section>
+
+        <section class="py-5 border-b border-border/10">
+          <h2 class="font-display text-xl font-medium mb-2">En recherche active</h2>
+          <p class="text-foreground-muted text-sm mb-6">Tu cherches activement ? Signale-le sur ton profil. Visible 30 jours, renouvelable.</p>
+
+          <div v-if="lookingForExpired && profile?.lookingFor?.length" class="mb-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+            <p class="text-sm text-amber-700 dark:text-amber-400">Ta recherche a expiré. Enregistre pour la renouveler.</p>
+          </div>
+          <div v-else-if="lookingForDaysLeft !== null && lookingForDaysLeft <= 7 && lookingForDaysLeft > 0" class="mb-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+            <p class="text-sm text-amber-700 dark:text-amber-400">Ta recherche expire dans {{ lookingForDaysLeft }} jour{{ lookingForDaysLeft > 1 ? 's' : '' }}. Enregistre pour la renouveler.</p>
+          </div>
+
+          <div class="flex flex-col md:flex-row flex-wrap gap-3">
+            <button
+              v-for="option in lookingForOptions"
+              :key="option.value"
+              type="button"
+              :class="[
+                'px-5 py-2.5 border rounded-full cursor-pointer text-sm transition-all w-full md:w-auto text-center',
+                form.lookingFor.includes(option.value)
+                  ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-700 dark:text-emerald-400'
+                  : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
+              ]"
+              @click="toggleLookingFor(option.value)"
+            >
+              {{ option.label }}
+            </button>
           </div>
         </section>
 

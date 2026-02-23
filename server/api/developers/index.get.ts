@@ -29,10 +29,13 @@ export default defineEventHandler(async (event) => {
   const page = parseInt(query.page as string) || 1
   const limit = parseInt(query.limit as string) || 24
 
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+
   const developers = await db.query.developers.findMany({
     with: {
       skills: true,
       openTo: true,
+      lookingFor: true,
       speakerProfile: true
     }
   })
@@ -56,6 +59,14 @@ export default defineEventHandler(async (event) => {
     const openToTypes = (query.openTo as string).split(',')
     filtered = filtered.filter(d =>
       d.openTo.some(o => openToTypes.includes(o.type))
+    )
+  }
+
+  if (query.lookingFor) {
+    const lookingForTypes = (query.lookingFor as string).split(',')
+    filtered = filtered.filter(d =>
+      d.lookingForSince && d.lookingForSince > thirtyDaysAgo &&
+      d.lookingFor.some(l => lookingForTypes.includes(l.type))
     )
   }
 
@@ -83,6 +94,9 @@ export default defineEventHandler(async (event) => {
       githubUrl: d.githubUrl,
       skills: d.skills.map(s => s.skillName),
       openTo: d.openTo.map(o => o.type),
+      lookingFor: d.lookingForSince && d.lookingForSince > thirtyDaysAgo
+        ? d.lookingFor.map(l => l.type)
+        : [],
       isSpeaker: d.speakerProfile?.available || d.openTo.some(o => o.type === 'conference')
     })),
     pagination: {

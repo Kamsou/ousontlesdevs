@@ -1,6 +1,7 @@
 import { getServerSession, getToken } from '#auth'
+import { eq } from 'drizzle-orm'
 import { sendWelcomeEmail } from '../../utils/email'
-import { validateProfileUrls, validateOpenTo } from '../../utils/validation'
+import { validateProfileUrls, validateOpenTo, validateLookingFor } from '../../utils/validation'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
@@ -78,6 +79,20 @@ export default defineEventHandler(async (event) => {
         type
       }))
     )
+  }
+
+  const validLookingFor = body.lookingFor?.length ? validateLookingFor(body.lookingFor) : []
+
+  if (validLookingFor.length) {
+    await db.insert(tables.developerLookingFor).values(
+      validLookingFor.map(type => ({
+        developerId: developer.id,
+        type
+      }))
+    )
+    await db.update(tables.developers).set({
+      lookingForSince: new Date()
+    }).where(eq(tables.developers.id, developer.id))
   }
 
   if (validOpenTo.includes('conference')) {
