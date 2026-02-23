@@ -31,6 +31,7 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@netlify/functions": "^5.1.2",
     "@types/node": "^25.0.2",
     "drizzle-kit": "^0.31.8",
     "typescript": "^5.9.3"
