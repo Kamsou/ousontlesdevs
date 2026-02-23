@@ -34,7 +34,8 @@ const userMenuOpen = ref(false)
 const resourcesMenuOpen = ref(false)
 
 function handleClickOutside(e: MouseEvent) {
-  const target = e.target as HTMLElement
+  if (!(e.target instanceof HTMLElement)) return
+  const target = e.target
   if (!target.closest('.user-menu')) {
     userMenuOpen.value = false
   }

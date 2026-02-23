@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { queryString } from '~/utils/query'
+
 const route = useRoute()
-const token = route.params.token as string
+const token = queryString(route.params.token)
 
 useSeoMeta({
   title: 'Ton retour',
@@ -9,9 +11,15 @@ useSeoMeta({
 
 const { data, status, error } = await useFetch(`/api/feedback/${token}`)
 
-const form = ref({
-  exchangeHappened: null as boolean | null,
-  usefulnessRating: null as number | null,
+interface FeedbackFormState {
+  exchangeHappened: boolean | null
+  usefulnessRating: number | null
+  comment: string
+}
+
+const form = ref<FeedbackFormState>({
+  exchangeHappened: null,
+  usefulnessRating: null,
   comment: ''
 })
 

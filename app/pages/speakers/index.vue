@@ -24,13 +24,15 @@ interface Speaker {
   } | null
 }
 
+import { queryString } from '~/utils/query'
+
 const { $clientPosthog } = useNuxtApp()
 const route = useRoute()
 const router = useRouter()
 
 const filters = reactive({
-  location: route.query.location as string || '',
-  topic: route.query.topic as string || '',
+  location: queryString(route.query.location),
+  topic: queryString(route.query.topic),
   remote: route.query.remote === 'true',
   travel: route.query.travel === 'true'
 })

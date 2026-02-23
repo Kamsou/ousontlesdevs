@@ -8,12 +8,14 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
+import { queryString } from '~/utils/query'
+
 const route = useRoute()
 const router = useRouter()
 const { status } = useAuth()
 
 const filters = reactive({
-  location: route.query.location as string || '',
+  location: queryString(route.query.location),
   verified: route.query.verified === 'true'
 })
 

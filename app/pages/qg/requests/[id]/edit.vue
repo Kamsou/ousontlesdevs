@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { HelpType } from '~/types/qg'
+
 interface HelpRequest {
   id: number
   title: string
   description: string | null
-  helpType: 'bug' | 'review' | 'advice' | 'pair' | 'other'
+  helpType: HelpType
   status: 'open' | 'in_progress' | 'closed'
   techs: { id: number; techName: string }[]
 }
@@ -24,11 +26,18 @@ useSeoMeta({
 
 const { data: request, status } = await useFetch<HelpRequest>(`/api/help-requests/${requestId}`)
 
-const form = ref({
+interface HelpFormState {
+  title: string
+  description: string
+  helpType: HelpType
+  techs: string[]
+}
+
+const form = ref<HelpFormState>({
   title: '',
   description: '',
-  helpType: 'bug' as 'bug' | 'review' | 'advice' | 'pair' | 'other',
-  techs: [] as string[]
+  helpType: 'bug',
+  techs: []
 })
 
 const techInput = ref('')
@@ -46,7 +55,7 @@ watch(request, (r) => {
   }
 }, { immediate: true })
 
-const helpTypes = [
+const helpTypes: { value: HelpType; label: string; description: string }[] = [
   { value: 'bug', label: 'Bug', description: 'Un truc qui marche pas' },
   { value: 'review', label: 'Review', description: 'Relire mon code' },
   { value: 'advice', label: 'Conseil', description: 'Avis sur une approche' },
@@ -162,7 +171,7 @@ async function submit() {
                 v-for="type in helpTypes"
                 :key="type.value"
                 type="button"
-                @click="form.helpType = type.value as typeof form.helpType"
+                @click="form.helpType = type.value"
                 :class="[
                   'p-4 border rounded-xl text-left transition-all',
                   form.helpType === type.value

@@ -19,20 +19,41 @@ const validProfileTypes = [
   'La Connectrice', "L'Exploratrice", 'La Gardienne', 'La Créative'
 ]
 
-const form = reactive({
+interface ProfileFormState {
+  firstName: string
+  lastName: string
+  bio: string
+  title: string
+  location: string
+  yearsExperience: number | null
+  website: string
+  linkedinUrl: string
+  twitterUrl: string
+  skills: string[]
+  lookingFor: string[]
+  openTo: string[]
+  speakerTopics: string[]
+  remoteOk: boolean
+  travelWilling: boolean
+  emailOptIn: boolean
+  commentsNotificationsEnabled: boolean
+  cocAccepted: boolean
+}
+
+const form = reactive<ProfileFormState>({
   firstName: '',
   lastName: '',
   bio: '',
   title: '',
   location: '',
-  yearsExperience: null as number | null,
+  yearsExperience: null,
   website: '',
   linkedinUrl: '',
   twitterUrl: '',
-  skills: [] as string[],
-  lookingFor: [] as string[],
-  openTo: [] as string[],
-  speakerTopics: [] as string[],
+  skills: [],
+  lookingFor: [],
+  openTo: [],
+  speakerTopics: [],
   remoteOk: true,
   travelWilling: false,
   emailOptIn: false,
@@ -58,7 +79,7 @@ function selectExperience(value: number) {
 }
 
 function handleClickOutsideExperience(e: MouseEvent) {
-  if (experienceDropdownRef.value && !experienceDropdownRef.value.contains(e.target as Node)) {
+  if (experienceDropdownRef.value && e.target instanceof Node && !experienceDropdownRef.value.contains(e.target)) {
     experienceDropdownOpen.value = false
   }
 }
@@ -171,8 +192,8 @@ async function save() {
         skills_count: form.skills.length,
         is_speaker: form.openTo.includes('conference')
       })
-    } else {
-      await $fetch(`/api/developers/${props.profile!.id}`, {
+    } else if (props.profile) {
+      await $fetch(`/api/developers/${props.profile.id}`, {
         method: 'PUT',
         body: payload
       })
@@ -193,7 +214,7 @@ async function deleteProfile() {
 
   deleting.value = true
   try {
-    await $fetch('/api/developers/me', { method: 'DELETE' } as any)
+    await $fetch('/api/developers/me', { method: 'DELETE' })
     $clientPosthog?.capture('profile_deleted')
     await signOut({ callbackUrl: '/' })
   } catch (e: any) {

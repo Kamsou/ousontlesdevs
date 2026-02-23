@@ -43,7 +43,7 @@ async function deleteDeveloper(id: number, name: string) {
 
   deleting.value = id
   try {
-    await $fetch(`/api/admin/developers/${id}`, { method: 'DELETE' } as any)
+    await $fetch(`/api/admin/developers/${id}`, { method: 'DELETE' })
     await refresh()
   } catch (e) {
     toast.error('Erreur lors de la suppression')

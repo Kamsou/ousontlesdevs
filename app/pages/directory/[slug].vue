@@ -26,10 +26,11 @@ interface Developer {
 }
 
 import { openToLabels } from '~/utils/constants'
+import { queryString } from '~/utils/query'
 
 const { $clientPosthog } = useNuxtApp()
 const route = useRoute()
-const slug = route.params.slug as string
+const slug = queryString(route.params.slug)
 
 const { data: developer, error } = await useFetch<Developer>(`/api/developers/${slug}`)
 

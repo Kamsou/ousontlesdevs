@@ -1,3 +1,5 @@
+export type HelpType = 'bug' | 'review' | 'advice' | 'pair' | 'other'
+
 export interface QgProfile {
   id: number
   name: string

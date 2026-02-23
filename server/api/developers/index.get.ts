@@ -26,8 +26,8 @@ export default defineEventHandler(async (event) => {
   const db = useDrizzle()
   const query = getQuery(event)
 
-  const page = parseInt(query.page as string) || 1
-  const limit = parseInt(query.limit as string) || 24
+  const page = parseInt(String(query.page)) || 1
+  const limit = parseInt(String(query.limit)) || 24
 
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
 
@@ -44,26 +44,28 @@ export default defineEventHandler(async (event) => {
   let filtered = seededShuffle(developers, getDailySeed())
 
   if (query.location) {
+    const location = String(query.location).toLowerCase()
     filtered = filtered.filter(d =>
-      d.location?.toLowerCase().includes((query.location as string).toLowerCase())
+      d.location?.toLowerCase().includes(location)
     )
   }
 
   if (query.skill) {
+    const skill = String(query.skill).toLowerCase()
     filtered = filtered.filter(d =>
-      d.skills.some(s => s.skillName.toLowerCase().includes((query.skill as string).toLowerCase()))
+      d.skills.some(s => s.skillName.toLowerCase().includes(skill))
     )
   }
 
   if (query.openTo) {
-    const openToTypes = (query.openTo as string).split(',')
+    const openToTypes = String(query.openTo).split(',')
     filtered = filtered.filter(d =>
       d.openTo.some(o => openToTypes.includes(o.type))
     )
   }
 
   if (query.lookingFor) {
-    const lookingForTypes = (query.lookingFor as string).split(',')
+    const lookingForTypes = String(query.lookingFor).split(',')
     filtered = filtered.filter(d =>
       d.lookingForSince && d.lookingForSince > thirtyDaysAgo &&
       d.lookingFor.some(l => lookingForTypes.includes(l.type))
@@ -74,10 +76,11 @@ export default defineEventHandler(async (event) => {
     const ranges: Record<number, [number, number]> = {
       0: [0, 0], 1: [1, 1], 2: [1, 3], 3: [3, 5], 5: [5, 10], 10: [11, Infinity]
     }
-    const selected = (query.experience as string).split(',').map(Number).map(v => ranges[v]).filter(Boolean)
-    filtered = filtered.filter(d =>
-      d.yearsExperience !== null && selected.some(([min, max]) => d.yearsExperience! >= min && d.yearsExperience! <= max)
-    )
+    const selected = String(query.experience).split(',').map(Number).map(v => ranges[v]).filter(Boolean)
+    filtered = filtered.filter(d => {
+      const exp = d.yearsExperience
+      return exp !== null && selected.some(([min, max]) => exp >= min && exp <= max)
+    })
   }
 
   if (query.speakers === 'true') {

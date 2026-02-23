@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { SideProjectStatus } from '~/utils/sideProjectStatus'
+
 definePageMeta({
   middleware: 'sidebase-auth'
 })
@@ -32,12 +34,20 @@ if (project.value && currentUser.value?.id !== project.value.developer.id) {
   await navigateTo(`/qg/projects/${projectId}`)
 }
 
-const form = ref({
+interface ProjectEditFormState {
+  title: string
+  description: string
+  repoUrl: string
+  websiteUrl: string
+  status: SideProjectStatus
+}
+
+const form = ref<ProjectEditFormState>({
   title: project.value?.title || '',
   description: project.value?.description || '',
   repoUrl: project.value?.repoUrl || '',
   websiteUrl: project.value?.websiteUrl || '',
-  status: (project.value?.status || 'open_to_contributors') as SideProjectStatus
+  status: project.value?.status || 'open_to_contributors'
 })
 
 const { techs, techInput, addTech, removeTech, handleTechKeydown, handleTechInput } = useTechInput(project.value?.techs || [])
@@ -177,7 +187,7 @@ async function submit() {
                 v-for="status in statusOptions"
                 :key="status.value"
                 type="button"
-                @click="form.status = status.value as typeof form.status"
+                @click="form.status = status.value"
                 :class="[
                   'p-4 border rounded-xl text-left transition-all',
                   form.status === status.value

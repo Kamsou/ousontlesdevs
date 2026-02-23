@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { HelpType } from '~/types/qg'
+
 definePageMeta({
   middleware: 'sidebase-auth'
 })
@@ -15,11 +17,18 @@ if (activity.value?.profileComplete === false) {
   await navigateTo('/qg?tab=profil')
 }
 
-const form = ref({
+interface HelpFormState {
+  title: string
+  description: string
+  helpType: HelpType
+  techs: string[]
+}
+
+const form = ref<HelpFormState>({
   title: '',
   description: '',
-  helpType: 'bug' as 'bug' | 'review' | 'advice' | 'pair' | 'other',
-  techs: [] as string[]
+  helpType: 'bug',
+  techs: []
 })
 
 const techInput = ref('')
@@ -28,7 +37,7 @@ const error = ref('')
 
 const canSubmit = computed(() => form.value.title.trim().length > 0)
 
-const helpTypes = [
+const helpTypes: { value: HelpType; label: string; description: string }[] = [
   { value: 'bug', label: 'Bug', description: 'Un truc qui marche pas' },
   { value: 'review', label: 'Review', description: 'Relire mon code' },
   { value: 'advice', label: 'Conseil', description: 'Avis sur une approche' },
@@ -141,7 +150,7 @@ async function submit() {
               v-for="type in helpTypes"
               :key="type.value"
               type="button"
-              @click="form.helpType = type.value as typeof form.helpType"
+              @click="form.helpType = type.value"
               :class="[
                 'p-4 border rounded-xl text-left transition-all',
                 form.helpType === type.value

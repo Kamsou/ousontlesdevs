@@ -38,14 +38,16 @@ const activeChallenge = computed(() =>
 )
 
 const activeChallengePack = computed(() => {
-  if (!activeChallenge.value) return null
-  const template = challengeTemplates.find(t => t.id === activeChallenge.value!.templateId)
+  const challenge = activeChallenge.value
+  if (!challenge) return null
+  const template = challengeTemplates.find(t => t.id === challenge.templateId)
   return template?.packId || null
 })
 
 const activeXp = computed(() => {
-  if (!activeChallenge.value) return 0
-  const template = challengeTemplates.find(t => t.id === activeChallenge.value!.templateId)
+  const challenge = activeChallenge.value
+  if (!challenge) return 0
+  const template = challengeTemplates.find(t => t.id === challenge.templateId)
   return template ? getXpForDifficulty(template.difficulty) : 0
 })
 

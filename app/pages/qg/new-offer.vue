@@ -16,11 +16,19 @@ if (activity.value?.profileComplete === false) {
   await navigateTo('/qg?tab=profil')
 }
 
-const form = ref({
+interface OfferFormState {
+  title: string
+  description: string
+  url: string
+  type: string
+  location: string
+}
+
+const form = ref<OfferFormState>({
   title: '',
   description: '',
   url: '',
-  type: 'alternance' as string,
+  type: 'alternance',
   location: ''
 })
 

@@ -9,6 +9,7 @@ useSeoMeta({
 })
 
 import { openToOptions, lookingForOptions, lookingForLabels, getExperienceLabel, experienceOptions } from '~/utils/constants'
+import { queryString, queryArray } from '~/utils/query'
 
 interface Developer {
   id: number
@@ -42,11 +43,11 @@ const route = useRoute()
 const router = useRouter()
 
 const filters = reactive({
-  location: String(route.query.location || ''),
-  skill: String(route.query.skill || ''),
-  openTo: route.query.openTo ? String(route.query.openTo).split(',').filter(Boolean) : [],
-  lookingFor: route.query.lookingFor ? String(route.query.lookingFor).split(',').filter(Boolean) : [],
-  experience: route.query.experience ? String(route.query.experience).split(',').filter(Boolean) : []
+  location: queryString(route.query.location),
+  skill: queryString(route.query.skill),
+  openTo: queryArray(route.query.openTo),
+  lookingFor: queryArray(route.query.lookingFor),
+  experience: queryArray(route.query.experience)
 })
 
 const allDevelopers = ref<Developer[]>([])
@@ -112,6 +113,8 @@ async function loadMore() {
 useIntersectionObserver(loadMoreRef, (entries) => {
   if (entries[0]?.isIntersecting) loadMore()
 }, { rootMargin: '200px' })
+
+const experienceFilterOptions = experienceOptions.map(o => ({ ...o, key: String(o.value) }))
 
 const showMoreFilters = ref(filters.openTo.length > 0)
 
@@ -264,15 +267,15 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
           <span class="text-xs tracking-wide text-foreground-muted w-28 shrink-0">Expérience</span>
           <div class="flex flex-wrap gap-2">
             <button
-              v-for="option in experienceOptions"
-              :key="option.value"
+              v-for="option in experienceFilterOptions"
+              :key="option.key"
               :class="[
                 'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all',
-                filters.experience.includes(String(option.value))
+                filters.experience.includes(option.key)
                   ? 'bg-foreground/10 border-foreground/30 text-foreground'
                   : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
               ]"
-              @click="toggleExperience(String(option.value))"
+              @click="toggleExperience(option.key)"
             >
               {{ option.label }}
             </button>
