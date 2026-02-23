@@ -11,8 +11,6 @@ export const suggestedSkills = skillGroups.flatMap(g => g.skills)
 export const openToOptions = [
   { value: 'conference', label: 'Conférence' },
   { value: 'mentoring', label: 'Mentoring' },
-  { value: 'freelance', label: 'Freelance' },
-  { value: 'cdi', label: 'CDI' },
   { value: 'coffee_chat', label: 'Coffee chat' },
   { value: 'pair_programming', label: 'Pair programming' },
   { value: 'cv_review', label: 'Relecture CV' }
@@ -20,9 +18,11 @@ export const openToOptions = [
 
 export type OpenToValue = typeof openToOptions[number]['value']
 
-export const openToLabels: Record<string, string> = Object.fromEntries(
-  openToOptions.map(o => [o.value, o.label])
-)
+export const openToLabels: Record<string, string> = {
+  ...Object.fromEntries(openToOptions.map(o => [o.value, o.label])),
+  freelance: 'Freelance',
+  cdi: 'CDI',
+}
 
 export const lookingForOptions = [
   { value: 'freelance', label: 'Mission freelance' },

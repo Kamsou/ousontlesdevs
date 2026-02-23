@@ -71,7 +71,7 @@ const seoDescription = computed(() => {
 
   if (developer.value.openTo?.length) {
     const labels = developer.value.openTo.map(o => openToLabels[o] || o).slice(0, 3)
-    parts.push(`Disponible pour : ${labels.join(', ')}`)
+    parts.push(`Échanges : ${labels.join(', ')}`)
   }
 
   return parts.join('. ').slice(0, 160) || 'Découvrez le profil de cette développeuse sur OSLD'
@@ -198,7 +198,7 @@ onMounted(() => {
       </section>
 
       <section v-if="developer.openTo?.length" class="py-8 border-b border-border/10">
-        <h2 class="font-display text-sm font-medium uppercase tracking-widest text-foreground-muted mb-4">Disponible pour</h2>
+        <h2 class="font-display text-sm font-medium uppercase tracking-widest text-foreground-muted mb-4">Échanges</h2>
         <div class="flex flex-wrap gap-3">
           <span v-for="tag in developer.openTo" :key="tag" class="px-5 py-2.5 bg-foreground/10 border border-foreground/20 text-foreground rounded-full text-sm">
             {{ openToLabels[tag] || tag }}

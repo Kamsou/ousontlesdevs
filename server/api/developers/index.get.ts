@@ -70,6 +70,16 @@ export default defineEventHandler(async (event) => {
     )
   }
 
+  if (query.experience) {
+    const ranges: Record<number, [number, number]> = {
+      0: [0, 0], 1: [1, 1], 2: [1, 3], 3: [3, 5], 5: [5, 10], 10: [11, Infinity]
+    }
+    const selected = (query.experience as string).split(',').map(Number).map(v => ranges[v]).filter(Boolean)
+    filtered = filtered.filter(d =>
+      d.yearsExperience !== null && selected.some(([min, max]) => d.yearsExperience! >= min && d.yearsExperience! <= max)
+    )
+  }
+
   if (query.speakers === 'true') {
     filtered = filtered.filter(d =>
       d.speakerProfile?.available === true || d.openTo.some(o => o.type === 'conference')

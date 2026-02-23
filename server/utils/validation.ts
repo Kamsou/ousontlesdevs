@@ -42,6 +42,7 @@ export function validateProfileUrls(body: {
 
 type OpenToType = 'conference' | 'mentoring' | 'freelance' | 'cdi' | 'coffee_chat' | 'pair_programming' | 'cv_review'
 
+// freelance + cdi kept for backward compat (existing profiles), but removed from UI (now in lookingFor)
 const VALID_OPEN_TO: OpenToType[] = ['conference', 'mentoring', 'freelance', 'cdi', 'coffee_chat', 'pair_programming', 'cv_review']
 
 export function validateOpenTo(openTo: string[]): OpenToType[] {

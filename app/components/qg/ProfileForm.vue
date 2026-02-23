@@ -444,8 +444,8 @@ useIntersectionObserver(stickysentinel, (entries) => {
         </section>
 
         <section class="py-5 border-b border-border/10">
-          <h2 class="font-display text-xl font-medium mb-2">Disponible pour</h2>
-          <p class="text-foreground-muted text-sm mb-6">Qu'est-ce qui t'intéresse ?</p>
+          <h2 class="font-display text-xl font-medium mb-2">Échanges</h2>
+          <p class="text-foreground-muted text-sm mb-6">Quels types d'échanges t'intéressent ?</p>
 
           <div class="flex flex-col md:flex-row flex-wrap gap-3">
             <button

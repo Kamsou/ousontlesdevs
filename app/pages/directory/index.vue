@@ -8,7 +8,7 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
-import { openToOptions, lookingForOptions, lookingForLabels, getExperienceLabel } from '~/utils/constants'
+import { openToOptions, lookingForOptions, lookingForLabels, getExperienceLabel, experienceOptions } from '~/utils/constants'
 
 interface Developer {
   id: number
@@ -45,7 +45,8 @@ const filters = reactive({
   location: String(route.query.location || ''),
   skill: String(route.query.skill || ''),
   openTo: route.query.openTo ? String(route.query.openTo).split(',').filter(Boolean) : [],
-  lookingFor: route.query.lookingFor ? String(route.query.lookingFor).split(',').filter(Boolean) : []
+  lookingFor: route.query.lookingFor ? String(route.query.lookingFor).split(',').filter(Boolean) : [],
+  experience: route.query.experience ? String(route.query.experience).split(',').filter(Boolean) : []
 })
 
 const allDevelopers = ref<Developer[]>([])
@@ -61,6 +62,7 @@ const initialQuery = computed(() => {
   if (filters.skill) params.skill = filters.skill
   if (filters.openTo.length) params.openTo = filters.openTo.join(',')
   if (filters.lookingFor.length) params.lookingFor = filters.lookingFor.join(',')
+  if (filters.experience.length) params.experience = filters.experience.join(',')
   params.page = '1'
   return params
 })
@@ -80,7 +82,7 @@ watch(data, (d) => {
   }
 }, { immediate: true })
 
-watch([() => filters.location, () => filters.skill, () => filters.openTo, () => filters.lookingFor], () => {
+watch([() => filters.location, () => filters.skill, () => filters.openTo, () => filters.lookingFor, () => filters.experience], () => {
   hasMore.value = false
   page.value = 1
 })
@@ -95,6 +97,7 @@ async function loadMore() {
     if (filters.skill) params.skill = filters.skill
     if (filters.openTo.length) params.openTo = filters.openTo.join(',')
     if (filters.lookingFor.length) params.lookingFor = filters.lookingFor.join(',')
+    if (filters.experience.length) params.experience = filters.experience.join(',')
     params.page = page.value.toString()
     const result = await $fetch<ApiResponse>('/api/developers', { query: params })
     allDevelopers.value = [...allDevelopers.value, ...result.developers]
@@ -110,12 +113,36 @@ useIntersectionObserver(loadMoreRef, (entries) => {
   if (entries[0]?.isIntersecting) loadMore()
 }, { rootMargin: '200px' })
 
+const showMoreFilters = ref(filters.openTo.length > 0)
+
+const openToTags = computed(() =>
+  filters.openTo.map(v => ({ label: openToOptions.find(o => o.value === v)?.label || v, value: v }))
+)
+
+function removeOpenTo(value: string) {
+  const index = filters.openTo.indexOf(value)
+  if (index > -1) filters.openTo.splice(index, 1)
+  updateUrl()
+  trackSearch()
+}
+
 function toggleOpenTo(value: string) {
   const index = filters.openTo.indexOf(value)
   if (index > -1) {
     filters.openTo.splice(index, 1)
   } else {
     filters.openTo.push(value)
+  }
+  updateUrl()
+  trackSearch()
+}
+
+function toggleExperience(value: string) {
+  const index = filters.experience.indexOf(value)
+  if (index > -1) {
+    filters.experience.splice(index, 1)
+  } else {
+    filters.experience.push(value)
   }
   updateUrl()
   trackSearch()
@@ -138,6 +165,7 @@ function updateUrl() {
   if (filters.skill) urlParams.skill = filters.skill
   if (filters.openTo.length) urlParams.openTo = filters.openTo.join(',')
   if (filters.lookingFor.length) urlParams.lookingFor = filters.lookingFor.join(',')
+  if (filters.experience.length) urlParams.experience = filters.experience.join(',')
   router.push({ query: urlParams })
 }
 
@@ -146,6 +174,7 @@ function clearFilters() {
   filters.skill = ''
   filters.openTo = []
   filters.lookingFor = []
+  filters.experience = []
   page.value = 1
   router.push({ query: {} })
 }
@@ -155,7 +184,7 @@ let searchTimeout: ReturnType<typeof setTimeout> | null = null
 function trackSearch() {
   if (searchTimeout) clearTimeout(searchTimeout)
   searchTimeout = setTimeout(() => {
-    const hasFilters = filters.location || filters.skill || filters.openTo.length || filters.lookingFor.length
+    const hasFilters = filters.location || filters.skill || filters.openTo.length || filters.lookingFor.length || filters.experience.length
     if (!hasFilters) return
     $clientPosthog?.capture('search_performed', {
       page: 'annuaire',
@@ -163,6 +192,7 @@ function trackSearch() {
       skill: filters.skill || null,
       openTo: filters.openTo.length ? filters.openTo : null,
       lookingFor: filters.lookingFor.length ? filters.lookingFor : null,
+      experience: filters.experience.length ? filters.experience : null,
       results_count: totalCount.value
     })
   }, 1000)
@@ -205,46 +235,96 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
           />
         </div>
 
-        <button v-if="filters.location || filters.skill || filters.openTo.length || filters.lookingFor.length" @click="clearFilters" class="px-6 py-3 bg-transparent border border-border/10 rounded-lg text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground">
+        <button v-if="filters.location || filters.skill || filters.lookingFor.length || filters.experience.length || filters.openTo.length" @click="clearFilters" class="px-6 py-3 bg-transparent border border-border/10 rounded-lg text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground">
           Effacer
         </button>
       </div>
 
-      <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-        <span class="text-xs tracking-wide text-foreground-muted">En recherche</span>
-        <div class="flex flex-wrap gap-2">
-          <button
-            v-for="option in lookingForOptions"
-            :key="option.value"
-            :class="[
-              'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all',
-              filters.lookingFor.includes(option.value)
-                ? 'bg-foreground/10 border-foreground/30 text-foreground'
-                : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
-            ]"
-            @click="toggleLookingFor(option.value)"
-          >
-            {{ option.label }}
-          </button>
+      <div class="mt-6 space-y-5">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+          <span class="text-xs tracking-wide text-foreground-muted w-28 shrink-0">En recherche</span>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="option in lookingForOptions"
+              :key="option.value"
+              :class="[
+                'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all',
+                filters.lookingFor.includes(option.value)
+                  ? 'bg-foreground/10 border-foreground/30 text-foreground'
+                  : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
+              ]"
+              @click="toggleLookingFor(option.value)"
+            >
+              {{ option.label }}
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+          <span class="text-xs tracking-wide text-foreground-muted w-28 shrink-0">Expérience</span>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="option in experienceOptions"
+              :key="option.value"
+              :class="[
+                'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all',
+                filters.experience.includes(String(option.value))
+                  ? 'bg-foreground/10 border-foreground/30 text-foreground'
+                  : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
+              ]"
+              @click="toggleExperience(String(option.value))"
+            >
+              {{ option.label }}
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="flex flex-col md:flex-row items-start md:items-center gap-6 mt-6">
-        <span class="text-xs tracking-wide text-foreground-muted">Disponible pour</span>
-        <div class="flex flex-wrap gap-2">
+      <div class="mt-5 flex flex-wrap items-center gap-3">
+        <button
+          :class="[
+            'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all flex items-center gap-2',
+            showMoreFilters
+              ? 'bg-foreground/10 border-foreground/30 text-foreground'
+              : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
+          ]"
+          @click="showMoreFilters = !showMoreFilters"
+        >
+          + Échanges
+          <span v-if="filters.openTo.length" class="px-1.5 py-0.5 bg-foreground text-background rounded-full text-xs font-medium leading-none">{{ filters.openTo.length }}</span>
+        </button>
+
+        <template v-if="openToTags.length && !showMoreFilters">
           <button
-            v-for="option in openToOptions"
-            :key="option.value"
-            :class="[
-              'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all',
-              filters.openTo.includes(option.value)
-                ? 'bg-foreground/10 border-foreground/30 text-foreground'
-                : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
-            ]"
-            @click="toggleOpenTo(option.value)"
+            v-for="tag in openToTags"
+            :key="tag.value"
+            class="px-3 py-1.5 bg-foreground/10 border border-foreground/20 rounded-full text-xs text-foreground cursor-pointer transition-all hover:bg-foreground/20 flex items-center gap-1.5"
+            @click="removeOpenTo(tag.value)"
           >
-            {{ option.label }}
+            {{ tag.label }}
+            <span class="text-foreground-muted">&#x2715;</span>
           </button>
+        </template>
+      </div>
+
+      <div v-show="showMoreFilters" class="mt-4">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+          <span class="text-xs tracking-wide text-foreground-muted w-28 shrink-0">Échanges</span>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="option in openToOptions"
+              :key="option.value"
+              :class="[
+                'px-4 py-2 border rounded-full text-sm cursor-pointer transition-all',
+                filters.openTo.includes(option.value)
+                  ? 'bg-foreground/10 border-foreground/30 text-foreground'
+                  : 'bg-transparent border-border/40 text-foreground-muted hover:border-border/10 hover:text-foreground'
+              ]"
+              @click="toggleOpenTo(option.value)"
+            >
+              {{ option.label }}
+            </button>
+          </div>
         </div>
       </div>
     </section>
