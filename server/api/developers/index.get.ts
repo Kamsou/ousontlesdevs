@@ -73,14 +73,10 @@ export default defineEventHandler(async (event) => {
   }
 
   if (query.experience) {
-    const ranges: Record<number, [number, number]> = {
-      0: [0, 0], 1: [1, 1], 2: [1, 3], 3: [3, 5], 5: [5, 10], 10: [11, Infinity]
-    }
-    const selected = String(query.experience).split(',').map(Number).map(v => ranges[v]).filter(Boolean)
-    filtered = filtered.filter(d => {
-      const exp = d.yearsExperience
-      return exp !== null && selected.some(([min, max]) => exp >= min && exp <= max)
-    })
+    const selected = String(query.experience).split(',').map(Number)
+    filtered = filtered.filter(d =>
+      d.yearsExperience !== null && selected.includes(d.yearsExperience)
+    )
   }
 
   if (query.speakers === 'true') {

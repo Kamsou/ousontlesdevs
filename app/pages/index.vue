@@ -163,7 +163,7 @@ const features = [
         <div>
           <div class="flex gap-4 items-center flex-wrap animate-slide-up animation-delay-400">
           <NuxtLink to="/directory" class="group flex items-center gap-4 px-6 py-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full text-sm font-medium cursor-pointer transition-all hover:gap-6 hover:pr-5 hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none no-underline">
-            <span>Découvrir les profils</span>
+            <span>Découvrir les développeuses</span>
             <span class="flex transition-transform group-hover:translate-x-1">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -171,7 +171,7 @@ const features = [
             </span>
           </NuxtLink>
           <button @click="handleCreateProfile" class="px-6 py-4 bg-transparent text-foreground border border-b-[3px] border-border/10 border-b-border/30 rounded-full text-sm font-medium cursor-pointer transition-all hover:border-foreground hover:bg-foreground hover:text-background hover:-translate-y-0.5 active:translate-y-px active:border-b">
-            Devenir visible
+            Rejoins la communauté
           </button>
           </div>
         </div>
@@ -579,7 +579,7 @@ const features = [
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button @click="handleCreateProfile" class="group inline-flex items-center gap-4 px-8 py-5 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full text-base font-medium cursor-pointer transition-all hover:gap-6 hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none">
-            <span>Devenir visible</span>
+            <span>Rejoins la communauté</span>
             <span class="flex transition-transform group-hover:translate-x-1">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
