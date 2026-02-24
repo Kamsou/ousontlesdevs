@@ -19,11 +19,40 @@ interface FeedData {
   pagination: { hasMore: boolean; total: number }
 }
 
+const props = defineProps<{
+  isAdmin?: boolean
+}>()
+
+const toast = useToast()
+
 const feedPage = ref(1)
 const feedData = ref<FeedData | null>(null)
 const isLoadingFeed = ref(false)
 const isLoadingMore = ref(false)
 const showResolvedRequests = ref(false)
+const closingRequestId = ref<number | null>(null)
+
+async function closeRequest(requestId: number) {
+  closingRequestId.value = requestId
+  try {
+    await $fetch(`/api/help-requests/${requestId}`, {
+      method: 'PATCH',
+      body: { status: 'closed' }
+    })
+    if (feedData.value) {
+      const idx = feedData.value.requests.findIndex(r => r.id === requestId)
+      if (idx !== -1) {
+        const closed = feedData.value.requests.splice(idx, 1)[0]
+        if (closed) feedData.value.resolvedRequests.unshift(closed)
+      }
+    }
+    toast.success('Demande clôturée')
+  } catch {
+    toast.error('Erreur lors de la clôture')
+  } finally {
+    closingRequestId.value = null
+  }
+}
 
 async function loadFeed(page = 1) {
   if (page === 1) {
@@ -140,6 +169,14 @@ onMounted(() => {
             </svg>
             {{ request.commentCount }}
           </span>
+          <button
+            v-if="props.isAdmin"
+            @click="closeRequest(request.id)"
+            :disabled="closingRequestId === request.id"
+            class="text-xs text-foreground-muted hover:text-green-700 dark:hover:text-green-400 transition-colors ml-auto disabled:opacity-50"
+          >
+            {{ closingRequestId === request.id ? '...' : 'Clore' }}
+          </button>
         </div>
       </div>
       </template>

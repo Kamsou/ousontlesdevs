@@ -413,7 +413,7 @@ onMounted(() => {
           <div class="flex-1 h-px bg-border"></div>
         </div>
 
-        <QgFeed />
+        <QgFeed :is-admin="isAdmin" />
       </div>
 
       <div v-else-if="activeTab === TABS.CHALLENGES">

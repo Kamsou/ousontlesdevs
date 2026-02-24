@@ -39,6 +39,9 @@ watch(() => request.value?.isOwner, (owner) => {
   if (owner) fetchMatches()
 })
 
+const { data: isAdmin } = useLazyFetch('/api/admin/check', {
+  default: () => false
+})
 const { data: currentUser } = useLazyFetch<{ id: number } | null>('/api/developers/me', {
   default: () => null
 })
@@ -285,6 +288,23 @@ async function sendContact() {
             </button>
           </div>
         </template>
+
+        <div v-if="!isOwner && isAdmin" class="flex items-center gap-4 pt-6 border-t border-border/20">
+          <button
+            v-if="request.status === 'open'"
+            @click="showCloseDialog = true"
+            class="text-sm text-foreground-muted hover:text-green-700 dark:hover:text-green-400 transition-colors"
+          >
+            Clore (admin)
+          </button>
+          <button
+            v-else
+            @click="showReopenDialog = true"
+            class="text-sm text-foreground-muted hover:text-foreground transition-colors"
+          >
+            Rouvrir (admin)
+          </button>
+        </div>
 
         <QgComments :help-request-id="Number(requestId)" :current-user-id="currentUserId" :is-owner="isOwner" />
       </div>
