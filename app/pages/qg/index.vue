@@ -131,7 +131,6 @@ async function handleProfileSaved() {
   await Promise.all([refreshProfile(), refreshActivity()])
   if (wasNew) {
     activeTab.value = TABS.ENTRAIDE
-    showOptInModal.value = true
   }
 }
 
