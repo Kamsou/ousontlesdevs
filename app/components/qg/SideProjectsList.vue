@@ -56,7 +56,7 @@ const isLoading = computed(() => status.value === 'pending')
         v-for="project in projects"
         :key="project.id"
         :to="`/qg/projects/${project.id}`"
-        class="block px-4 py-4 -mx-4 rounded-lg hover:bg-foreground/[0.03] transition-colors group"
+        :class="['block px-4 py-4 -mx-4 rounded-lg hover:bg-foreground/[0.03] transition-colors group', project.status === 'completed' && 'opacity-50']"
       >
         <div class="flex items-center gap-2 mb-1.5">
           <span class="text-sm font-medium text-foreground group-hover:text-foreground-muted transition-colors truncate">
