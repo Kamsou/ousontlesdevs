@@ -12,10 +12,10 @@ useSeoMeta({
 
 const router = useRouter()
 
-const { data: activity } = await useFetch<{ profileComplete?: boolean }>('/api/qg/activity')
-if (activity.value?.profileComplete === false) {
-  await navigateTo('/qg?tab=profil')
-}
+const { data: activity } = useLazyFetch<{ profileComplete?: boolean }>('/api/qg/activity')
+watch(activity, (val) => {
+  if (val?.profileComplete === false) navigateTo('/qg?tab=profil')
+})
 
 interface ProjectFormState {
   title: string
