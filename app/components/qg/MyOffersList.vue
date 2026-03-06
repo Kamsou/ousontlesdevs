@@ -45,70 +45,59 @@ async function deleteOffer(id: number, e: Event) {
 </script>
 
 <template>
-  <div v-if="offers.length" class="mb-10">
-    <div class="flex items-center justify-between mb-5">
-      <h3 class="text-sm font-medium text-foreground-muted uppercase tracking-wide">Offres</h3>
-      <span v-if="offers.length > 0" class="flex items-center gap-2 px-2.5 py-1 bg-foreground/[0.08] rounded-full">
-        <span class="w-1.5 h-1.5 bg-foreground-muted rounded-full"></span>
-        <span class="text-xs text-foreground-muted">{{ offers.length }} offre{{ offers.length > 1 ? 's' : '' }}</span>
-      </span>
+  <div v-if="offers.length" class="mb-8">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="text-xs font-display font-bold uppercase tracking-wide">Offres</h3>
+      <span class="text-[11px] text-foreground-muted/30">{{ offers.length }}</span>
     </div>
 
-    <div class="space-y-2">
+    <div class="divide-y divide-border/20">
       <div
         v-for="offer in offers"
         :id="`offer-${offer.id}`"
         :key="offer.id"
-        class="border border-border/30 rounded-xl hover:border-primary/20 hover:bg-foreground/[0.02] transition-all"
       >
-        <div class="flex items-center gap-4 p-4 group">
-          <span
-            class="px-2 py-0.5 text-xs font-medium border rounded-full shrink-0"
-            :class="typeColors[offer.type] || typeColors.other"
-          >
-            {{ typeLabels[offer.type] || offer.type }}
-          </span>
+        <div class="flex items-start gap-3 py-3 first:pt-0 group">
           <div class="min-w-0 flex-1">
-            <span class="text-sm font-medium text-foreground group-hover:text-foreground-muted transition-colors truncate block">
+            <div class="flex items-center gap-1.5 mb-1">
+              <span
+                class="px-1.5 py-0.5 text-[10px] font-medium border rounded-full shrink-0"
+                :class="typeColors[offer.type] || typeColors.other"
+              >
+                {{ typeLabels[offer.type] || offer.type }}
+              </span>
+              <span
+                v-if="offer.verified"
+                class="text-[10px] text-green-700 dark:text-green-400"
+              >Vérifié</span>
+            </div>
+            <span class="text-[13px] font-bold text-foreground leading-snug line-clamp-2 block">
               <a
                 v-if="offer.url"
                 :href="offer.url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="underline underline-offset-2 decoration-border hover:decoration-foreground-muted transition-colors"
+                class="underline underline-offset-2 decoration-border/30 hover:decoration-primary transition-colors"
               >
                 {{ offer.title }}
               </a>
               <template v-else>{{ offer.title }}</template>
             </span>
-            <div class="flex items-center gap-3 mt-1 text-xs text-foreground-muted">
-              <span v-if="offer.location">{{ offer.location }}</span>
-              <span
-                v-if="offer.verified"
-                class="text-green-700 dark:text-green-400"
-              >Vérifié</span>
-              <span v-else class="text-amber-700 dark:text-amber-400">Non vérifié</span>
-              <button
-                @click="toggleComments(offer.id)"
-                class="hover:text-foreground transition-colors"
-              >
-                {{ expandedOfferId === offer.id ? 'Masquer' : 'Voir' }} commentaires
-              </button>
-            </div>
+            <span v-if="offer.location" class="text-[10px] text-foreground-muted/40 mt-0.5 block">{{ offer.location }}</span>
           </div>
           <button
             @click="deleteOffer(offer.id, $event)"
             :disabled="deleting === offer.id"
-            class="p-2 text-foreground-muted/30 hover:text-red-700 dark:hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all disabled:opacity-50"
+            class="p-1 text-foreground-muted/15 hover:text-red-700 dark:hover:text-red-400 transition-colors disabled:opacity-50 shrink-0"
             title="Supprimer"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        <div v-if="expandedOfferId === offer.id" class="border-t border-border/20 p-4">
+        <div v-if="expandedOfferId === offer.id" class="pb-3">
           <QgComments
             :offer-id="offer.id"
             :current-user-id="currentUserId"

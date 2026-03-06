@@ -17,7 +17,7 @@
 }
 
 .theme-light {
-  --background: 249 247 243;
+  --background: 255 255 255;
   --background-card: 0 0 0;
   --background-card-alpha: 0.04;
   --background-card-hover-alpha: 0.07;

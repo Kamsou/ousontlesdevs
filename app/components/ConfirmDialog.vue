@@ -55,12 +55,12 @@ const variantClasses = computed(() => {
         >
           <div
             v-if="open"
-            class="relative w-full max-w-sm bg-background border border-border/10 rounded-2xl p-6"
+            class="relative w-full max-w-sm bg-background border border-border/10 rounded-2xl p-8"
           >
-            <h3 class="font-display text-lg font-medium mb-2">
+            <h3 class="font-display text-lg font-bold mb-2">
               {{ title }}
             </h3>
-            <p class="text-foreground-muted text-sm mb-6">
+            <p class="text-foreground-muted text-sm mb-8 leading-relaxed">
               {{ message }}
             </p>
 
@@ -68,7 +68,7 @@ const variantClasses = computed(() => {
               <button
                 @click="emit('cancel')"
                 :disabled="loading"
-                class="flex-1 py-2.5 text-sm text-foreground-muted border border-border/10 rounded-lg hover:bg-white/5 transition-colors disabled:opacity-50"
+                class="flex-1 py-3 text-sm text-foreground-muted border border-border/10 rounded-full hover:border-foreground-muted hover:text-foreground transition-colors disabled:opacity-50"
               >
                 {{ cancelLabel || 'Annuler' }}
               </button>
@@ -76,7 +76,7 @@ const variantClasses = computed(() => {
                 @click="emit('confirm')"
                 :disabled="loading"
                 :class="[
-                  'flex-1 py-2.5 text-sm text-background rounded-lg transition-colors disabled:opacity-50',
+                  'flex-1 py-3 text-sm font-medium text-background rounded-full transition-all disabled:opacity-50',
                   variantClasses
                 ]"
               >

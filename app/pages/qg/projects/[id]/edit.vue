@@ -99,22 +99,22 @@ async function submit() {
     <div class="max-w-2xl mx-auto px-6 py-16">
       <NuxtLink
         :to="`/qg/projects/${projectId}`"
-        class="inline-flex items-center gap-2 text-foreground-muted hover:text-foreground transition-colors mb-8"
+        class="inline-flex items-center gap-2 text-foreground-muted/60 hover:text-foreground transition-colors mb-10 text-xs uppercase tracking-widest font-medium"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
         Retour au projet
       </NuxtLink>
 
       <div v-if="projectStatus === 'pending'" class="animate-pulse space-y-4">
-        <div class="h-8 bg-border/50 rounded w-1/2"></div>
-        <div class="h-12 bg-border/50 rounded w-full mt-8"></div>
-        <div class="h-24 bg-border/50 rounded w-full"></div>
+        <div class="h-8 bg-border/10 rounded w-1/2"></div>
+        <div class="h-12 bg-border/10 rounded w-full mt-8"></div>
+        <div class="h-24 bg-border/10 rounded w-full"></div>
       </div>
 
       <template v-else-if="project">
-        <h1 class="font-display text-3xl md:text-4xl font-medium mb-3">
+        <h1 class="font-display text-3xl md:text-4xl font-bold mb-3">
           Modifier le projet
         </h1>
         <p class="text-foreground-muted text-lg mb-10">
@@ -135,7 +135,7 @@ async function submit() {
               v-model="form.title"
               type="text"
               placeholder="Ex: App de gestion de tâches collaborative"
-              class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+              class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
             />
           </div>
 
@@ -148,7 +148,7 @@ async function submit() {
               v-model="form.description"
               rows="4"
               placeholder="Décris ton projet, l'idée, ce que tu cherches..."
-              class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors resize-none"
+              class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors resize-none"
             />
           </div>
 
@@ -161,7 +161,7 @@ async function submit() {
               v-model="form.repoUrl"
               type="url"
               placeholder="https://github.com/..."
-              class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+              class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
             />
           </div>
 
@@ -174,7 +174,7 @@ async function submit() {
               v-model="form.websiteUrl"
               type="url"
               placeholder="https://monprojet.fr"
-              class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+              class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
             />
           </div>
 
@@ -191,7 +191,7 @@ async function submit() {
                 :class="[
                   'p-4 border rounded-xl text-left transition-all',
                   form.status === status.value
-                    ? 'border-green-500 bg-green-500/5'
+                    ? 'border-primary bg-primary/10'
                     : 'border-border/10 hover:border-foreground-muted'
                 ]"
               >
@@ -213,12 +213,12 @@ async function submit() {
                 placeholder="Ex: Vue, TypeScript, Node..."
                 @keydown="handleTechKeydown"
                 @input="handleTechInput"
-                class="flex-1 px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+                class="flex-1 px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
               />
               <button
                 type="button"
                 @click="addTech"
-                class="px-4 py-3 border border-border/10 rounded-lg text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
+                class="px-4 py-3 border border-border/20 rounded-xl text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
               >
                 Ajouter
               </button>
@@ -227,7 +227,7 @@ async function submit() {
               <span
                 v-for="tech in techs"
                 :key="tech"
-                class="inline-flex items-center gap-2 px-3 py-1 bg-subtle border border-border/10 rounded-full text-sm"
+                class="inline-flex items-center gap-2 px-3 py-1 bg-foreground/[0.04] border border-border/20 rounded-full text-sm"
               >
                 {{ tech }}
                 <button type="button" @click="removeTech(tech)" class="text-foreground-muted hover:text-foreground" :aria-label="`Supprimer ${tech}`">
@@ -242,14 +242,14 @@ async function submit() {
           <div class="pt-4 flex gap-4">
             <NuxtLink
               :to="`/qg/projects/${projectId}`"
-              class="px-8 py-4 border border-border/10 rounded-full font-medium transition-all hover:border-foreground-muted text-center"
+              class="px-8 py-4 border border-border/20 rounded-full font-medium transition-all hover:border-foreground-muted text-center"
             >
               Annuler
             </NuxtLink>
             <button
               type="submit"
               :disabled="saving || !canSubmit"
-              class="flex-1 px-8 py-4 bg-foreground text-background rounded-full font-medium transition-all hover:bg-foreground-muted disabled:opacity-50 disabled:cursor-not-allowed"
+              class="flex-1 px-8 py-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full font-medium transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {{ saving ? 'Enregistrement...' : 'Enregistrer' }}
             </button>

@@ -108,20 +108,20 @@ function formatDate(date: string) {
 </script>
 
 <template>
-  <section class="mt-8 pt-8 border-t border-border/20">
-    <h3 class="text-sm font-medium mb-6">
+  <section class="mt-10 pt-8 border-t border-border/20">
+    <h3 class="text-sm font-display font-bold uppercase tracking-wide mb-6">
       Discussion
-      <span v-if="comments?.length" class="text-foreground-muted font-normal">
-        ({{ comments.length }})
+      <span v-if="comments?.length" class="text-foreground-muted/50 font-normal ml-1">
+        {{ comments.length }}
       </span>
     </h3>
 
     <div v-if="isLoading" class="space-y-4">
       <div v-for="i in 2" :key="i" class="flex gap-3 animate-pulse">
-        <div class="w-8 h-8 bg-border/20 rounded-full shrink-0"></div>
+        <div class="w-8 h-8 bg-border/10 rounded-full shrink-0"></div>
         <div class="flex-1">
-          <div class="h-3 bg-border/20 rounded w-24 mb-2"></div>
-          <div class="h-4 bg-border/20 rounded w-3/4"></div>
+          <div class="h-3 bg-border/10 rounded w-24 mb-2"></div>
+          <div class="h-4 bg-border/10 rounded w-3/4"></div>
         </div>
       </div>
     </div>
@@ -138,9 +138,9 @@ function formatDate(date: string) {
               v-if="comment.developer.avatarUrl"
               :src="comment.developer.avatarUrl"
               :alt="comment.developer.name"
-              class="w-8 h-8 rounded-full object-cover shrink-0"
+              class="w-8 h-8 rounded-full object-cover shrink-0 ring-2 ring-border/20"
             />
-            <div v-else class="w-8 h-8 rounded-full bg-border/30 flex items-center justify-center shrink-0">
+            <div v-else class="w-8 h-8 rounded-full bg-foreground/[0.05] flex items-center justify-center shrink-0 ring-2 ring-border/20">
               <span class="text-xs text-foreground-muted">{{ comment.developer.name?.charAt(0) || '?' }}</span>
             </div>
           </NuxtLink>
@@ -149,7 +149,7 @@ function formatDate(date: string) {
             <div class="flex items-center gap-2 mb-1">
               <NuxtLink
                 :to="`/directory/${comment.developer.slug}`"
-                class="text-sm font-medium hover:text-foreground-muted transition-colors"
+                class="text-sm font-bold hover:text-foreground-muted transition-colors"
               >
                 {{ comment.developer.name }}
               </NuxtLink>
@@ -167,8 +167,8 @@ function formatDate(date: string) {
         </div>
       </div>
 
-      <div v-else class="text-center py-6 mb-6">
-        <p class="text-foreground-muted text-sm">Aucun commentaire</p>
+      <div v-else class="text-center py-8 mb-6">
+        <p class="text-foreground-muted/40 text-sm">Aucun commentaire</p>
       </div>
 
       <div v-if="isAuthenticated">
@@ -176,7 +176,7 @@ function formatDate(date: string) {
           v-model="newComment"
           rows="2"
           placeholder="Ajouter un commentaire..."
-          class="w-full px-4 py-3 bg-subtle border border-border/10 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none text-sm"
+          class="w-full px-4 py-3 bg-foreground/[0.03] border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none text-sm"
           @keydown.meta.enter="submitComment"
           @keydown.ctrl.enter="submitComment"
         ></textarea>

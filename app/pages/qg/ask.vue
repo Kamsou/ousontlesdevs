@@ -96,14 +96,14 @@ async function submit() {
 <template>
   <div class="min-h-screen bg-background">
     <div class="max-w-2xl mx-auto px-6 py-16">
-      <NuxtLink to="/qg" class="inline-flex items-center gap-2 text-foreground-muted hover:text-foreground transition-colors mb-8">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <NuxtLink to="/qg" class="inline-flex items-center gap-2 text-foreground-muted/60 hover:text-foreground transition-colors mb-10 text-xs uppercase tracking-widest font-medium">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
         Mon QG
       </NuxtLink>
 
-      <h1 class="font-display text-3xl md:text-4xl font-medium mb-3">
+      <h1 class="font-display text-3xl md:text-4xl font-bold mb-3">
         Bloquée sur un truc ?
       </h1>
       <p class="text-foreground-muted text-lg mb-10">
@@ -124,7 +124,7 @@ async function submit() {
             v-model="form.title"
             type="text"
             placeholder="Ex: Bug TypeScript avec les generics"
-            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+            class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
           />
         </div>
 
@@ -137,7 +137,7 @@ async function submit() {
             v-model="form.description"
             rows="4"
             placeholder="Décris un peu plus le contexte, ce que t'as déjà essayé..."
-            class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors resize-none"
+            class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors resize-none"
           />
         </div>
 
@@ -154,7 +154,7 @@ async function submit() {
               :class="[
                 'p-4 border rounded-xl text-left transition-all',
                 form.helpType === type.value
-                  ? 'border-foreground bg-subtle'
+                  ? 'border-primary bg-primary/10'
                   : 'border-border/10 hover:border-foreground-muted'
               ]"
             >
@@ -175,12 +175,12 @@ async function submit() {
               type="text"
               placeholder="Ex: Vue, TypeScript, Node..."
               @keydown="handleTechKeydown"
-              class="flex-1 px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+              class="flex-1 px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
             />
             <button
               type="button"
               @click="addTech"
-              class="px-4 py-3 border border-border/10 rounded-lg text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
+              class="px-4 py-3 border border-border/20 rounded-xl text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
             >
               Ajouter
             </button>
@@ -189,7 +189,7 @@ async function submit() {
             <span
               v-for="tech in form.techs"
               :key="tech"
-              class="inline-flex items-center gap-2 px-3 py-1 bg-subtle border border-border/10 rounded-full text-sm"
+              class="inline-flex items-center gap-2 px-3 py-1 bg-foreground/[0.04] border border-border/20 rounded-full text-sm"
             >
               {{ tech }}
               <button type="button" @click="removeTech(tech)" class="text-foreground-muted hover:text-foreground">
@@ -205,7 +205,7 @@ async function submit() {
           <button
             type="submit"
             :disabled="saving || !canSubmit"
-            class="w-full px-8 py-4 bg-foreground text-background rounded-full font-medium transition-all hover:bg-foreground-muted disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-full px-8 py-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full font-medium transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {{ saving ? 'Création...' : 'Trouver de l\'aide' }}
           </button>

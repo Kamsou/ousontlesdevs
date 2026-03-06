@@ -116,20 +116,20 @@ async function submit() {
 <template>
   <div class="min-h-screen bg-background">
     <div class="max-w-2xl mx-auto px-6 py-16">
-      <NuxtLink :to="`/qg/requests/${requestId}`" class="inline-flex items-center gap-2 text-foreground-muted hover:text-foreground transition-colors mb-8">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <NuxtLink :to="`/qg/requests/${requestId}`" class="inline-flex items-center gap-2 text-foreground-muted/60 hover:text-foreground transition-colors mb-10 text-xs uppercase tracking-widest font-medium">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
         Retour
       </NuxtLink>
 
       <div v-if="status === 'pending'" class="animate-pulse space-y-4">
-        <div class="h-8 bg-border/50 rounded w-1/2"></div>
-        <div class="h-12 bg-border/50 rounded"></div>
+        <div class="h-8 bg-border/10 rounded w-1/2"></div>
+        <div class="h-12 bg-border/10 rounded"></div>
       </div>
 
       <div v-else-if="request">
-        <h1 class="font-display text-2xl font-medium mb-8">
+        <h1 class="font-display text-2xl font-bold mb-8">
           Modifier la demande
         </h1>
 
@@ -146,7 +146,7 @@ async function submit() {
               id="title"
               v-model="form.title"
               type="text"
-              class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground focus:outline-none focus:border-foreground-muted transition-colors"
+              class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted transition-colors"
             />
           </div>
 
@@ -158,7 +158,7 @@ async function submit() {
               id="description"
               v-model="form.description"
               rows="4"
-              class="w-full px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground focus:outline-none focus:border-foreground-muted transition-colors resize-none"
+              class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground focus:outline-none focus:border-foreground-muted transition-colors resize-none"
             />
           </div>
 
@@ -175,7 +175,7 @@ async function submit() {
                 :class="[
                   'p-4 border rounded-xl text-left transition-all',
                   form.helpType === type.value
-                    ? 'border-foreground bg-subtle'
+                    ? 'border-primary bg-primary/10'
                     : 'border-border/10 hover:border-foreground-muted'
                 ]"
               >
@@ -196,12 +196,12 @@ async function submit() {
                 type="text"
                 placeholder="Ajouter une techno..."
                 @keydown="handleTechKeydown"
-                class="flex-1 px-4 py-3 bg-background border border-border/10 rounded-lg text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
+                class="flex-1 px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted transition-colors"
               />
               <button
                 type="button"
                 @click="addTech"
-                class="px-4 py-3 border border-border/10 rounded-lg text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
+                class="px-4 py-3 border border-border/20 rounded-xl text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
               >
                 Ajouter
               </button>
@@ -210,7 +210,7 @@ async function submit() {
               <span
                 v-for="tech in form.techs"
                 :key="tech"
-                class="inline-flex items-center gap-2 px-3 py-1 bg-subtle border border-border/10 rounded-full text-sm"
+                class="inline-flex items-center gap-2 px-3 py-1 bg-foreground/[0.04] border border-border/20 rounded-full text-sm"
               >
                 {{ tech }}
                 <button type="button" @click="removeTech(tech)" :aria-label="`Retirer ${tech}`" class="text-foreground-muted hover:text-foreground">
@@ -225,14 +225,14 @@ async function submit() {
           <div class="flex gap-3 pt-4">
             <NuxtLink
               :to="`/qg/requests/${requestId}`"
-              class="px-6 py-3 border border-border/10 rounded-full text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
+              class="px-6 py-3 border border-border/20 rounded-full text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors"
             >
               Annuler
             </NuxtLink>
             <button
               type="submit"
               :disabled="saving || !canSubmit"
-              class="flex-1 px-6 py-3 bg-foreground text-background rounded-full font-medium transition-all hover:bg-foreground-muted disabled:opacity-50 disabled:cursor-not-allowed"
+              class="flex-1 px-6 py-3 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full font-medium transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {{ saving ? 'Enregistrement...' : 'Enregistrer' }}
             </button>

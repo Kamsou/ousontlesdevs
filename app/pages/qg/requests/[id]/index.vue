@@ -162,50 +162,51 @@ async function sendContact() {
 <template>
   <div class="min-h-screen bg-background">
     <div class="max-w-3xl mx-auto px-6 py-16">
-      <NuxtLink to="/qg" class="inline-flex items-center gap-2 text-foreground-muted hover:text-foreground transition-colors mb-8">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <NuxtLink to="/qg" class="inline-flex items-center gap-2 text-foreground-muted/60 hover:text-foreground transition-colors mb-10 text-xs uppercase tracking-widest font-medium">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M19 12H5M12 19l-7-7 7-7" />
         </svg>
         Mon QG
       </NuxtLink>
 
       <div v-if="requestStatus === 'pending'" class="animate-pulse space-y-4">
-        <div class="h-8 bg-border/50 rounded w-2/3"></div>
-        <div class="h-4 bg-border/50 rounded w-1/3"></div>
+        <div class="h-8 bg-border/10 rounded w-2/3"></div>
+        <div class="h-4 bg-border/10 rounded w-1/3"></div>
       </div>
 
       <div v-else-if="request">
-        <div class="flex items-start justify-between gap-4 mb-8">
+        <div class="flex items-start justify-between gap-4 mb-6">
           <div class="min-w-0">
-            <h1 class="font-display text-xl font-medium mb-2">{{ request.title }}</h1>
-            <div v-if="request.techs?.length" class="flex flex-wrap gap-1.5">
-              <span
-                v-for="tech in request.techs"
-                :key="tech.techName"
-                class="text-xs text-foreground-muted"
-              >
-                {{ tech.techName }}
-              </span>
-            </div>
+            <span
+              :class="[
+                'inline-block px-2.5 py-1 rounded-full text-[11px] font-medium mb-3',
+                request.status === 'open' ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-primary/10 text-primary'
+              ]"
+            >
+              {{ request.status === 'open' ? 'En cours' : 'Résolu' }}
+            </span>
+            <h1 class="font-display text-2xl md:text-3xl font-bold leading-tight">{{ request.title }}</h1>
           </div>
+        </div>
+
+        <div v-if="request.techs?.length" class="flex flex-wrap gap-2 mb-8">
           <span
-            :class="[
-              'px-2.5 py-1 rounded-full text-xs shrink-0',
-              request.status === 'open' ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400' : 'bg-green-500/10 text-green-700 dark:text-green-400'
-            ]"
+            v-for="tech in request.techs"
+            :key="tech.techName"
+            class="px-2.5 py-1 bg-foreground/[0.04] rounded-full text-xs text-foreground-muted"
           >
-            {{ request.status === 'open' ? 'En cours' : 'Résolu' }}
+            {{ tech.techName }}
           </span>
         </div>
 
-        <p v-if="request.description" class="text-foreground-muted text-sm mb-8">
+        <p v-if="request.description" class="text-foreground-muted leading-relaxed mb-8 whitespace-pre-wrap">
           {{ request.description }}
         </p>
 
-        <div v-if="!isOwner && request.developer" class="flex items-center gap-3 mb-8 p-3 rounded-lg bg-foreground/[0.02]">
-          <img v-if="request.developer.avatarUrl" :src="request.developer.avatarUrl" :alt="request.developer.name" class="w-8 h-8 rounded-full object-cover" />
-          <div v-else class="w-8 h-8 rounded-full bg-border/20 flex items-center justify-center text-foreground-muted text-xs">{{ request.developer.name?.charAt(0) }}</div>
-          <NuxtLink :to="`/directory/${request.developer.slug}`" class="text-sm hover:text-foreground-muted transition-colors">{{ request.developer.name }}</NuxtLink>
+        <div v-if="!isOwner && request.developer" class="flex items-center gap-3 mb-8 p-4 rounded-xl border-2 border-border/15">
+          <img v-if="request.developer.avatarUrl" :src="request.developer.avatarUrl" :alt="request.developer.name" class="w-9 h-9 rounded-full object-cover ring-2 ring-border/20" />
+          <div v-else class="w-9 h-9 rounded-full bg-foreground/[0.05] flex items-center justify-center text-foreground-muted text-xs ring-2 ring-border/20">{{ request.developer.name?.charAt(0) }}</div>
+          <NuxtLink :to="`/directory/${request.developer.slug}`" class="text-sm font-bold hover:text-primary transition-colors">{{ request.developer.name }}</NuxtLink>
         </div>
 
         <template v-if="isOwner">
@@ -217,32 +218,34 @@ async function sendContact() {
           </div>
 
           <div v-else-if="matches?.length" class="mb-8">
-            <p class="text-xs text-foreground-muted mb-3">{{ totalMatches }} {{ totalMatches === 1 ? 'personne peut' : 'personnes peuvent' }} t'aider</p>
-            <div class="space-y-1">
+            <h3 class="text-sm font-display font-bold uppercase tracking-wide mb-4">
+              {{ totalMatches }} {{ totalMatches === 1 ? 'personne peut' : 'personnes peuvent' }} t'aider
+            </h3>
+            <div class="divide-y divide-border/20">
               <div
                 v-for="dev in matches"
                 :key="dev.id"
-                class="flex items-center gap-3 p-3 -mx-3 rounded-lg hover:bg-foreground/[0.02] transition-colors group"
+                class="flex items-center gap-3 py-3 first:pt-0 group"
               >
                 <img
                   v-if="dev.avatarUrl"
                   :src="dev.avatarUrl"
                   :alt="dev.name"
-                  class="w-8 h-8 rounded-full object-cover"
+                  class="w-9 h-9 rounded-full object-cover ring-2 ring-border/20"
                 />
-                <div v-else class="w-8 h-8 rounded-full bg-border/20 flex items-center justify-center text-foreground-muted text-xs">
+                <div v-else class="w-9 h-9 rounded-full bg-foreground/[0.05] flex items-center justify-center text-foreground-muted text-xs ring-2 ring-border/20">
                   {{ dev.name?.charAt(0) }}
                 </div>
-                <NuxtLink :to="`/directory/${dev.slug}`" target="_blank" class="text-sm hover:text-foreground-muted transition-colors flex-1 min-w-0 truncate">
+                <NuxtLink :to="`/directory/${dev.slug}`" target="_blank" class="text-sm font-bold hover:text-primary transition-colors flex-1 min-w-0 truncate">
                   {{ dev.name }}
                 </NuxtLink>
-                <span v-if="dev.matchedSkills?.length" class="text-xs text-foreground-muted hidden sm:block">
+                <span v-if="dev.matchedSkills?.length" class="text-[11px] text-foreground-muted/50 hidden sm:block">
                   {{ dev.matchedSkills.slice(0, 2).join(', ') }}
                 </span>
                 <button
                   v-if="dev.email"
                   @click="openContactModal({ id: dev.id, name: dev.name })"
-                  class="text-xs text-foreground-muted hover:text-foreground transition-colors"
+                  class="px-3 py-1 text-xs font-bold text-primary border border-primary/30 rounded-full hover:bg-primary/10 transition-colors"
                 >
                   Contacter
                 </button>
@@ -252,7 +255,7 @@ async function sendContact() {
               v-if="hasMoreMatches"
               @click="loadAllMatches"
               :disabled="isLoadingMore"
-              class="text-xs text-foreground-muted hover:text-foreground transition-colors mt-2"
+              class="text-[11px] font-semibold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors mt-3 disabled:opacity-50"
             >
               {{ isLoadingMore ? '...' : `+ ${totalMatches - matches.length} autres` }}
             </button>
@@ -262,45 +265,45 @@ async function sendContact() {
             Pas encore de match
           </div>
 
-          <div class="flex items-center gap-4 pt-6 border-t border-border/20">
-            <NuxtLink :to="`/qg/requests/${requestId}/edit`" class="text-sm text-foreground-muted hover:text-foreground transition-colors">
+          <div class="flex items-center gap-3 pt-6 border-t-2 border-border/15">
+            <NuxtLink :to="`/qg/requests/${requestId}/edit`" class="px-4 py-2 text-sm font-medium border border-border/20 rounded-full hover:border-foreground-muted hover:text-foreground transition-colors text-foreground-muted">
               Modifier
             </NuxtLink>
             <button
               v-if="request.status === 'open'"
               @click="showCloseDialog = true"
-              class="text-sm text-foreground-muted hover:text-green-700 dark:hover:text-green-400 transition-colors"
+              class="px-4 py-2 text-sm font-medium border border-border/20 rounded-full hover:border-primary hover:text-primary transition-colors text-foreground-muted"
             >
               Résolu
             </button>
             <button
               v-else
               @click="showReopenDialog = true"
-              class="text-sm text-foreground-muted hover:text-foreground transition-colors"
+              class="px-4 py-2 text-sm font-medium border border-border/20 rounded-full hover:border-foreground-muted hover:text-foreground transition-colors text-foreground-muted"
             >
               Rouvrir
             </button>
             <button
               @click="showDeleteDialog = true"
-              class="text-sm text-foreground-muted hover:text-red-700 dark:text-red-400 transition-colors ml-auto"
+              class="px-4 py-2 text-sm font-medium border border-border/20 rounded-full hover:border-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors text-foreground-muted ml-auto"
             >
               Supprimer
             </button>
           </div>
         </template>
 
-        <div v-if="!isOwner && isAdmin" class="flex items-center gap-4 pt-6 border-t border-border/20">
+        <div v-if="!isOwner && isAdmin" class="flex items-center gap-3 pt-6 border-t-2 border-border/15">
           <button
             v-if="request.status === 'open'"
             @click="showCloseDialog = true"
-            class="text-sm text-foreground-muted hover:text-green-700 dark:hover:text-green-400 transition-colors"
+            class="px-4 py-2 text-sm font-medium border border-border/20 rounded-full hover:border-primary hover:text-primary transition-colors text-foreground-muted"
           >
             Clore (admin)
           </button>
           <button
             v-else
             @click="showReopenDialog = true"
-            class="text-sm text-foreground-muted hover:text-foreground transition-colors"
+            class="px-4 py-2 text-sm font-medium border border-border/20 rounded-full hover:border-foreground-muted hover:text-foreground transition-colors text-foreground-muted"
           >
             Rouvrir (admin)
           </button>
@@ -327,36 +330,36 @@ async function sendContact() {
           @click="closeContactModal"
         ></div>
 
-        <div class="relative w-full max-w-md bg-background border border-border/10 rounded-2xl p-6">
+        <div class="relative w-full max-w-md bg-background border-2 border-border/15 rounded-2xl p-8">
           <button
             @click="closeContactModal"
-            class="absolute top-4 right-4 text-foreground-muted hover:text-foreground transition-colors"
+            class="absolute top-5 right-5 text-foreground-muted/40 hover:text-foreground transition-colors"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
 
           <div v-if="contactSuccess" class="text-center py-8">
-            <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-green-500/10 flex items-center justify-center">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-700 dark:text-green-400">
+            <div class="w-14 h-14 mx-auto mb-5 rounded-full bg-primary/10 flex items-center justify-center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-primary">
                 <path d="M20 6L9 17l-5-5" />
               </svg>
             </div>
-            <h3 class="font-display text-lg font-medium mb-2">Message envoyé</h3>
-            <p class="text-foreground-muted text-sm mb-6">
+            <h3 class="font-display text-xl font-bold mb-2">Message envoyé</h3>
+            <p class="text-foreground-muted text-sm mb-8">
               {{ selectedDev?.name }} recevra ton message par email.
             </p>
             <button
               @click="closeContactModal"
-              class="text-sm text-foreground-muted hover:text-foreground transition-colors underline"
+              class="px-6 py-2.5 text-sm text-foreground-muted border border-border/10 rounded-full hover:border-foreground-muted hover:text-foreground transition-colors"
             >
               Fermer
             </button>
           </div>
 
           <div v-else>
-            <h3 class="font-display text-lg font-medium mb-1">
+            <h3 class="font-display text-xl font-bold mb-1">
               Contacter {{ selectedDev?.name }}
             </h3>
             <p class="text-foreground-muted text-sm mb-6">
@@ -365,15 +368,15 @@ async function sendContact() {
 
             <div class="space-y-4">
               <div>
-                <label class="block text-sm text-foreground-muted mb-2">Ton message</label>
+                <label class="block text-xs font-medium text-foreground-muted uppercase tracking-wider mb-2">Ton message</label>
                 <textarea
                   v-model="contactMessage"
                   rows="5"
                   maxlength="1000"
                   placeholder="Salut ! J'ai vu que tu connaissais..."
-                  class="w-full px-4 py-3 bg-subtle border border-border/10 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none"
+                  class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none"
                 ></textarea>
-                <p class="text-xs text-foreground-muted mt-1 text-right">
+                <p class="text-[11px] text-foreground-muted/40 mt-1.5 text-right tabular-nums">
                   {{ contactMessage.length }}/1000
                 </p>
               </div>
@@ -385,7 +388,7 @@ async function sendContact() {
               <button
                 @click="sendContact"
                 :disabled="!contactMessage.trim() || isSending"
-                class="w-full py-3 bg-foreground text-background rounded-xl font-medium transition-opacity disabled:opacity-50"
+                class="w-full py-3.5 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 text-background rounded-full font-medium transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none disabled:opacity-50"
               >
                 {{ isSending ? 'Envoi...' : 'Envoyer' }}
               </button>

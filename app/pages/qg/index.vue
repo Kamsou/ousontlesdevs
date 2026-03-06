@@ -176,15 +176,16 @@ onMounted(() => {
   </ClientOnly>
 
   <div class="min-h-screen bg-background">
-    <header class="sticky top-0 z-50 px-4 md:px-8 py-3 backdrop-blur-xl bg-background/80 border-b border-border/20">
-      <div class="max-w-3xl mx-auto flex items-center justify-between">
+    <div class="sticky top-0 z-50 backdrop-blur-xl bg-background/80">
+    <header class="px-4 md:px-8 pt-3">
+      <div class="max-w-5xl mx-auto flex items-center justify-between pb-3">
         <NuxtLink to="/directory" class="flex items-center gap-2 no-underline text-foreground-muted hover:text-foreground transition-colors text-sm">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
           Retour
         </NuxtLink>
-        <h1 class="font-display text-sm font-semibold tracking-widest text-primary m-0">MON QG</h1>
+        <h1 class="font-display text-2xl font-bold uppercase tracking-wider text-primary m-0">MON QG</h1>
         <div class="flex items-center gap-3">
           <NuxtLink v-if="isAdmin" to="/admin" class="flex items-center justify-center w-8 h-8 rounded-full border border-border/10 text-foreground-muted hover:text-foreground hover:border-foreground-muted transition-colors" title="Dashboard admin">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -208,74 +209,48 @@ onMounted(() => {
       </div>
     </header>
 
-    <div class="max-w-3xl mx-auto px-6 pt-4 md:pt-8 pb-4 md:pb-6">
-      <ClientOnly>
-        <div v-if="isLoadingActivity" class="mb-4 md:mb-6">
-          <div class="h-4 w-28 bg-border/20 rounded animate-pulse mb-3"></div>
-          <div class="flex flex-wrap gap-2">
-            <div class="h-8 w-32 bg-border/20 rounded-full animate-pulse"></div>
-            <div class="h-8 w-44 bg-border/20 rounded-full animate-pulse"></div>
-          </div>
-        </div>
-        <QgWeeklyActivity
-          v-else-if="activity && !activity.isNew"
-          :activity="activity"
-          class="mb-4 md:mb-6"
-          @go-to-profile="activeTab = TABS.PROFIL"
-        />
-        <template #fallback>
-          <div class="mb-4 md:mb-6">
-            <div class="h-4 w-28 bg-border/20 rounded animate-pulse mb-3"></div>
-            <div class="flex flex-wrap gap-2">
-              <div class="h-8 w-32 bg-border/20 rounded-full animate-pulse"></div>
-              <div class="h-8 w-44 bg-border/20 rounded-full animate-pulse"></div>
-            </div>
-          </div>
-        </template>
-      </ClientOnly>
-    </div>
-
-    <nav class="hidden md:block sticky top-[49px] z-40 bg-background border-b border-border/10">
-      <div class="max-w-3xl mx-auto px-6 flex gap-6">
+    <nav class="hidden md:block">
+      <div class="max-w-5xl mx-auto px-6 flex items-center gap-8">
         <button
           @click="activeTab = TABS.ENTRAIDE"
           :class="[
-            'pt-3 pb-3 text-sm font-medium transition-colors relative',
+            'pt-3.5 pb-3.5 text-xs font-semibold uppercase tracking-widest transition-colors relative',
             activeTab === TABS.ENTRAIDE
               ? 'text-foreground'
-              : 'text-foreground-muted hover:text-foreground'
+              : 'text-foreground-muted/50 hover:text-foreground-muted'
           ]"
         >
           Entraide
-          <span v-if="activeTab === TABS.ENTRAIDE" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
+          <span v-if="activeTab === TABS.ENTRAIDE" class="absolute bottom-0 left-0 right-0 h-[3px] bg-primary"></span>
         </button>
         <!-- Challenges tab hidden for now -->
         <button
           @click="activeTab = TABS.OPPORTUNITES"
           :class="[
-            'pt-3 pb-3 text-sm font-medium transition-colors relative',
+            'pt-3.5 pb-3.5 text-xs font-semibold uppercase tracking-widest transition-colors relative',
             activeTab === TABS.OPPORTUNITES
               ? 'text-foreground'
-              : 'text-foreground-muted hover:text-foreground'
+              : 'text-foreground-muted/50 hover:text-foreground-muted'
           ]"
         >
           Opportunités
-          <span v-if="activeTab === TABS.OPPORTUNITES" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
+          <span v-if="activeTab === TABS.OPPORTUNITES" class="absolute bottom-0 left-0 right-0 h-[3px] bg-primary"></span>
         </button>
         <button
           @click="activeTab = TABS.PROFIL"
           :class="[
-            'pt-3 pb-3 text-sm font-medium transition-colors relative',
+            'pt-3.5 pb-3.5 text-xs font-semibold uppercase tracking-widest transition-colors relative',
             activeTab === TABS.PROFIL
               ? 'text-foreground'
-              : 'text-foreground-muted hover:text-foreground'
+              : 'text-foreground-muted/50 hover:text-foreground-muted'
           ]"
         >
           Profil
-          <span v-if="activeTab === TABS.PROFIL" class="absolute bottom-0 left-0 right-0 h-px bg-primary"></span>
+          <span v-if="activeTab === TABS.PROFIL" class="absolute bottom-0 left-0 right-0 h-[3px] bg-primary"></span>
         </button>
       </div>
     </nav>
+    </div>
 
     <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/20 pb-[env(safe-area-inset-bottom)]">
       <div class="flex justify-around">
@@ -319,7 +294,30 @@ onMounted(() => {
       </div>
     </nav>
 
-    <div class="max-w-3xl mx-auto px-6 py-4 md:py-8 pb-24 md:pb-8">
+    <div class="max-w-5xl mx-auto px-6 py-6 md:py-10 pb-24 md:pb-10">
+      <ClientOnly>
+        <div v-if="isLoadingActivity" class="mb-6 md:mb-8">
+          <div class="flex flex-wrap gap-2">
+            <div class="h-8 w-32 bg-border/10 rounded-full animate-pulse"></div>
+            <div class="h-8 w-44 bg-border/10 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+        <QgWeeklyActivity
+          v-else-if="activity && !activity.isNew"
+          :activity="activity"
+          class="mb-6 md:mb-8"
+          @go-to-profile="activeTab = TABS.PROFIL"
+        />
+        <template #fallback>
+          <div class="mb-6 md:mb-8">
+            <div class="flex flex-wrap gap-2">
+              <div class="h-8 w-32 bg-border/10 rounded-full animate-pulse"></div>
+              <div class="h-8 w-44 bg-border/10 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </template>
+      </ClientOnly>
+
       <div v-if="showLookingForBanner" class="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <p v-if="lookingForDaysLeft! <= 0" class="text-sm text-amber-700 dark:text-amber-400 font-medium">Ta recherche active a expiré</p>
@@ -331,89 +329,80 @@ onMounted(() => {
         </button>
       </div>
 
-      <div v-if="activeTab === TABS.ENTRAIDE" class="space-y-10 md:space-y-14">
+      <div v-if="activeTab === TABS.ENTRAIDE">
         <QgIncompleteProfileBanner
           v-if="!isLoadingActivity && activity?.profileComplete === false"
           :missing-fields="activity?.missingFields || []"
           context="à l'entraide"
+          class="mb-8"
           @go-to-profile="activeTab = TABS.PROFIL"
         />
 
-        <section>
+        <section class="mb-8 md:mb-10">
           <NuxtLink
             v-if="activity?.profileComplete !== false"
             to="/qg/ask"
-            class="group block p-5 md:p-8 border border-b-[3px] border-primary/20 border-b-primary/60 rounded-2xl transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none"
+            class="group block bg-primary p-6 md:p-8 rounded-2xl transition-all hover:brightness-110 hover:-translate-y-0.5 active:translate-y-px no-underline"
           >
             <div class="flex items-center justify-between gap-4">
               <div>
-                <h2 class="text-xl md:text-2xl font-display font-medium mb-2">
-                  Un problème ? On est là.
+                <h2 class="text-xl md:text-2xl font-display font-bold uppercase tracking-wide text-white">
+                  Un problème ?
                 </h2>
-                <p class="text-foreground-muted text-sm">
+                <p class="text-white/60 text-sm mt-1">
                   Décris ton souci, la communauté t'aide.
                 </p>
               </div>
-              <span class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors shrink-0">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-white shrink-0 group-hover:translate-x-1 transition-transform">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
             </div>
           </NuxtLink>
           <div
             v-else
-            class="block p-5 md:p-8 border border-border/20 rounded-2xl cursor-not-allowed"
+            class="block bg-foreground/[0.04] border-2 border-border/10 p-6 md:p-8 rounded-2xl cursor-not-allowed"
           >
             <div class="flex items-start justify-between gap-4">
               <div>
-                <h2 class="text-xl md:text-2xl font-display font-medium mb-2 text-foreground-muted">
-                  Un problème ? On est là.
+                <h2 class="text-xl md:text-2xl font-display font-bold uppercase tracking-wide text-foreground-muted/30">
+                  Un problème ?
                 </h2>
-                <p class="text-foreground-muted/60 text-sm">
+                <p class="text-foreground-muted/20 text-sm mt-1">
                   Complète ton profil pour demander de l'aide
                 </p>
               </div>
-              <span class="w-10 h-10 flex items-center justify-center rounded-full bg-border/20 shrink-0">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-foreground-muted/50">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-foreground-muted/15 shrink-0">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
             </div>
           </div>
         </section>
 
-        <section class="rounded-2xl border border-primary/10 bg-primary/[0.02] p-5 md:p-6">
-          <div class="flex items-center gap-3 mb-6">
-            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
-                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-              </svg>
-            </span>
-            <h2 class="text-base font-display font-semibold text-foreground">Tes demandes</h2>
-          </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
+          <aside class="lg:col-span-4">
+            <div class="lg:sticky lg:top-[100px]">
+              <div class="p-5 rounded-2xl border-2 border-border/15">
+                <h2 class="text-sm font-display font-bold uppercase tracking-wide mb-5">Tes demandes</h2>
 
-          <div v-if="isLoadingRequests || openRequests.length > 0 || closedRequests.length > 0">
-            <QgRequestsList
-              :open-requests="openRequests"
-              :closed-requests="closedRequests"
-              :is-loading="isLoadingRequests"
-              @mark-resolved="handleMarkResolved"
-            />
-          </div>
-          <div v-else class="py-8 text-center">
-            <p class="text-foreground-muted text-sm">Tu n'as pas encore posté de problème</p>
-            <p class="text-foreground-muted/60 text-xs mt-1">Décris ton souci et la communauté t'aidera</p>
-          </div>
-        </section>
+                <div v-if="isLoadingRequests || openRequests.length > 0 || closedRequests.length > 0">
+                  <QgRequestsList
+                    :open-requests="openRequests"
+                    :closed-requests="closedRequests"
+                    :is-loading="isLoadingRequests"
+                    @mark-resolved="handleMarkResolved"
+                  />
+                </div>
+                <div v-else class="py-8 text-center">
+                  <p class="text-foreground-muted/60 text-xs">Aucun problème posté</p>
+                </div>
+              </div>
+            </div>
+          </aside>
 
-        <div class="flex items-center gap-4">
-          <div class="flex-1 h-px bg-border"></div>
-          <span class="text-xs font-medium text-foreground-muted/40 uppercase tracking-widest">Communauté</span>
-          <div class="flex-1 h-px bg-border"></div>
+          <section class="lg:col-span-8">
+            <QgFeed :is-admin="isAdmin" />
+          </section>
         </div>
-
-        <QgFeed :is-admin="isAdmin" />
       </div>
 
       <div v-else-if="activeTab === TABS.CHALLENGES">
@@ -427,38 +416,34 @@ onMounted(() => {
         <QgChallenges v-else />
       </div>
 
-      <div v-else-if="activeTab === TABS.OPPORTUNITES" class="space-y-10 md:space-y-14">
-        <div v-if="activity?.profileComplete !== false" class="flex flex-col sm:flex-row gap-3">
+      <div v-else-if="activeTab === TABS.OPPORTUNITES">
+        <div v-if="activity?.profileComplete !== false" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8 md:mb-10">
           <NuxtLink
             to="/qg/new-offer"
-            class="group flex-1 block p-5 border border-b-[3px] border-primary/20 border-b-primary/60 rounded-2xl transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none no-underline"
+            class="group block bg-primary p-5 rounded-2xl transition-all hover:brightness-110 hover:-translate-y-0.5 active:translate-y-px no-underline"
           >
-            <div class="flex items-center gap-3">
-              <span class="w-9 h-9 flex items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors shrink-0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
-                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
-                </svg>
-              </span>
+            <div class="flex items-center justify-between">
               <div>
-                <span class="block text-sm font-medium text-foreground">Poster une offre</span>
-                <span class="block text-xs text-foreground-muted">Alternance, stage, CDI...</span>
+                <span class="block text-sm font-bold text-white uppercase tracking-wide">Poster une offre</span>
+                <span class="block text-xs text-white/60 mt-0.5">Alternance, stage, CDI...</span>
               </div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white/80 shrink-0 group-hover:translate-x-0.5 transition-transform">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
             </div>
           </NuxtLink>
           <NuxtLink
             to="/qg/new-project"
-            class="group flex-1 block p-5 border border-b-[3px] border-primary/20 border-b-primary/60 rounded-2xl transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none no-underline"
+            class="group block border-2 border-primary/30 p-5 rounded-2xl transition-all hover:border-primary/60 hover:bg-primary/[0.05] hover:-translate-y-0.5 active:translate-y-px no-underline"
           >
-            <div class="flex items-center gap-3">
-              <span class="w-9 h-9 flex items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors shrink-0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
-                  <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-                </svg>
-              </span>
+            <div class="flex items-center justify-between">
               <div>
-                <span class="block text-sm font-medium text-foreground">Side project</span>
-                <span class="block text-xs text-foreground-muted">Trouve des contributrices</span>
+                <span class="block text-sm font-bold text-foreground uppercase tracking-wide">Side project</span>
+                <span class="block text-xs text-foreground-muted mt-0.5">Trouve des contributrices</span>
               </div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary shrink-0 group-hover:translate-x-0.5 transition-transform">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
             </div>
           </NuxtLink>
         </div>
@@ -466,54 +451,48 @@ onMounted(() => {
           v-else
           :missing-fields="activity?.missingFields || []"
           context="aux opportunités"
+          class="mb-8"
           @go-to-profile="activeTab = TABS.PROFIL"
         />
 
-        <section class="rounded-2xl border border-primary/10 bg-primary/[0.02] p-5 md:p-6">
-          <div class="flex items-center gap-3 mb-6">
-            <span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
-                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-              </svg>
-            </span>
-            <h2 class="text-base font-display font-semibold text-foreground">Tes publications</h2>
-          </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
+          <aside class="lg:col-span-4">
+            <div class="lg:sticky lg:top-[100px]">
+              <div class="p-5 rounded-2xl border-2 border-border/15">
+                <h2 class="text-sm font-display font-bold uppercase tracking-wide mb-5">Tes publications</h2>
 
-          <div v-if="myOffers.length > 0 || (myProjects || []).length > 0">
-            <QgMyOffersList
-              :offers="myOffers"
+                <div v-if="myOffers.length > 0 || (myProjects || []).length > 0">
+                  <QgMyOffersList
+                    :offers="myOffers"
+                    :is-loading="isLoadingOffers"
+                    :current-user-id="profile?.id"
+                    @deleted="refreshOffers()"
+                  />
+                  <QgMyProjectsList
+                    :projects="myProjects || []"
+                    :is-loading="isLoadingProjects"
+                    @mark-completed="handleMarkProjectCompleted"
+                  />
+                </div>
+                <div v-else class="py-8 text-center">
+                  <p class="text-foreground-muted/60 text-xs">Aucune publication</p>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <section class="lg:col-span-8 space-y-10">
+            <QgOffersList
+              :offers="offers || []"
               :is-loading="isLoadingOffers"
               :current-user-id="profile?.id"
-              @deleted="refreshOffers()"
             />
-            <QgMyProjectsList
-              :projects="myProjects || []"
-              :is-loading="isLoadingProjects"
-              @mark-completed="handleMarkProjectCompleted"
-            />
-          </div>
-          <div v-else class="py-8 text-center">
-            <p class="text-foreground-muted text-sm">Tu n'as pas encore de publication</p>
-            <p class="text-foreground-muted/60 text-xs mt-1">Poste une offre ou un side project pour commencer</p>
-          </div>
-        </section>
-
-        <div class="flex items-center gap-4">
-          <div class="flex-1 h-px bg-border"></div>
-          <span class="text-xs font-medium text-foreground-muted/40 uppercase tracking-widest">Communauté</span>
-          <div class="flex-1 h-px bg-border"></div>
+            <QgSideProjectsList />
+          </section>
         </div>
-
-        <QgOffersList
-          :offers="offers || []"
-          :is-loading="isLoadingOffers"
-          :current-user-id="profile?.id"
-        />
-
-        <QgSideProjectsList />
       </div>
 
-      <div v-else>
+      <div v-else class="max-w-3xl">
         <QgProfileForm
           :profile="profile ?? null"
           :session-user-name="session?.user?.name || undefined"
