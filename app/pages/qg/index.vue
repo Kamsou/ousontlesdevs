@@ -348,10 +348,10 @@ onMounted(() => {
             <div class="flex items-center justify-between gap-4">
               <div>
                 <h2 class="text-xl md:text-2xl font-display font-medium mb-2">
-                  Besoin d'un coup de main ?
+                  Un problème ? On est là.
                 </h2>
                 <p class="text-foreground-muted text-sm">
-                  Décris ton blocage, on te trouve quelqu'un.
+                  Décris ton souci, la communauté t'aide.
                 </p>
               </div>
               <span class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors shrink-0">
@@ -368,7 +368,7 @@ onMounted(() => {
             <div class="flex items-start justify-between gap-4">
               <div>
                 <h2 class="text-xl md:text-2xl font-display font-medium mb-2 text-foreground-muted">
-                  Besoin d'un coup de main ?
+                  Un problème ? On est là.
                 </h2>
                 <p class="text-foreground-muted/60 text-sm">
                   Complète ton profil pour demander de l'aide
@@ -402,8 +402,8 @@ onMounted(() => {
             />
           </div>
           <div v-else class="py-8 text-center">
-            <p class="text-foreground-muted text-sm">Tu n'as pas encore de demande d'aide</p>
-            <p class="text-foreground-muted/60 text-xs mt-1">Décris ton blocage et la communauté t'aidera</p>
+            <p class="text-foreground-muted text-sm">Tu n'as pas encore posté de problème</p>
+            <p class="text-foreground-muted/60 text-xs mt-1">Décris ton souci et la communauté t'aidera</p>
           </div>
         </section>
 

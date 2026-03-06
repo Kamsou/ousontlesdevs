@@ -91,7 +91,7 @@ onMounted(() => {
 
 <template>
   <section>
-    <h2 class="text-lg font-display font-medium mb-6">Coups de main demandés</h2>
+    <h2 class="text-lg font-display font-medium mb-6">Problèmes postés</h2>
 
     <div v-if="isLoadingFeed" class="space-y-4">
       <div v-for="i in 3" :key="i" class="p-4 border border-border/20 rounded-xl animate-pulse">
