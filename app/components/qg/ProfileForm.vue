@@ -325,14 +325,14 @@ useIntersectionObserver(stickysentinel, (entries) => {
             <div class="flex flex-col gap-2">
               <label for="title" class="text-xs uppercase tracking-wide text-foreground-muted">En quelques mots</label>
               <div class="relative">
-                <input id="title" v-model="form.title" type="text" maxlength="120" placeholder="Dev fullstack Vue/Node, freelance..." class="w-full px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
+                <input id="title" v-model="form.title" type="text" maxlength="120" placeholder="Ex : Dev fullstack Vue/Node, freelance..." class="w-full px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted/40" />
                 <span v-if="form.title.length > 80" class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] tabular-nums text-foreground-muted/40">{{ form.title.length }}/120</span>
               </div>
             </div>
 
             <div class="flex flex-col gap-2">
               <label for="bio" class="text-xs uppercase tracking-wide text-foreground-muted">Bio</label>
-              <textarea id="bio" v-model="form.bio" rows="3" placeholder="Ce que tu fais, ce qui te passionne..." class="px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted resize-y min-h-[80px] placeholder:text-foreground-muted"></textarea>
+              <textarea id="bio" v-model="form.bio" rows="3" placeholder="Ex : Ce que tu fais, ce qui te passionne..." class="px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted resize-y min-h-[80px] placeholder:text-foreground-muted/40"></textarea>
             </div>
           </div>
         </section>
@@ -343,7 +343,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
               <label for="location" class="text-xs uppercase tracking-wide text-foreground-muted">Ville</label>
-              <input id="location" v-model="form.location" type="text" placeholder="Paris" class="px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
+              <input id="location" v-model="form.location" type="text" placeholder="Ex : Paris" class="px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted/40" />
             </div>
 
             <div class="flex flex-col gap-2">
@@ -419,7 +419,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
               type="text"
               placeholder="Autre compétence..."
               aria-labelledby="competences-label"
-              class="flex-1 px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
+              class="flex-1 px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted/40"
               @keydown.enter.prevent="addSkill"
             />
             <button type="button" @click="addSkill" class="px-6 py-3 bg-background-card border border-b-[3px] border-primary/20 border-b-primary/60 rounded-lg text-foreground cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">Ajouter</button>
@@ -496,8 +496,8 @@ useIntersectionObserver(stickysentinel, (entries) => {
                   id="new-topic"
                   v-model="newTopic"
                   type="text"
-                  placeholder="Vue.js, Women in Tech..."
-                  class="flex-1 px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted"
+                  placeholder="Ex : Vue.js, Women in Tech..."
+                  class="flex-1 px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted/40"
                   @keydown.enter.prevent="addTopic"
                 />
                 <button type="button" @click="addTopic" class="px-6 py-3 bg-background-card border border-b-[3px] border-primary/20 border-b-primary/60 rounded-lg text-foreground cursor-pointer transition-all hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-glow hover:-translate-y-0.5 active:translate-y-px active:border-b active:shadow-none">Ajouter</button>
@@ -537,12 +537,12 @@ useIntersectionObserver(stickysentinel, (entries) => {
 
             <div class="flex flex-col gap-2">
               <label for="website" class="text-xs uppercase tracking-wide text-foreground-muted">Site web / Portfolio</label>
-              <input id="website" v-model="form.website" type="url" placeholder="https://..." class="px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
+              <input id="website" v-model="form.website" type="url" placeholder="https://..." class="px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted/40" />
             </div>
 
             <div class="flex flex-col gap-2">
               <label for="twitter" class="text-xs uppercase tracking-wide text-foreground-muted">Twitter / X</label>
-              <input id="twitter" v-model="form.twitterUrl" type="url" placeholder="https://twitter.com/..." class="px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted" />
+              <input id="twitter" v-model="form.twitterUrl" type="url" placeholder="https://twitter.com/..." class="px-4 py-3 bg-background-card border border-border/20 rounded-lg text-foreground text-sm transition-colors focus:outline-none focus:border-foreground-muted placeholder:text-foreground-muted/40" />
             </div>
           </div>
         </section>

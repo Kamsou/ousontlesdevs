@@ -374,7 +374,7 @@ async function sendContact() {
                   rows="5"
                   maxlength="1000"
                   placeholder="Salut ! J'ai vu que tu connaissais..."
-                  class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/50 focus:outline-none focus:border-foreground-muted resize-none"
+                  class="w-full px-4 py-3 bg-background border border-border/20 rounded-xl text-foreground placeholder:text-foreground-muted/40 focus:outline-none focus:border-foreground-muted resize-none"
                 ></textarea>
                 <p class="text-[11px] text-foreground-muted/40 mt-1.5 text-right tabular-nums">
                   {{ contactMessage.length }}/1000

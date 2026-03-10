@@ -1,25 +1,18 @@
-export type ThemePreference = 'system' | 'light' | 'dark'
+export type ThemePreference = 'light' | 'dark'
 
 export function useQgTheme() {
-  const preference = useState<ThemePreference>('qg-theme', () => 'system')
+  const preference = useState<ThemePreference>('qg-theme', () => 'dark')
 
-  const systemDark = ref(true)
+  const isDark = computed(() => preference.value === 'dark')
 
   if (import.meta.client) {
     const saved = localStorage.getItem('qg-theme') as ThemePreference | null
-    if (saved && ['system', 'light', 'dark'].includes(saved)) {
+    if (saved && ['light', 'dark'].includes(saved)) {
       preference.value = saved
+    } else {
+      preference.value = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     }
-
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    systemDark.value = mq.matches
-    mq.addEventListener('change', (e) => { systemDark.value = e.matches })
   }
-
-  const isDark = computed(() => {
-    if (preference.value === 'system') return systemDark.value
-    return preference.value === 'dark'
-  })
 
   function setTheme(theme: ThemePreference) {
     preference.value = theme
@@ -28,11 +21,9 @@ export function useQgTheme() {
     }
   }
 
-  function cycle() {
-    const order: ThemePreference[] = ['system', 'light', 'dark']
-    const idx = order.indexOf(preference.value)
-    setTheme(order[(idx + 1) % order.length] ?? 'system')
+  function toggle() {
+    setTheme(preference.value === 'dark' ? 'light' : 'dark')
   }
 
-  return { preference, isDark, setTheme, cycle }
+  return { preference, isDark, setTheme, toggle }
 }
