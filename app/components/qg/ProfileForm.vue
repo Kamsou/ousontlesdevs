@@ -607,7 +607,7 @@ useIntersectionObserver(stickysentinel, (entries) => {
         </section>
 
         <div ref="stickysentinel" class="h-0" aria-hidden="true"></div>
-        <div :class="['sticky bottom-[calc(3.5rem+env(safe-area-inset-bottom,0px))] md:bottom-0 z-10 -mx-6 px-6 py-3 bg-background/90 backdrop-blur-lg mt-6 transition-colors', isSticky ? 'border-t border-border/20' : '']">
+        <div :class="['sticky bottom-[calc(3.5rem+env(safe-area-inset-bottom,0px))] md:bottom-0 -mx-6 px-6 py-3 bg-background/90 backdrop-blur-lg mt-6 transition-colors', isSticky ? 'border-t border-border/20' : '', experienceDropdownOpen ? 'z-0' : 'z-40']">
           <div class="flex md:justify-end">
             <button type="submit" :disabled="saving || (isNewProfile && !form.cocAccepted)" class="w-full md:w-auto px-8 py-4 bg-foreground border border-b-[3px] border-foreground border-b-foreground-muted/50 rounded-full text-background text-sm font-medium cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-glow active:translate-y-px active:border-b active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed">
               {{ saving ? 'Enregistrement...' : 'Enregistrer' }}

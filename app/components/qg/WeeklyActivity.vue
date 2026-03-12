@@ -50,13 +50,13 @@ const emit = defineEmits<{
       </div>
 
       <div v-if="activity.profileComplete" class="px-3 py-2 bg-foreground/[0.03]">
-        <span class="text-xs text-foreground-muted/50 uppercase tracking-wide">
+        <span class="text-xs text-foreground-muted uppercase tracking-wide">
           <span class="text-foreground-muted">✓</span> Profil complet
         </span>
       </div>
 
       <div v-if="activity.communityNewMembers && activity.communityNewMembers > 0" class="px-3 py-2 bg-foreground/[0.03]">
-        <span class="text-xs text-foreground-muted/50 uppercase tracking-wide">
+        <span class="text-xs text-foreground-muted uppercase tracking-wide">
           <span class="text-foreground-muted">+</span>
           <span class="font-bold text-foreground-muted tabular-nums">{{ activity.communityNewMembers }}</span>
           {{ activity.communityNewMembers === 1 ? 'nouvelle inscrite' : 'nouvelles inscrites' }}
@@ -64,7 +64,7 @@ const emit = defineEmits<{
       </div>
 
       <div v-if="activity.communityHelpRequests && activity.communityHelpRequests > 0" class="px-3 py-2 bg-foreground/[0.03]">
-        <span class="text-xs text-foreground-muted/50 uppercase tracking-wide">
+        <span class="text-xs text-foreground-muted uppercase tracking-wide">
           <span class="text-foreground-muted">+</span>
           <span class="font-bold text-foreground-muted tabular-nums">{{ activity.communityHelpRequests }}</span>
           {{ activity.communityHelpRequests === 1 ? 'demande d\'aide' : 'demandes d\'aide' }}
@@ -72,7 +72,7 @@ const emit = defineEmits<{
       </div>
 
       <div v-if="activity.communityNewProjects && activity.communityNewProjects > 0" class="px-3 py-2 bg-foreground/[0.03]">
-        <span class="text-xs text-foreground-muted/50 uppercase tracking-wide">
+        <span class="text-xs text-foreground-muted uppercase tracking-wide">
           <span class="text-foreground-muted">+</span>
           <span class="font-bold text-foreground-muted tabular-nums">{{ activity.communityNewProjects }}</span>
           {{ activity.communityNewProjects === 1 ? 'nouveau projet' : 'nouveaux projets' }}
@@ -80,7 +80,7 @@ const emit = defineEmits<{
       </div>
     </div>
 
-    <p v-if="activity.totalHelpGiven && activity.totalHelpGiven > 0" class="text-xs text-foreground-muted/40 mt-3">
+    <p v-if="activity.totalHelpGiven && activity.totalHelpGiven > 0" class="text-xs text-foreground-muted mt-3">
       Tu as propose ton aide {{ activity.totalHelpGiven }} fois au total
     </p>
   </section>

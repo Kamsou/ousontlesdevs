@@ -213,7 +213,7 @@ onMounted(() => {
             'pt-3.5 pb-3.5 text-xs font-semibold uppercase tracking-widest transition-colors relative',
             activeTab === TABS.ENTRAIDE
               ? 'text-foreground'
-              : 'text-foreground-muted/50 hover:text-foreground-muted'
+              : 'text-foreground-muted hover:text-foreground'
           ]"
         >
           Entraide
@@ -226,7 +226,7 @@ onMounted(() => {
             'pt-3.5 pb-3.5 text-xs font-semibold uppercase tracking-widest transition-colors relative',
             activeTab === TABS.OPPORTUNITES
               ? 'text-foreground'
-              : 'text-foreground-muted/50 hover:text-foreground-muted'
+              : 'text-foreground-muted hover:text-foreground'
           ]"
         >
           Opportunités
@@ -238,7 +238,7 @@ onMounted(() => {
             'pt-3.5 pb-3.5 text-xs font-semibold uppercase tracking-widest transition-colors relative',
             activeTab === TABS.PROFIL
               ? 'text-foreground'
-              : 'text-foreground-muted/50 hover:text-foreground-muted'
+              : 'text-foreground-muted hover:text-foreground'
           ]"
         >
           Profil
@@ -345,7 +345,7 @@ onMounted(() => {
                 <h2 class="text-xl md:text-2xl font-display font-bold uppercase tracking-wide text-white">
                   Un problème ?
                 </h2>
-                <p class="text-white/60 text-sm mt-1">
+                <p class="text-white/80 text-sm mt-1">
                   Décris ton souci, la communauté t'aide.
                 </p>
               </div>
@@ -389,7 +389,7 @@ onMounted(() => {
                   />
                 </div>
                 <div v-else class="py-8 text-center">
-                  <p class="text-foreground-muted/60 text-xs">Aucun problème posté</p>
+                  <p class="text-foreground-muted text-xs">Aucun problème posté</p>
                 </div>
               </div>
             </div>
@@ -421,7 +421,7 @@ onMounted(() => {
             <div class="flex items-center justify-between">
               <div>
                 <span class="block text-sm font-bold text-white uppercase tracking-wide">Poster une offre</span>
-                <span class="block text-xs text-white/60 mt-0.5">Alternance, stage, CDI...</span>
+                <span class="block text-xs text-white/80 mt-0.5">Alternance, stage, CDI...</span>
               </div>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white/80 shrink-0 group-hover:translate-x-0.5 transition-transform">
                 <path d="M5 12h14M13 5l7 7-7 7" />
@@ -471,7 +471,7 @@ onMounted(() => {
                   />
                 </div>
                 <div v-else class="py-8 text-center">
-                  <p class="text-foreground-muted/60 text-xs">Aucune publication</p>
+                  <p class="text-foreground-muted text-xs">Aucune publication</p>
                 </div>
               </div>
             </div>

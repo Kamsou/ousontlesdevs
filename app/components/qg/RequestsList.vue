@@ -57,7 +57,7 @@ async function markAsResolved(requestId: number, e: Event) {
             >
               {{ tech.techName }}
             </span>
-            <span v-if="request.techs.length > 2" class="text-[10px] text-foreground-muted/30">
+            <span v-if="request.techs.length > 2" class="text-[10px] text-foreground-muted">
               +{{ request.techs.length - 2 }}
             </span>
           </div>
@@ -92,7 +92,7 @@ async function markAsResolved(requestId: number, e: Event) {
       <button
         v-if="closedRequests.length > 0"
         @click="showClosedRequests = !showClosedRequests"
-        class="flex items-center gap-1.5 pt-3 text-foreground-muted/30 hover:text-foreground-muted transition-colors text-[11px]"
+        class="flex items-center gap-1.5 pt-3 text-foreground-muted hover:text-foreground transition-colors text-[11px]"
       >
         <svg
           width="9"

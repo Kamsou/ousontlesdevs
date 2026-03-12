@@ -66,8 +66,8 @@ function formatDate(date: string) {
             <div v-else class="w-6 h-6 rounded-full bg-foreground/[0.05] flex items-center justify-center shrink-0">
               <span class="text-[9px] font-medium text-foreground-muted">{{ offer.developer.name?.charAt(0) || '?' }}</span>
             </div>
-            <span class="text-xs text-foreground-muted/50">{{ offer.developer.name }}</span>
-            <span class="text-[11px] text-foreground-muted/30 ml-auto">{{ formatDate(offer.createdAt) }}</span>
+            <span class="text-xs text-foreground-muted">{{ offer.developer.name }}</span>
+            <span class="text-[11px] text-foreground-muted ml-auto">{{ formatDate(offer.createdAt) }}</span>
           </div>
 
           <div class="flex items-center gap-2 flex-wrap mb-2">
@@ -79,11 +79,11 @@ function formatDate(date: string) {
             </span>
             <span
               v-if="offer.verified"
-              class="px-2 py-0.5 text-[11px] font-medium border border-green-500/30 text-green-700 dark:text-green-400 rounded-full"
+              class="px-2 py-0.5 text-[11px] font-medium border border-primary/30 text-primary rounded-full"
             >
               Vérifié
             </span>
-            <span v-if="offer.location" class="text-[11px] text-foreground-muted/40">{{ offer.location }}</span>
+            <span v-if="offer.location" class="text-[11px] text-foreground-muted">{{ offer.location }}</span>
           </div>
 
           <h3 class="font-medium text-[15px] text-foreground leading-snug">
@@ -98,13 +98,13 @@ function formatDate(date: string) {
             </a>
             <span v-else>{{ offer.title }}</span>
           </h3>
-          <p v-if="offer.description" class="text-xs text-foreground-muted/60 mt-1.5 line-clamp-2">
+          <p v-if="offer.description" class="text-xs text-foreground-muted mt-1.5 line-clamp-2">
             {{ offer.description }}
           </p>
 
           <button
             @click="toggleComments(offer.id)"
-            class="text-[11px] text-foreground-muted/40 hover:text-foreground-muted mt-3 transition-colors"
+            class="text-[11px] text-foreground-muted hover:text-foreground mt-3 transition-colors"
           >
             {{ expandedOfferId === offer.id ? 'Masquer' : 'Commentaires' }}
           </button>

@@ -168,7 +168,7 @@ function formatDate(date: string) {
       </div>
 
       <div v-else class="text-center py-8 mb-6">
-        <p class="text-foreground-muted/40 text-sm">Aucun commentaire</p>
+        <p class="text-foreground-muted/60 text-sm">Aucun commentaire</p>
       </div>
 
       <div v-if="isAuthenticated">

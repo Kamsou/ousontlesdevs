@@ -44,7 +44,7 @@ async function markAsCompleted(projectId: number, e: Event) {
       <h3 class="text-xs font-display font-bold uppercase tracking-wide">Projets</h3>
       <span v-if="activeProjects.length > 0" class="flex items-center gap-1.5">
         <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
-        <span class="text-[11px] text-foreground-muted/30">{{ activeProjects.length }}</span>
+        <span class="text-[11px] text-foreground-muted">{{ activeProjects.length }}</span>
       </span>
     </div>
 
@@ -73,13 +73,13 @@ async function markAsCompleted(projectId: number, e: Event) {
               >
                 {{ tech }}
               </span>
-              <span v-if="project.techs.length > 2" class="text-[10px] text-foreground-muted/30">
+              <span v-if="project.techs.length > 2" class="text-[10px] text-foreground-muted">
                 +{{ project.techs.length - 2 }}
               </span>
             </template>
             <span
               v-if="project.commentsCount > 0"
-              class="inline-flex items-center gap-1 text-[10px] text-foreground-muted/30"
+              class="inline-flex items-center gap-1 text-[10px] text-foreground-muted"
             >
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -118,7 +118,7 @@ async function markAsCompleted(projectId: number, e: Event) {
       <button
         v-if="completedProjects.length > 0"
         @click="showCompleted = !showCompleted"
-        class="flex items-center gap-1.5 pt-3 text-foreground-muted/30 hover:text-foreground-muted transition-colors text-[11px]"
+        class="flex items-center gap-1.5 pt-3 text-foreground-muted hover:text-foreground transition-colors text-[11px]"
       >
         <svg
           width="9"

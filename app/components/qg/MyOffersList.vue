@@ -48,7 +48,7 @@ async function deleteOffer(id: number, e: Event) {
   <div v-if="offers.length" class="mb-8">
     <div class="flex items-center justify-between mb-3">
       <h3 class="text-xs font-display font-bold uppercase tracking-wide">Offres</h3>
-      <span class="text-[11px] text-foreground-muted/30">{{ offers.length }}</span>
+      <span class="text-[11px] text-foreground-muted">{{ offers.length }}</span>
     </div>
 
     <div class="divide-y divide-border/20">
@@ -68,7 +68,7 @@ async function deleteOffer(id: number, e: Event) {
               </span>
               <span
                 v-if="offer.verified"
-                class="text-[10px] text-green-700 dark:text-green-400"
+                class="text-[10px] text-primary"
               >Vérifié</span>
             </div>
             <span class="text-[13px] font-bold text-foreground leading-snug line-clamp-2 block">
@@ -83,7 +83,7 @@ async function deleteOffer(id: number, e: Event) {
               </a>
               <template v-else>{{ offer.title }}</template>
             </span>
-            <span v-if="offer.location" class="text-[10px] text-foreground-muted/40 mt-0.5 block">{{ offer.location }}</span>
+            <span v-if="offer.location" class="text-[10px] text-foreground-muted mt-0.5 block">{{ offer.location }}</span>
           </div>
           <button
             @click="deleteOffer(offer.id, $event)"

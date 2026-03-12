@@ -42,7 +42,7 @@ const isLoading = computed(() => status.value === 'pending')
     </div>
 
     <div v-else-if="!projects?.length" class="py-16 text-center">
-      <p class="text-foreground-muted/40 text-sm">Aucun side project pour le moment</p>
+      <p class="text-foreground-muted text-sm">Aucun side project pour le moment</p>
     </div>
 
     <div v-else class="space-y-4">
@@ -63,7 +63,7 @@ const isLoading = computed(() => status.value === 'pending')
             <div v-else class="w-6 h-6 rounded-full bg-foreground/[0.05] flex items-center justify-center shrink-0">
               <span class="text-[9px] font-medium text-foreground-muted">{{ project.developer.name?.charAt(0) || '?' }}</span>
             </div>
-            <span class="text-xs text-foreground-muted/50 truncate">{{ project.developer.name }}</span>
+            <span class="text-xs text-foreground-muted truncate">{{ project.developer.name }}</span>
           </div>
           <span :class="['px-2 py-0.5 rounded text-[11px] shrink-0', statusColors[project.status]]">
             {{ statusLabels[project.status] }}
@@ -73,7 +73,7 @@ const isLoading = computed(() => status.value === 'pending')
         <h3 class="text-[15px] font-medium text-foreground group-hover:text-primary transition-colors leading-snug mb-1.5">
           {{ project.title }}
         </h3>
-        <p class="text-xs text-foreground-muted/60 line-clamp-2 mb-3">{{ project.description }}</p>
+        <p class="text-xs text-foreground-muted line-clamp-2 mb-3">{{ project.description }}</p>
 
         <div class="flex items-center gap-2 flex-wrap">
           <template v-if="project.techs.length">
@@ -84,11 +84,11 @@ const isLoading = computed(() => status.value === 'pending')
             >
               {{ tech }}
             </span>
-            <span v-if="project.techs.length > 3" class="text-[11px] text-foreground-muted/30">
+            <span v-if="project.techs.length > 3" class="text-[11px] text-foreground-muted">
               +{{ project.techs.length - 3 }}
             </span>
           </template>
-          <div class="flex items-center gap-2 ml-auto text-[11px] text-foreground-muted/30">
+          <div class="flex items-center gap-2 ml-auto text-[11px] text-foreground-muted">
             <span v-if="project.commentsCount > 0" class="flex items-center gap-1">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
