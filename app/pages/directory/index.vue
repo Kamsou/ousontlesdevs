@@ -116,7 +116,18 @@ useIntersectionObserver(loadMoreRef, (entries) => {
 
 const experienceFilterOptions = experienceOptions.map(o => ({ ...o, key: String(o.value) }))
 
+const showMobileFilters = ref(false)
 const showMoreFilters = ref(filters.openTo.length > 0)
+
+const activeFilterCount = computed(() => {
+  let count = 0
+  if (filters.location) count++
+  if (filters.skill) count++
+  count += filters.openTo.length
+  count += filters.lookingFor.length
+  count += filters.experience.length
+  return count
+})
 
 const openToTags = computed(() =>
   filters.openTo.map(v => ({ label: openToOptions.find(o => o.value === v)?.label || v, value: v }))
@@ -207,7 +218,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
 
 <template>
   <div class="max-w-7xl mx-auto px-4 md:px-16">
-    <header class="py-16 border-b border-border/10">
+    <header class="py-8 md:py-16 border-b border-border/10">
       <span class="text-xs tracking-wide text-foreground-muted mb-6 block">Annuaire</span>
       <h1 class="font-display text-4xl md:text-7xl font-medium tracking-tight mb-2">Développeuses</h1>
       <p class="text-foreground-muted text-base">
@@ -216,7 +227,25 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
       </p>
     </header>
 
-    <section class="py-8 border-b border-border/10">
+    <!-- Mobile: bouton filtrer -->
+    <div class="md:hidden py-4 border-b border-border/10 flex items-center gap-3">
+      <button
+        @click="showMobileFilters = !showMobileFilters"
+        class="px-4 py-2 border border-border/10 rounded-full text-sm text-foreground-muted transition-all flex items-center gap-2"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="6" x2="20" y2="6" /><line x1="6" y1="12" x2="18" y2="12" /><line x1="8" y1="18" x2="16" y2="18" />
+        </svg>
+        Filtrer
+        <span v-if="activeFilterCount" class="px-1.5 py-0.5 bg-foreground text-background rounded-full text-xs font-medium leading-none">{{ activeFilterCount }}</span>
+      </button>
+      <button v-if="activeFilterCount" @click="clearFilters" class="text-xs text-foreground-muted hover:text-foreground transition-colors">
+        Effacer
+      </button>
+    </div>
+
+    <!-- Filtres: toujours visible desktop, collapsible mobile -->
+    <section :class="['py-8 border-b border-border/10', showMobileFilters ? 'block' : 'hidden md:block']">
       <div class="flex flex-col md:flex-row gap-6 items-stretch md:items-end mb-6">
         <div class="flex-1 max-w-none md:max-w-[250px]">
           <label class="block text-xs tracking-wide text-foreground-muted mb-2">Ville</label>
@@ -238,7 +267,7 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
           />
         </div>
 
-        <button v-if="filters.location || filters.skill || filters.lookingFor.length || filters.experience.length || filters.openTo.length" @click="clearFilters" class="px-6 py-3 bg-transparent border border-border/10 rounded-lg text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground">
+        <button v-if="filters.location || filters.skill || filters.lookingFor.length || filters.experience.length || filters.openTo.length" @click="clearFilters" class="hidden md:block px-6 py-3 bg-transparent border border-border/10 rounded-lg text-foreground-muted text-sm cursor-pointer transition-all hover:border-foreground hover:text-foreground">
           Effacer
         </button>
       </div>
@@ -330,6 +359,14 @@ watch(() => filters.skill, () => { updateUrl(); trackSearch() })
           </div>
         </div>
       </div>
+
+      <!-- Mobile: bouton appliquer -->
+      <button
+        @click="showMobileFilters = false"
+        class="md:hidden mt-6 w-full py-3 bg-foreground text-background rounded-full text-sm font-medium"
+      >
+        Voir les résultats
+      </button>
     </section>
 
     <section class="py-12">
