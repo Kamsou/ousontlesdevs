@@ -12,6 +12,10 @@ export default defineEventHandler(async (event) => {
 
   const githubId = (token?.id || token?.sub) as string
 
+  if (!githubId) {
+    throw createError({ statusCode: 401, message: 'Non authentifié' })
+  }
+
   const id = Number(getRouterParam(event, 'slug'))
   const body = await readBody(event)
 

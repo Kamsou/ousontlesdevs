@@ -105,7 +105,7 @@ export default defineNuxtConfig({
     originEnvKey: 'NUXT_PUBLIC_AUTH_BASE_URL',
     provider: {
       type: 'authjs',
-      trustHost: false
+      trustHost: true
     },
     globalAppMiddleware: {
       isEnabled: false
